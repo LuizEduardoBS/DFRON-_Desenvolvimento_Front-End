@@ -14,6 +14,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: aquamarine;
+  padding-right: 20px;
 }
 
 .top-bar {
@@ -26,27 +27,9 @@ body {
   justify-content: space-between;
 }
 
-.logo {
-  padding: 0;
+img {
+  width: 150px;
+  height: 100%;
   margin: 0;
-}
-
-#cigla {
-  padding: 0;
-  margin: 0;
-  font-size: 48px;
-  height: 48px;
-  display: inline-block;
-  
-}
-
-#nome-logo{
-  font-size: 20px;
-  letter-spacing: 3.5px;
-  display: inline-block;
-}
-
-p{
-  padding: 0;
-  margin: 0;
+  padding-left: 20px;
 }
