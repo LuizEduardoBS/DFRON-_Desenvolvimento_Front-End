@@ -169,10 +169,12 @@ form {
 .titulo-livros {
   text-align: center;
   font-size: 18px;
+  padding: 0;
+  margin: 0;
 }
 
 .botao-adicionar {
-  width: 104px;
+  width: 120px;
   height: 23px;
   background-color: #0C8CE9;
   font-size: 15px;
