@@ -45,13 +45,18 @@ img {
   text-decoration: none;
   color: black;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
   display: block;
   height: 44px;
   place-content: center;
   gap: 0;
   padding: 0;
+  cursor: pointer;
 }
+.opcoes-sem-login:hover > :not(:hover) {
+  transform: scale(0.9);
+}
+
 
 /* MAIN - INDEX */
 
@@ -92,7 +97,6 @@ img {
   border: none;
   background-color: #E7E7E7; 
   box-shadow: 0 2px 8px 0px #989898;
-   
 }
 
 form {
@@ -112,7 +116,15 @@ form {
   background-color: #0C8CE9;
   border: none;
   box-shadow: 0 2px 8px -2px #989898;
+  cursor: pointer;
 }
+
+.bloco-index-busca button:hover {
+  border: 1px solid #0C8CE9;
+  background-color: #fff;
+  color: #0C8CE9;
+}
+
 .bloco-index-busca p {
   font-size: 18px;
 }
@@ -147,6 +159,11 @@ form {
   gap: 20px;
 }
 
+.bloco-cards-destaques:hover > :not(:hover) {
+  opacity: .4;
+  transform: scale(0.9);
+}
+
 .card-livro-destaque {
   width: 143px;
   height: 248px;
@@ -156,6 +173,8 @@ form {
   flex-direction: column;
   align-items: center;
   row-gap: 5px;
+  transition: .35s;
+  cursor: pointer;
 }
 
 .card-livro-destaque img {
@@ -166,14 +185,14 @@ form {
   margin-top: 6px;
 }
 
-.titulo-livros {
+.titulo-livros-index {
   text-align: center;
   font-size: 18px;
   padding: 0;
   margin: 0;
 }
 
-.botao-adicionar {
+.botao-adicionar-index {
   width: 120px;
   height: 23px;
   background-color: #0C8CE9;
@@ -182,6 +201,13 @@ form {
   color: #FFF;
   border-radius: 5px;
   border: none;
+  cursor: pointer;
+}
+
+.botao-adicionar-index:hover {
+  border: 1px solid #0C8CE9;
+  background-color: #fff;
+  color: #0C8CE9;
 }
 
 /* CATEGORIAS */
@@ -228,6 +254,12 @@ form {
   font-size: 18px;
   text-decoration: none;
   color: #000;
+}
+
+.lista-categorias a:hover {
+  background-color: #0C8CE9;
+  color: #fff;
+  font-weight: 700;
 }
 
 /* FOOTER - RODAPÉ */
