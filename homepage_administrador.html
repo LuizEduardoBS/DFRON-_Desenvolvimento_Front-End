@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./Styles/menu_sem_logar_e_suas_telas.css">
+  <link rel="stylesheet" href="./Styles/menu_adm_e_suas_telas.css">
   <title>Inicio</title>
 </head>
 
@@ -16,38 +16,30 @@
         <img src="./img/Bliblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
       </div>
 
-      <section class="opcoes-sem-login">
+      <section class="opcoes-logado-adm">
         <a href="./index.html">Home</a>
         <a href="./acervo.html">Acervo</a>
         <a href="#">Blog</a>
         <a href="./politicas.html">Políticas</a>
         <a href="./sobre.html">Sobre</a>
-        <a href="./login.html" style="color: #0C8CE9;">Login</a>
-        <a href="./cadastro.html">Cadastre-se</a>
+        <a href="./login.html" id="usuario-menu">"nome-usuario"<img src="./img/person.png"></a>
       </section>
     </div>
   </header>
+  <header class="bloco-do-submenu">
+    <section class="opcoes-submenu-adm">
+      <a href="./homepage_administrador.html" style="color: #0C8CE9;">Dashboard</a>
+      <a href="#">Usuários</a>
+      <a href="#">Livros</a>
+      <a href="#">Postagens</a>
+    </section>
+  </header>
 
-  <main class="main-login">
-    <div class="bloco-login">
-      <div class="bloco-login-interno">
-        <h1>Logar</h1>
-        <!-- <div> -->
-        <form action="/login" method="POST">
-          <span>Seu e-mail</span>
-          <input type="text" placeholder="  exemplo@exemplo.com">
-          <span>Sua senha</span>
-          <input type="text" placeholder="  senha@123">
-          <button>Logar</button>
-        </form>
-        <!-- </div> -->
-      </div>
-      <div class="nao-possui-conta">
-        <span>Ainda não tem conta?</span>
-        <a href="./cadastro">Cadastre-se</a>
-      </div>
 
-    </div>
+  <main class="main-homepage-adm">
+
+
+
   </main>
 
   <footer>

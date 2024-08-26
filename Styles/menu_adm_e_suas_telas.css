@@ -1,0 +1,146 @@
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #F0F0F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ########################################### */
+/* MENU SUPERIOR - TOP-BAR */
+
+.bloco-do-menu {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  box-shadow: 0 2px 8px -2px #989898;
+}
+.top-bar-index {
+  width: 1032px;
+  height: 44px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+.bloco-do-menu img {
+  width: 150px;
+  height: 100%;
+  margin-top: 0;
+  padding-left: 20px;
+}
+.opcoes-logado-adm {
+  display: flex;
+  flex-direction: row;
+  padding-right: 20px;
+  gap: 20px;
+}
+.opcoes-logado-adm a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  display: block;
+  height: 44px;
+  place-content: center;
+  gap: 0;
+  padding: 0;
+  cursor: pointer;  
+}
+
+.opcoes-logado-adm a:hover {
+  color: #0C8CE9;
+  text-decoration: underline;
+}
+
+.opcoes-logado-adm a img {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 29px;
+  margin-left: 5px;
+
+  padding-right: 90px;
+}
+
+.bloco-do-submenu {
+  width: 1072px;
+  height: 80px;
+  background-color: #fff;
+  margin-top: 3px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0 2px 8px -2px #989898;
+}
+
+.opcoes-submenu-adm {
+  display: flex;
+  flex-direction: row;
+  padding-right: 20px;
+  gap: 20px;
+  margin-left: 32px;
+}
+
+.opcoes-submenu-adm a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  display: block;
+  height: 44px;
+  place-content: center;
+  gap: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.opcoes-submenu-adm a:hover {
+  color: #0C8CE9;
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
+/* ########################################### */
+/* FOOTER - RODAPÉ */
+footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  row-gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+.footer-contatos {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 21px;
+}
+.footer-contatos img {
+  width: 27px;
+  height: 27px;
+  padding: 0;
+}
+footer p {
+  padding: 0;
+  margin: 3px;
+  font-size: 15px;
+}
