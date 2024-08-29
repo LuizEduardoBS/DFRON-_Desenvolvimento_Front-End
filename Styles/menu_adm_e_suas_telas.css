@@ -236,6 +236,8 @@ button:hover {
   background-color: #fff;
   box-shadow: 0 2px 8px -2px #989898;
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .cabecalho-tabela-usuarios {
@@ -247,7 +249,10 @@ button:hover {
 
 .bloco-adm-usuarios table td {
   border: 1px solid black;
-  
+}
+
+#coluna-1 {
+  width: 58px;
 }
 
 
