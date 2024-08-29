@@ -28,36 +28,53 @@
   </header>
   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-adm">
-      <a href="./homepage_administrador.html" style="color: #0C8CE9;">Dashboard</a>
-      <a href="./adm_usuarios.html">Usuários</a>
+      <a href="./homepage_administrador.html">Dashboard</a>
+      <a href="./adm_usuario.html" style="color: #0C8CE9;">Usuários</a>
       <a href="#">Livros</a>
       <a href="#">Postagens</a>
+      <a href="#" style="text-align: center;">Notificação<br>Geral</a>
     </section>
+    <form action="">
+      <input type="text" placeholder="   Pesquisar por ID, nome, e-mail, hierarquia ou status">
+      <button></button>
+    </form>
   </header>
 
 
-  <main class="main-homepage-adm">
-    <div class="bloco-dashboard">
-      <div class="bloco-cards">
-        <div class="card1-dashboard">
-          <h1>1525</h1>
-          <h2>Acessos totais</h2>
-        </div>
-        <div class="card2-dashboard">
-          <h1>53</h1>
-          <h2>Acessos esse mês</h2>
-        </div>
-        <div class="card3-dashboard">
-          <h1>2976</h1>
-          <h2>Acessos totais</h2>
-        </div>
-        <div class="card4-dashboard">
-          <h1>201</h1>
-          <h2>Livros emprestados</h2>
-        </div>
-      </div>
-    </div>
+  <main class="main-usuarios-adm">
+    <div class="bloco-adm-usuarios">
+      <div class="cabecalho-tabela-usuarios"></div>
 
+      <table>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Luíz Eduardo</td>
+            <td>administrador@adm.com</td>
+            <td>
+              <select name="" id="">
+                <option value="">ADM</option>
+                <option value="">Bibliotecario(a)</option>
+                <option value="">Usuário</option>
+              </select>
+            </td>
+            <td>Verde</td>
+            <td>Icone</td>
+            <td>
+              <select name="" id="">
+                <option value="">Ativo</option>
+                <option value="">Bloqueado</option>
+              </select>
+            </td>
+            <td>Lixeira</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+
+
+    </div>
 
   </main>
 
