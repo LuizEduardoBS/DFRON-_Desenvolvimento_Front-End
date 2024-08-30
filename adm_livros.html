@@ -22,26 +22,26 @@
         <a href="#" class="opcao-menu">Blog</a>
         <a href="./politicas.html" class="opcao-menu">Políticas</a>
         <a href="./sobre.html" class="opcao-menu">Sobre</a>
-        <a href="./login.html" id="usuario-menu" class="opcao-menu">"nome-usuario"<img src="./img/person.png"></a>
+        <a href="./login.html" class="opcao-menu" id="usuario-menu">"nome-usuario"<img src="./img/person.png"></a>
       </section>
     </div>
   </header>
   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-adm">
       <a href="./homepage_administrador.html" class="opcao-menu">Dashboard</a>
-      <a href="./adm_usuario.html" class="opcao-menu" style="color: #0C8CE9;">Usuários</a>
-      <a href="./adm_livros.html" class="opcao-menu">Livros</a>
+      <a href="./adm_usuarios.html" class="opcao-menu">Usuários</a>
+      <a href="./adm_livros.html" class="opcao-menu" style="color: #0C8CE9;">Livros</a>
       <a href="#" class="opcao-menu">Postagens</a>
-      <a href="#" class="opcao-menu" style="text-align: center;">Notificação<br>Geral</a>
     </section>
     <form action="">
-      <input type="text" placeholder="   Pesquisar por ID, nome, e-mail, hierarquia ou status">
+      <input type="text" placeholder="   Pesquisar por título, autor, gênero, status ou ID">
       <button class="botao-busca">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
         </svg>
       </button>
     </form>
+    <button class="botao-adicionar-livro">Adicionar Livro</button>
   </header>
 
 
@@ -78,28 +78,14 @@
               </select>
             </td>
             <td id="coluna-5">Verde</td>
-            <td id="coluna-6">
-              <a href="" class="icone-acessar-perfil">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
-                  <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
-                  <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
-                </svg>
-              </a>
-            </td>
+            <td id="coluna-6">Icone</td>
             <td id="coluna-7">
               <select name="" id="">
                 <option value="">Ativo</option>
                 <option value="">Bloqueado</option>
               </select>
             </td>
-            <td id="coluna-8">
-              <a href="" class="deletar-usuario">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-              </a>
-            </td>
+            <td id="coluna-8">Lixeira</td>
           </tr>
 
           <tr>
@@ -114,28 +100,14 @@
               </select>
             </td>
             <td id="coluna-5">Verde</td>
-            <td id="coluna-6">
-              <a href="" class="icone-acessar-perfil">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
-                  <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
-                  <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
-                </svg>
-              </a>
-            </td>
+            <td id="coluna-6">Icone</td>
             <td id="coluna-7">
               <select name="" id="">
                 <option value="">Ativo</option>
                 <option value="">Bloqueado</option>
               </select>
             </td>
-            <td id="coluna-8">
-              <a href="#" class="deletar-usuario">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-              </a>
-            </td>
+            <td id="coluna-8">Lixeira</td>
           </tr>
 
           <tr>
@@ -150,28 +122,14 @@
               </select>
             </td>
             <td id="coluna-5">Verde</td>
-            <td id="coluna-6">
-              <a href="" class="icone-acessar-perfil">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
-                  <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
-                  <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
-                </svg>
-              </a>
-            </td>
+            <td id="coluna-6">Icone</td>
             <td id="coluna-7">
               <select name="" id="">
                 <option value="">Ativo</option>
                 <option value="">Bloqueado</option>
               </select>
             </td>
-            <td id="coluna-8">
-              <a href="#" class="deletar-usuario">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                </svg>
-              </a>
-            </td>
+            <td id="coluna-8">Lixeira</td>
           </tr>
 
           <tr>
@@ -288,16 +246,16 @@
       </table>
 
       <div class="paginas-tabela">
-        <a href="" class="passador-paginas">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+        <a href="">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
             <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
           </svg>
           <p>Anterior</p>
         </a>
-        <p>1 / 643</p>
-        <a href="" class="passador-paginas">
+        <p>1 / 2532</p>
+        <a href="">
           <p>Próximo</p>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
             <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
           </svg>
         </a>

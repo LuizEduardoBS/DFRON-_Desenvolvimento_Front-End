@@ -423,25 +423,46 @@ form {
   color: #0C8CE9;
 }
 
-.botao-ver-mais-acervo {
-  width: 169px;
-  height: 35px;
-  box-shadow: 0 2px 8px -2px #989898;
+.paginas-acervo {
+  width: 1000px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  font-weight: 700;
-  text-decoration: underline;
-  color: #0C8CE9;
-  margin-bottom: 20px;
-  cursor: pointer;
+  padding: 20px 0 35px 0;
 }
 
-.botao-ver-mais-acervo:hover {
-  background-color: #0C8CE9;
-  color: #fff;
+.paginas-acervo p {
+  font-size: 18px;
+}
+
+.bloco-interno-livros-acervo a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #0C8CE9;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.bloco-interno-livros-acervo a p {
+  margin: 0;
+  padding: 0;
+}
+
+.bloco-interno-livros-acervo a svg {
+  fill: #0C8CE9; 
+  width: 20px;
+  height: 20px;
+}
+
+.bloco-interno-livros-acervo a:hover {
+  text-decoration: underline;
+  svg {
+    fill: #fff;
+    stroke: #0C8CE9;
+  }
 }
 
 /* ########################################### */

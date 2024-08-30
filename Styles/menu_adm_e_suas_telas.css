@@ -43,7 +43,7 @@ body {
   padding-right: 20px;
   gap: 20px;
 }
-.opcoes-logado-adm a {
+.opcoes-logado-adm .opcao-menu {
   text-decoration: none;
   color: black;
   font-weight: bold;
@@ -56,12 +56,12 @@ body {
   cursor: pointer;  
 }
 
-.opcoes-logado-adm a:hover {
+.opcoes-logado-adm .opcao-menu:hover {
   color: #0C8CE9;
   text-decoration: underline;
 }
 
-.opcoes-logado-adm a img {
+.opcoes-logado-adm .opcao-menu img {
   width: 30px;
   height: 30px;
   margin: 0;
@@ -93,7 +93,7 @@ body {
   margin-left: 32px;
 }
 
-.opcoes-submenu-adm a {
+.opcoes-submenu-adm .opcao-menu {
   text-decoration: none;
   color: black;
   font-weight: bold;
@@ -105,7 +105,7 @@ body {
   padding: 0;
   cursor: pointer;
 }
-.opcoes-submenu-adm a:hover {
+.opcoes-submenu-adm .opcao-menu:hover {
   color: #0C8CE9;
   text-decoration: underline;
 }
@@ -202,7 +202,7 @@ form {
   border-radius: 5px;
 }
 
-input {
+.bloco-do-submenu input {
   width: 393px;
   height: 40px;
   background-color: #E7E7E7;
@@ -210,7 +210,7 @@ input {
   border-radius: 5px 0 0 5px;
 }
 
-button {
+.bloco-do-submenu .botao-busca {
   width: 48px;
   height: 42px;
   background-color: #fff;
@@ -218,8 +218,17 @@ button {
   border-radius: 0 5px 5px 0;
 }
 
-button:hover {
+.bloco-do-submenu .botao-busca svg {
+  fill: #0C8CE9; 
+  width: 20px;
+  height: 20px;
+}
+
+.bloco-do-submenu .botao-busca:hover {
   background-color: #0C8CE9;
+  svg {
+    fill: #fff;
+  }
 }
 
 .main-usuarios-adm {
@@ -238,6 +247,7 @@ button:hover {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .cabecalho-tabela-usuarios {
@@ -273,7 +283,7 @@ button:hover {
 
 .bloco-adm-usuarios .tabela-principal td {
   border: 1px solid black;
-  height: 30px;
+  height: 30px; 
 }
 
 #coluna-1 {
@@ -308,6 +318,103 @@ button:hover {
 #coluna-8 {
   width: 87px;
 }
+
+.tabela-principal select {
+  border: none;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  font-family: 'Times New Roman';
+}
+
+.icone-acessar-perfil {
+  svg {
+  fill: #0C8CE9; 
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  }
+}
+
+.icone-acessar-perfil:hover {
+  svg {
+  fill: #000; 
+  }
+}
+
+.deletar-usuario {
+  svg {
+    fill: #ff1e00;
+  }
+}
+
+.deletar-usuario:hover {
+  svg {
+    fill: #000;
+  }
+}
+
+.paginas-tabela {
+  width: 1000px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paginas-tabela p {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+}
+
+.bloco-adm-usuarios .passador-paginas {
+  text-decoration: none;
+  font-size: 18px;
+  color: #0C8CE9;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.bloco-adm-usuarios .passador-paginas p {
+  margin: 0;
+  padding: 0;
+}
+
+.bloco-adm-usuarios .passador-paginas:hover {
+  text-decoration: underline;
+  svg {
+    fill: #fff;
+    stroke: #0C8CE9;
+  }
+}
+
+/* ########################################### */
+/* LIVROS - ADM */
+.bloco-do-submenu .botao-adicionar-livro {
+  width: 173px;
+  height: 47px;
+  background-color: #0C8CE9;
+  border: none;
+  border-radius: 5px;
+  margin-right: 32px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  font-family: 'Times New Roman';
+}
+
+.bloco-do-submenu .botao-adicionar-livro:hover {
+  background-color: #fff;
+  color: #0C8CE9;
+  border: 1px solid #0C8CE9;
+}
+
+
 
 /* ########################################### */
 /* FOOTER - RODAPÉ */
