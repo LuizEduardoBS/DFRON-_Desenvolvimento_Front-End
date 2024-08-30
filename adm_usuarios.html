@@ -43,9 +43,32 @@
 
   <main class="main-usuarios-adm">
     <div class="bloco-adm-usuarios">
-      <div class="cabecalho-tabela-usuarios"></div>
+      <div class="cabecalho-tabela-usuarios">
+          <!-- <div id="coluna-1"><span>ID</span></div>
+          <div id="coluna-2"><span>Usuário</span></div>
+          <div id="coluna-3"><span>E-mail</span></div>
+          <div id="coluna-4"><span>Permissões</span></div>
+          <div id="coluna-5"><span>Equipe</span></div>
+          <div id="coluna-6"><span>Perfil</span></div>
+          <div id="coluna-7"><span>Status</span></div>
+          <div id="coluna-8"><span>Excluir</span></div> -->
+          <table class="texto-cabeçalho-usuarios">
+            <thead>
+              <tr>
+                <th id="coluna-1">ID</th>
+                <th id="coluna-2">Usuário</th>
+                <th id="coluna-3">E-mail</th>
+                <th id="coluna-4">Permissões</th>
+                <th id="coluna-5">Equipe</th>
+                <th id="coluna-6">Perfil</th>
+                <th id="coluna-7">Status</th>
+                <th id="coluna-8">Excluir</th>
+              </tr>
+            </thead>  
+          </table>
+      </div>
 
-      <table>
+      <table class="tabela-principal">
         <tbody>
           <tr>
             <td id="coluna-1">1</td>
@@ -226,7 +249,10 @@
         </tbody>
       </table>
 
-
+      <div class="paginas-tabela">
+        <div><span>Anterior</span></div>
+        <div><span>Próximo</span></div>
+      </div>
 
     </div>
 
