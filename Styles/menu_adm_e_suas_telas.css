@@ -247,14 +247,50 @@ button:hover {
   margin-top: 0;
 }
 
+.bloco-adm-usuarios table {
+  margin: 10px 35px;
+  border: 1px solid black;
+  text-align: center;
+  background-color: #E7E7E7;
+}
+
 .bloco-adm-usuarios table td {
   border: 1px solid black;
+  height: 30px;
 }
 
 #coluna-1 {
   width: 58px;
+  
 }
 
+#coluna-2 {
+  width: 193px;
+}
+
+#coluna-3 {
+  width: 240px;
+}
+
+#coluna-4 {
+  width: 152px;
+}
+
+#coluna-5 {
+  width: 74px;
+}
+
+#coluna-6 {
+  width: 104px;
+}
+
+#coluna-7 {
+  width: 92px;
+}
+
+#coluna-8 {
+  width: 87px;
+}
 
 /* ########################################### */
 /* FOOTER - RODAPÉ */
