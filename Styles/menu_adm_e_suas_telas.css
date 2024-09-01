@@ -264,9 +264,6 @@ form {
 .texto-cabeçalho-usuarios {
   display: flex;
   flex-direction: row;
-}
-
-.texto-cabeçalho-usuarios {
   margin: 10px 35px;
   border: none;
   text-align: center;
@@ -406,6 +403,10 @@ form {
   font-weight: bold;
   font-size: 18px;
   font-family: 'Times New Roman';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .bloco-do-submenu .botao-adicionar-livro:hover {
@@ -414,7 +415,255 @@ form {
   border: 1px solid #0C8CE9;
 }
 
+.main-livros-adm {
+  height: calc(100% - 170px);
+  max-width: 1072px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
+.bloco-adm-livros {
+  width: 1071px;
+  height: 593px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px -2px #989898;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cabecalho-tabela-livros {
+  width: 1071px;
+  height: 48px;
+  box-shadow: 0 2px 8px -2px #989898;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.texto-cabeçalho-livros {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 35px;
+  border: none;
+  text-align: center;
+  font-size: 18px;
+}
+
+.bloco-adm-livros .tabela-principal-livros {
+  margin: 10px 35px;
+  border: 1px solid black;
+  text-align: center;
+  background-color: #E7E7E7;
+  font-size: 18px;
+}
+
+.bloco-adm-livros .tabela-principal-livros td {
+  border: 1px solid black;
+  height: 30px; 
+}
+
+#coluna-1-livro {
+  width: 58px;
+}
+
+#coluna-2-livro {
+  width: 237px;
+}
+
+#coluna-3-livro {
+  width: 162px;
+}
+
+#coluna-4-livro {
+  width: 186px;
+}
+
+#coluna-5-livro {
+  width: 58px;
+}
+
+#coluna-6-livro {
+  width: 138px;
+}
+
+#coluna-7-livro {
+  width: 88px;
+}
+
+#coluna-8-livro {
+  width: 67px;
+}
+
+.editar-livro {
+  text-decoration: none;
+  color: #0C8CE9;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.editar-livro:hover {
+  text-decoration: underline;
+  color: #000;
+}
+
+.deletar-livro {
+  svg {
+    fill: #ff1e00;
+  }
+}
+
+.deletar-livro:hover {
+  svg {
+    fill: #000;
+  }
+}
+
+.tabela-principal-livros select {
+  border: none;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  font-family: 'Times New Roman';
+}
+
+.paginas-tabela-livros {
+  width: 1000px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paginas-tabela-livros p {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+}
+
+.bloco-adm-livros .passador-paginas-livros {
+  text-decoration: none;
+  font-size: 18px;
+  color: #0C8CE9;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.bloco-adm-livros .passador-paginas-livros p {
+  margin: 0;
+  padding: 0;
+}
+
+.bloco-adm-livros .passador-paginas-livros:hover {
+  text-decoration: underline;
+  svg {
+    fill: #fff;
+    stroke: #0C8CE9;
+  }
+}
+
+/* ########################################### */
+/* ADICIONAR LIVROS - ADM */
+.main-adicionar-livro {
+  width: 1072px;
+  height: 639px;
+  background-color: #fff;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px -2px #989898;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.conteudo-add-livro {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.título-pagina-disponibilidade {
+  display: flex;
+  flex-direction: row;
+  width: 1012px;
+  height: 25px;
+  padding: 0;
+  margin: 25px 0 0 0;
+}
+
+.título-pagina-disponibilidade h1 {
+  font-size: 20px;
+  font-weight: 18px;
+  font-family: 'Times New Roman';
+  padding: 0;
+  margin: 0 50px 0 0;
+  text-decoration: underline;
+}
+
+.título-pagina-disponibilidade select {
+  width: 170px;
+  height: 25px;
+  font-size: 18px;
+  text-align: center;
+  background-color: #E7E7E7;
+  border-radius: 5px;
+  margin: 0;
+  padding: 0;  
+}
+
+.título-pagina-disponibilidade form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.coluna-add-livro {
+  width: 506px;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.campo-tamanho-comum {
+  width: 492px;
+  height: 47px;
+  background-color: #E7E7E7;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 2px 8px -2px #989898;
+  font-size: 18px;
+  font-family: 'Times New Roman';
+}
+
+.campo-descricao {
+  width: 492px;
+  height: 375px;
+  border: none;
+  background-color: #E7E7E7;
+  box-shadow: 0 2px 8px -2px #989898;
+  font-size: 18px;
+  font-family: 'Times New Roman';
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  padding: 10px; /*AVALIAR*/ 
+  resize: none; /* Impede o redimensionamento do campo */
+  overflow-y: auto; /* Permite rolagem vertical caso o texto ultrapasse o espaço */
+}
+
+.titulo-dos-campos {
+  font-size: 18px;
+  font-family: 'Times New Roman';
+  margin: 16px 0 5px 0;
+}
 
 /* ########################################### */
 /* FOOTER - RODAPÉ */

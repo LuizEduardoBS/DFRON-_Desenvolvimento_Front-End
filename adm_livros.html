@@ -41,221 +41,257 @@
         </svg>
       </button>
     </form>
-    <button class="botao-adicionar-livro">Adicionar Livro</button>
+    <a href="./adicionar_livro.html" class="botao-adicionar-livro">Adicionar Livro</a>
   </header>
 
 
-  <main class="main-usuarios-adm">
-    <div class="bloco-adm-usuarios">
-      <div class="cabecalho-tabela-usuarios">
-        <table class="texto-cabeçalho-usuarios">
+  <main class="main-livros-adm">
+    <div class="bloco-adm-livros">
+      <div class="cabecalho-tabela-livros">
+        <table class="texto-cabeçalho-livros">
           <thead>
             <tr>
-              <th id="coluna-1">ID</th>
-              <th id="coluna-2">Usuário</th>
-              <th id="coluna-3">E-mail</th>
-              <th id="coluna-4">Permissões</th>
-              <th id="coluna-5">Equipe</th>
-              <th id="coluna-6">Perfil</th>
-              <th id="coluna-7">Status</th>
-              <th id="coluna-8">Excluir</th>
+              <th id="coluna-1-livro">ID</th>
+              <th id="coluna-2-livro">Título</th>
+              <th id="coluna-3-livro">Autor</th>
+              <th id="coluna-4-livro">Gênero</th>
+              <th id="coluna-5-livro">Cópias</th>
+              <th id="coluna-6-livro">Status</th>
+              <th id="coluna-7-livro">Alterações</th>
+              <th id="coluna-8-livro">Excluir</th>
             </tr>
           </thead>
         </table>
       </div>
 
-      <table class="tabela-principal">
+      <table class="tabela-principal-livros">
         <tbody>
           <tr>
-            <td id="coluna-1">1</td>
-            <td id="coluna-2">Luíz Eduardo</td>
-            <td id="coluna-3">administrador@adm.com</td>
-            <td id="coluna-4">
+            <td id="coluna-1-livro">1</td>
+            <td id="coluna-2-livro">Harry Potter e o Prisioneir...</td>
+            <td id="coluna-3-livro">J. K. Rowling</td>
+            <td id="coluna-4-livro">
               <select name="" id="">
-                <option value="">ADM</option>
-                <option value="">Bibliotecario(a)</option>
-                <option value="">Usuário</option>
+                <option value="" selected>Literatura e Ficção</option>
+                <option value="">Infantil e HQ's</option>
+                <option value="">Informática e Tecnologia</option>
+                <option value="">Técnicos e Acadêmicos</option>
+                <option value="">Saúde e Bem Estar</option>
+                <option value="">Autoajuda e Espiritualidade</option>
               </select>
             </td>
-            <td id="coluna-5">Verde</td>
-            <td id="coluna-6">Icone</td>
-            <td id="coluna-7">
+            <td id="coluna-5-livro">15</td>
+            <td id="coluna-6-livro">
               <select name="" id="">
-                <option value="">Ativo</option>
-                <option value="">Bloqueado</option>
+                <option value="">Indisponível</option>
+                <option value="">Disponível</option>
               </select>
             </td>
-            <td id="coluna-8">Lixeira</td>
+            <td id="coluna-7-livro">
+              <a href="" class="editar-livro">Editar</a>
+            </td>
+            <td id="coluna-8-livro">
+              <a href="" class="deletar-livro">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+              </a>
+            </td>
           </tr>
 
           <tr>
-            <td id="coluna-1">2</td>
-            <td id="coluna-2">Bibliotecario(a)</td>
-            <td id="coluna-3">adm.blog@blog.com</td>
-            <td id="coluna-4">
+            <td id="coluna-1-livro">2</td>
+            <td id="coluna-2-livro">Bibliotecario(a)</td>
+            <td id="coluna-3-livro">adm.blog@blog.com</td>
+            <td id="coluna-4-livro">
               <select name="" id="">
-                <option value="">ADM</option>
-                <option value="" selected>Bibliotecario(a)</option>
-                <option value="">Usuário</option>
+                <option value="" selected>Literatura e Ficção</option>
+                <option value="">Infantil e HQ's</option>
+                <option value="">Informática e Tecnologia</option>
+                <option value="">Técnicos e Acadêmicos</option>
+                <option value="">Saúde e Bem Estar</option>
+                <option value="">Autoajuda e Espiritualidade</option>
               </select>
             </td>
-            <td id="coluna-5">Verde</td>
-            <td id="coluna-6">Icone</td>
-            <td id="coluna-7">
+            <td id="coluna-5-livro">20</td>
+            <td id="coluna-6-livro">
               <select name="" id="">
-                <option value="">Ativo</option>
-                <option value="">Bloqueado</option>
+                <option value="">Indisponível</option>
+                <option value="">Disponível</option>
               </select>
             </td>
-            <td id="coluna-8">Lixeira</td>
+            <td id="coluna-7-livro">
+              <a href="" class="editar-livro">Editar</a>
+            </td>
+            <td id="coluna-8-livro">
+              <a href="" class="deletar-livro">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+              </a>
+            </td>
           </tr>
 
           <tr>
-            <td id="coluna-1">3</td>
-            <td id="coluna-2">Usuário comum</td>
-            <td id="coluna-3">usuario.leior@gmail.com</td>
-            <td id="coluna-4">
+            <td id="coluna-1-livro">3</td>
+            <td id="coluna-2-livro">Usuário comum</td>
+            <td id="coluna-3-livro">usuario.leior@gmail.com</td>
+            <td id="coluna-4-livro">
               <select name="" id="">
-                <option value="">ADM</option>
-                <option value="">Bibliotecario(a)</option>
-                <option value="" selected>Usuário</option>
+                <option value="" selected>Literatura e Ficção</option>
+                <option value="">Infantil e HQ's</option>
+                <option value="">Informática e Tecnologia</option>
+                <option value="">Técnicos e Acadêmicos</option>
+                <option value="">Saúde e Bem Estar</option>
+                <option value="">Autoajuda e Espiritualidade</option>
               </select>
             </td>
-            <td id="coluna-5">Verde</td>
-            <td id="coluna-6">Icone</td>
-            <td id="coluna-7">
+            <td id="coluna-5-livro">8</td>
+            <td id="coluna-6-livro">
               <select name="" id="">
-                <option value="">Ativo</option>
-                <option value="">Bloqueado</option>
+                <option value="">Indisponível</option>
+                <option value="">Disponível</option>
               </select>
             </td>
-            <td id="coluna-8">Lixeira</td>
+            <td id="coluna-7-livro">
+              <a href="" class="editar-livro">Editar</a>
+            </td>
+            <td id="coluna-8-livro">
+              <a href="" class="deletar-livro">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+              </a>
+            </td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
           <tr>
-            <td id="coluna-1">-</td>
-            <td id="coluna-2"></td>
-            <td id="coluna-3"></td>
-            <td id="coluna-4"></td>
-            <td id="coluna-5"></td>
-            <td id="coluna-6"></td>
-            <td id="coluna-7"></td>
-            <td id="coluna-8"></td>
+            <td id="coluna-1-livro">-</td>
+            <td id="coluna-2-livro"></td>
+            <td id="coluna-3-livro"></td>
+            <td id="coluna-4-livro"></td>
+            <td id="coluna-5-livro"></td>
+            <td id="coluna-6-livro"></td>
+            <td id="coluna-7-livro"></td>
+            <td id="coluna-8-livro"></td>
           </tr>
 
         </tbody>
       </table>
 
-      <div class="paginas-tabela">
-        <a href="">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+      <div class="paginas-tabela-livros">
+        <a href="" class="passador-paginas-livros">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
             <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
           </svg>
           <p>Anterior</p>
         </a>
         <p>1 / 2532</p>
-        <a href="">
+        <a href="" class="passador-paginas-livros">
           <p>Próximo</p>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
             <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
           </svg>
         </a>
