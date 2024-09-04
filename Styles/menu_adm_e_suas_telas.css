@@ -588,6 +588,7 @@ form {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  column-gap: 10px;
 }
 
 .título-pagina-disponibilidade {
@@ -633,7 +634,7 @@ form {
 }
 
 .campo-tamanho-comum {
-  width: 492px;
+  width: 480px;
   height: 47px;
   background-color: #E7E7E7;
   border-radius: 5px;
@@ -641,11 +642,12 @@ form {
   box-shadow: 0 2px 8px -2px #989898;
   font-size: 18px;
   font-family: 'Times New Roman';
+  padding-left: 10px;
 }
 
 .campo-descricao {
-  width: 492px;
-  height: 375px;
+  width: 480px;
+  height: 392px;
   border: none;
   background-color: #E7E7E7;
   box-shadow: 0 2px 8px -2px #989898;
@@ -654,9 +656,21 @@ form {
   display: flex;
   flex-direction: column;
   text-align: start;
-  padding: 10px; /*AVALIAR*/ 
+  padding: 8px; 
   resize: none; /* Impede o redimensionamento do campo */
   overflow-y: auto; /* Permite rolagem vertical caso o texto ultrapasse o espaço */
+}
+
+.campo-tamanho-comum-select {
+  width: 493px;
+  height: 47px;
+  background-color: #E7E7E7;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 2px 8px -2px #989898;
+  font-size: 18px;
+  font-family: 'Times New Roman';
+  padding-left: 10px;
 }
 
 .titulo-dos-campos {
