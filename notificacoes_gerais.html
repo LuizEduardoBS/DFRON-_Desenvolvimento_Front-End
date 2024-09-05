@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./Styles/menu_adm_e_suas_telas.css">
+  <title>Inicio</title>
+</head>
+
+<body>
+  <header class="bloco-do-menu">
+    <div class="top-bar-index">
+
+      <div class="logo">
+        <img src="./img/Bliblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
+      </div>
+
+      <section class="opcoes-logado-adm">
+        <a href="./index.html" class="opcao-menu">Home</a>
+        <a href="./acervo.html" class="opcao-menu">Acervo</a>
+        <a href="#" class="opcao-menu">Blog</a>
+        <a href="./politicas.html" class="opcao-menu">Políticas</a>
+        <a href="./sobre.html" class="opcao-menu">Sobre</a>
+        <a href="./login.html" id="usuario-menu" class="opcao-menu">"nome-usuario"<img src="./img/person.png"></a>
+      </section>
+    </div>
+  </header>
+  <header class="bloco-do-submenu">
+    <section class="opcoes-submenu-adm">
+      <a href="./homepage_administrador.html" class="opcao-menu">Dashboard</a>
+      <a href="./adm_usuarios.html" class="opcao-menu">Usuários</a>
+      <a href="./adm_livros.html" class="opcao-menu">Livros</a>
+      <a href="#" class="opcao-menu">Postagens</a>
+      <a href="./notificacoes_gerais.html" class="opcao-menu" style="text-align: center;  color: #0C8CE9;">Notificação<br>Geral</a>
+    </section>
+  </header>
+
+  <main class="main-notificacoes-gerais">
+    <div class="conteudo-notificacao-geral">
+      <div class="aviso-notificacao-geral"><span>*Observação: essa notificação aparecerá para todos os usuário. Para um usuário específico notifique-o através de seu perfil privado.</span></div>
+      <form action="">
+        <div class="coluna-notificacoes-gerais">
+          <div class="titulo-e-botao-enviar-geral">
+            <div class="titulo-e-campo-titulo">
+              <label class="titulo-dos-campos">Título da notificação *</label>
+              <input type="text" placeholder=" Ex: Novidades: 20 cópias do livro: Manual de Javascript " class="campo-titulo-notificacao">
+            </div>
+            <div id="bloco-posicao-botao-notificacao">
+              <div class="botao-enviar-notificacao-geral">Enviar</div>
+            </div>
+          </div>
+          <textarea type="text" class="campo-texto-notificacao-geral" placeholder=" Texto da notificação"></textarea>
+        </div>
+      </form>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Redes Sociais:</p>
+    <div class="footer-contatos">
+      <img src="./img/instagram.svg" alt="">
+      <img src="./img/twitter-x.svg" alt="">
+      <img src="./img/github.svg" alt="">
+    </div>
+    <p>Alguns direitos resercados 2024.</p>
+  </footer>
+</body>
+
+</html>
