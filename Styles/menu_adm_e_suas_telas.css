@@ -931,6 +931,13 @@ body {
   font-weight: bold;
   color: #fff;
   box-shadow: 0 2px 8px -2px #989898;
+  font-family: 'Times New Roman';
+}
+
+.titulo-notificar-e-botao button:hover {
+  background-color: #fff;
+  color: #0C8CE9;
+  border: 1px solid #0C8CE9;
 }
 
 .coluna-perfil-usuarios-adm-2 .formulario-notificacao-usuario {
