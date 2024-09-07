@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./Styles/menu_adm_e_suas_telas.css">
+  <title>Inicio</title>
+</head>
+
+<body>
+  <header class="bloco-do-menu">
+    <div class="top-bar-index">
+
+      <div class="logo">
+        <img src="./img/Bliblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
+      </div>
+
+      <section class="opcoes-logado-adm">
+        <a href="./index.html" class="opcao-menu">Home</a>
+        <a href="./acervo.html" class="opcao-menu">Acervo</a>
+        <a href="#" class="opcao-menu">Blog</a>
+        <a href="./politicas.html" class="opcao-menu">Políticas</a>
+        <a href="./sobre.html" class="opcao-menu">Sobre</a>
+        <a href="./login.html" id="usuario-menu" class="opcao-menu">"nome-usuario"<img src="./img/person.png"></a>
+      </section>
+    </div>
+  </header>
+  <header class="bloco-do-submenu">
+    <section class="opcoes-submenu-adm">
+      <a href="./homepage_administrador.html" class="opcao-menu">Dashboard</a>
+      <a href="./adm_usuarios.html" class="opcao-menu">Usuários</a>
+      <a href="./adm_livros.html" class="opcao-menu">Livros</a>
+      <a href="#" class="opcao-menu">Postagens</a>
+      <a href="./notificacoes_gerais.html" class="opcao-menu" style="text-align: center;">Notificação<br>Geral</a>
+    </section>
+  </header>
+
+  <main class="main-perfil-usuarios-adm">
+    <div class="conteudo-perfil-usuarios-adm">
+      <div class="coluna-perfil-usuarios-adm-1">
+        <img src="./img/person.png" alt="" width="168" height="168">
+        <div class="coluna-identificadores">
+          <span><strong>ID: </strong> <span id="id-usuario">1</span></span>
+          <span><strong>Usuário: </strong><span id="nome-usuario">Nome-Usuário</span></span>
+          <span><strong>E-mail: </strong><span id="email-usuario">usuario@user.com</span></span>
+          <span><strong>Permissões: </strong><span id="permissoes-usuario">
+              <select name="" id="">
+                <option value="">ADM</option>
+                <option value="">Bibliotecario(a)</option>
+                <option value="">Usuário</option>
+              </select></span>
+          </span>
+          <span><strong>Status:</strong> <span id="status-usuario">
+              <select name="" id="">
+                <option value="">Ativo</option>
+                <option value="">Bloqueado</option>
+              </select>
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="coluna-perfil-usuarios-adm-2">
+        <form action="" class="formulario-notificacao-usuario">
+          <div class="titulo-notificar-e-botao">
+            <label><strong>Notificar</strong></label>
+            <button type="submit">Enviar</button>
+          </div>
+          <textarea type="text" class="campo-notificar-usuario" placeholder=" O que deseja dizer a esse usuário?"></textarea>
+        </form>
+      </div>
+    </div>
+
+    <hr>
+
+    <h1>Histórico</h1>
+
+    <table class="tabela-historico-usuario">
+      <thead>
+        <tr>
+          <th class="coluna-1-historico-usuario">ID</th>
+          <th class="coluna-2-historico-usuario">Autor</th>
+          <th class="coluna-3-historico-usuario">Título</th>
+          <th class="coluna-4-historico-usuario">Status</th>
+          <th class="coluna-5-historico-usuario">Data empréstimo</th>
+          <th class="coluna-6-historico-usuario">Prazo devolução</th>
+          <th class="coluna-7-historico-usuario">Data devolução</th>
+        </tr>
+      </thead>
+    </table>
+
+    <table class="tabela-historico-usuario">
+      <tbody>
+        <tr class="linha-historico">
+          <td class="coluna-1-historico-usuario">382</td>
+          <td class="coluna-2-historico-usuario">George Samuel Cle...</td>
+          <td class="coluna-3-historico-usuario">O Homem Mais Rico...</td>
+          <td class="coluna-4-historico-usuario">
+            <select name="" id="">
+              <option value="">Solicitado</option>
+              <option value="">Autorizado</option>
+              <option value="">Negado</option>
+            </select>
+          </td>
+          <td class="coluna-5-historico-usuario">15/08/2024</td>
+          <td class="coluna-6-historico-usuario">30/08/2024</td>
+          <td class="coluna-7-historico-usuario">---</td>
+        </tr>
+        <tr class="linha-historico">
+          <td class="coluna-1-historico-usuario">-</td>
+          <td class="coluna-2-historico-usuario"></td>
+          <td class="coluna-3-historico-usuario"></td>
+          <td class="coluna-4-historico-usuario"></td>
+          <td class="coluna-5-historico-usuario"></td>
+          <td class="coluna-6-historico-usuario"></td>
+          <td class="coluna-7-historico-usuario"></td>
+        </tr>
+        <tr class="linha-historico">
+          <td class="coluna-1-historico-usuario">-</td>
+          <td class="coluna-2-historico-usuario"></td>
+          <td class="coluna-3-historico-usuario"></td>
+          <td class="coluna-4-historico-usuario"></td>
+          <td class="coluna-5-historico-usuario"></td>
+          <td class="coluna-6-historico-usuario"></td>
+          <td class="coluna-7-historico-usuario"></td>
+        </tr>
+        <tr class="linha-historico">
+          <td class="coluna-1-historico-usuario">-</td>
+          <td class="coluna-2-historico-usuario"></td>
+          <td class="coluna-3-historico-usuario"></td>
+          <td class="coluna-4-historico-usuario"></td>
+          <td class="coluna-5-historico-usuario"></td>
+          <td class="coluna-6-historico-usuario"></td>
+          <td class="coluna-7-historico-usuario"></td>
+        </tr>
+        <tr class="linha-historico">
+          <td class="coluna-1-historico-usuario">-</td>
+          <td class="coluna-2-historico-usuario"></td>
+          <td class="coluna-3-historico-usuario"></td>
+          <td class="coluna-4-historico-usuario"></td>
+          <td class="coluna-5-historico-usuario"></td>
+          <td class="coluna-6-historico-usuario"></td>
+          <td class="coluna-7-historico-usuario"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="botao-ver-mais-historico">Ver mais</div>
+
+  </main>
+
+  <footer>
+    <p>Redes Sociais:</p>
+    <div class="footer-contatos">
+      <img src="./img/instagram.svg" alt="">
+      <img src="./img/twitter-x.svg" alt="">
+      <img src="./img/github.svg" alt="">
+    </div>
+    <p>Alguns direitos resercados 2024.</p>
+  </footer>
+</body>
+
+</html>
