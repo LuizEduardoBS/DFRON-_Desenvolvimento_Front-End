@@ -155,6 +155,12 @@ body {
   flex-wrap: nowrap;
 }
 
+.foto-do-perfil {
+  border-radius: 50%;
+  width: 150px; 
+  height: 150px;
+}
+
 .coluna-perfil-usuario-1 {
   height: 168px;
   width: 506px;
@@ -177,6 +183,7 @@ body {
   font-size: 18px;
   box-shadow: 0 2px 8px -2px #989898;
   border: none;
+  border-radius: 5px;
 }
 
 .coluna-perfil-usuario-2 {
@@ -196,13 +203,13 @@ body {
 .main-perfil-usuario hr {
   width: 1012px;
   height: 2px;
-  margin: 20px 0 10px 0;
+  margin: 10px 0 10px 0;
 }
 
 .main-perfil-usuario h1 {
   font-size: 20px;
   font-weight: bold;
-  margin: 0 0 10px 0;
+  margin: 0 0 5px 0;
   padding: 0;
 }
 
@@ -214,6 +221,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 }
 
 .grid-colunas-da-linha {
@@ -223,16 +231,21 @@ body {
   align-items: center;
 }
 
+.linha-gerenciar-livro span {
+  font-size: 18px;
+}
+
 .coluna-1-gerenciar-livro {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
 }
 
 .coluna-1-gerenciar-livro img {
   width: 61px;
   height: 94px;
+  margin-left: 10px;
 }
 
 .descricoes-coluna-1 {
@@ -243,12 +256,17 @@ body {
   margin-left: 20px;
 }
 
+.coluna-2-gerenciar-livro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .descricoes-coluna-2 {
   display: flex;
   flex-direction: column;
   height: 90px;
   justify-content: space-between;
-  margin-left: 20px;
 }
 
 .coluna-3-gerenciar-livro {
@@ -281,6 +299,13 @@ body {
   box-shadow: 0 2px 8px -2px #989898;
   background-color: #fff;
   margin-left: 10px;
+  font-size: 18px;
+  font-family: 'Times New Roman';
+}
+
+.botao-renovar:hover {
+  color: #0C8CE9;
+  border: 1px solid #0C8CE9;
 }
 
 .botao-finalizar {
@@ -298,3 +323,145 @@ body {
   margin-left: 10px;
 }
 
+.botao-finalizar:hover {
+  background-color: #00cc70;
+  border: 1px solid #00A65A;
+}
+
+.botao-ver-mais-historico {
+  width: 169px;
+  height: 35px;
+  margin: 15px 0 0px 0;
+  font-size: 18px;
+  text-decoration: underline;
+  font-weight: bold;
+  color: #0C8CE9;
+  box-shadow: 0 2px 8px -2px #989898;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.botao-ver-mais-historico:hover {
+  background-color: #0C8CE9;
+  color: #fff;
+}
+
+.emprestimo-finalizado {
+  background-color: #d9d9d9;
+}
+
+.emprestimo-finalizado .botao-renovar {
+  background-color: #d7d7d7;
+}
+
+.emprestimo-finalizado .botao-finalizar {
+  background-color: #d7d7d7;
+  color: #989898;
+}
+
+/* ########################################### */
+/* NOTIFICAÇÕES DO USUARIO */
+
+.main-usuario-notificacoes {
+  width: 1072px;
+  height: 756px;
+  background-color: #fff;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 8px -2px #989898;
+}
+
+.main-usuario-notificacoes h1 {
+  font-size: 20px;
+  margin: 10px 0 0 0;
+}
+
+.card-notificacoes-usuario {
+  width: 1012px;
+  height: 100px;
+  box-shadow: 0 2px 8px -2px #989898;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tipo-da-notificacao {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.texto-da-notificacao {
+  max-width: 850px;
+  max-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+
+.botao-ver-mais-historico-notificacoes {
+  width: 169px;
+  height: 35px;
+  margin: 15px 0 0px 0;
+  font-size: 18px;
+  text-decoration: underline;
+  font-weight: bold;
+  color: #0C8CE9;
+  box-shadow: 0 2px 8px -2px #989898;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  
+}
+
+.botao-ver-mais-historico-notificacoes:hover {
+  background-color: #0C8CE9;
+  color: #fff;
+}
+
+/* ########################################### */
+/* FOOTER - RODAPÉ */
+footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  row-gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+.footer-contatos {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 21px;
+}
+.footer-contatos img {
+  width: 27px;
+  height: 27px;
+  padding: 0;
+}
+footer p {
+  padding: 0;
+  margin: 3px;
+  font-size: 15px;
+}

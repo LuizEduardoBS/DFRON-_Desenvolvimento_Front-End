@@ -28,17 +28,17 @@
   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-usuario">
       <a href="./perfil_usuario.html" class="opcao-menu" style="text-align: center;  color: #0C8CE9;">Perfil</a>
-      <a href="./" class="opcao-menu">Notificações</a>
+      <a href="./notificacoes_do_usuario.html" class="opcao-menu">Notificações</a>
       <a href="./" class="opcao-menu" style="text-align: center;">Carrinho de<br>Empréstimos</a>
       <a href="./" class="opcao-menu">Reservas</a>
     </section>
-    <div class="botao-escolher-livro">Escolher um livro</div>
+    <a href="./acervo.html" class="botao-escolher-livro">Escolher um livro</a>
   </header>
 
   <main class="main-perfil-usuario">
     <div class="conteudo-perfil-usuario">
       <div class="coluna-perfil-usuario-1">
-        <img src="./img/person.png" alt="" width="168" height="168">
+        <img src="./img/person.png" alt="" class="foto-do-perfil">
         <div class="coluna-identificadores">
           <input type="text" disabled placeholder="Nome do Usuário">
           <input type="text" disabled placeholder="email@email.com">
@@ -73,6 +73,7 @@
             <span><strong>Data devolução: </strong> - - -</span>
           </div>
         </div>
+
         <div class="coluna-3-gerenciar-livro">
           <div class="renovar-livro">
             <span><strong>Renovar: </strong></span>
@@ -87,16 +88,117 @@
             </button>
           </div>
         </div>
-
       </div>
     </div>
 
     <div class="linha-gerenciar-livro">
+      <div class="grid-colunas-da-linha">
 
+        <div class="coluna-1-gerenciar-livro">
+          <img src="" alt="">
+          <div class="descricoes-coluna-1">
+            <span><strong>Título: </strong><span class="titulo-livro">O Homem Mais Rico...</span></span>
+            <span><strong>Status: </strong><span class="status-livro">Autorizado</span></span>
+            <span><strong>Avaliar: </strong></span>
+          </div>
+        </div>
+
+        <div class="coluna-2-gerenciar-livro">
+          <div class="descricoes-coluna-2">
+            <span><strong>Data empréstimo: </strong><span class="titulo-livro">15/08/2024</span></span>
+            <span><strong>Prazo devolução: </strong><span class="status-livro">30/08/2024</span></span>
+            <span><strong>Data devolução: </strong> - - -</span>
+          </div>
+        </div>
+        <div class="coluna-3-gerenciar-livro">
+          <div class="renovar-livro">
+            <span><strong>Renovar: </strong></span>
+            <button class="botao-renovar">+ 10 dias</button>
+          </div>
+          <div class="finalizar-emprestimo">
+            <span><strong>Finalizar: </strong></span>
+            <button class="botao-finalizar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="linha-gerenciar-livro">
+      <div class="grid-colunas-da-linha">
+
+        <div class="coluna-1-gerenciar-livro">
+          <img src="" alt="">
+          <div class="descricoes-coluna-1">
+            <span><strong>Título: </strong><span class="titulo-livro">O Homem Mais Rico...</span></span>
+            <span><strong>Status: </strong><span class="status-livro">Autorizado</span></span>
+            <span><strong>Avaliar: </strong></span>
+          </div>
+        </div>
+
+        <div class="coluna-2-gerenciar-livro">
+          <div class="descricoes-coluna-2">
+            <span><strong>Data empréstimo: </strong><span class="titulo-livro">15/08/2024</span></span>
+            <span><strong>Prazo devolução: </strong><span class="status-livro">30/08/2024</span></span>
+            <span><strong>Data devolução: </strong> - - -</span>
+          </div>
+        </div>
+
+        <div class="coluna-3-gerenciar-livro">
+          <div class="renovar-livro">
+            <span><strong>Renovar: </strong></span>
+            <button class="botao-renovar">+ 10 dias</button>
+          </div>
+          <div class="finalizar-emprestimo">
+            <span><strong>Finalizar: </strong></span>
+            <button class="botao-finalizar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="linha-gerenciar-livro"></div>
-    <div class="linha-gerenciar-livro"></div>
+
+    <div class="linha-gerenciar-livro emprestimo-finalizado">
+      <div class="grid-colunas-da-linha">
+        <div class="coluna-1-gerenciar-livro">
+          <img src="" alt="">
+          <div class="descricoes-coluna-1">
+            <span><strong>Título: </strong><span class="titulo-livro">O Homem Mais Rico...</span></span>
+            <span><strong>Status: </strong><span class="status-livro">Autorizado</span></span>
+            <span><strong>Avaliar: </strong></span>
+          </div>
+        </div>
+
+        <div class="coluna-2-gerenciar-livro">
+          <div class="descricoes-coluna-2">
+            <span><strong>Data empréstimo: </strong><span class="titulo-livro">15/08/2024</span></span>
+            <span><strong>Prazo devolução: </strong><span class="status-livro">30/08/2024</span></span>
+            <span><strong>Data devolução: </strong> - - -</span>
+          </div>
+        </div>
+
+        <div class="coluna-3-gerenciar-livro">
+          <div class="renovar-livro">
+            <span><strong>Renovar: </strong></span>
+            <button class="botao-renovar">+ 10 dias</button>
+          </div>
+          <div class="finalizar-emprestimo">
+            <span><strong>Finalizar: </strong></span>
+            <button class="botao-finalizar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="botao-ver-mais-historico">Ver mais</div>
 

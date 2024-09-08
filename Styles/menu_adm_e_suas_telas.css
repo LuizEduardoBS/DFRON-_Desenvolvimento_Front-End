@@ -886,11 +886,18 @@ body {
   
 }
 
+.foto-do-perfil {
+  border-radius: 50%;
+  width: 150px; 
+  height: 150px;
+}
+
 .coluna-perfil-usuarios-adm-1 {
   height: 168px;
   width: 506px;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .coluna-identificadores {
