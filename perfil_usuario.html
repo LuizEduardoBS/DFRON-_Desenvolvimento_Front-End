@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./Styles/menu_usuario_e_suas_telas.css">
+  <title>Inicio</title>
+</head>
+
+<body>
+  <header class="bloco-do-menu">
+    <div class="top-bar-index">
+
+      <div class="logo">
+        <img src="./img/Bliblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
+      </div>
+
+      <section class="opcoes-logado-adm">
+        <a href="./index.html" class="opcao-menu">Home</a>
+        <a href="./acervo.html" class="opcao-menu">Acervo</a>
+        <a href="./politicas.html" class="opcao-menu">Políticas</a>
+        <a href="./sobre.html" class="opcao-menu">Sobre</a>
+        <a href="./login.html" id="usuario-menu" class="opcao-menu">"nome-usuario"<img src="./img/person.png"></a>
+      </section>
+    </div>
+  </header>
+  <header class="bloco-do-submenu">
+    <section class="opcoes-submenu-usuario">
+      <a href="./perfil_usuario.html" class="opcao-menu" style="text-align: center;  color: #0C8CE9;">Perfil</a>
+      <a href="./" class="opcao-menu">Notificações</a>
+      <a href="./" class="opcao-menu" style="text-align: center;">Carrinho de<br>Empréstimos</a>
+      <a href="./" class="opcao-menu">Reservas</a>
+    </section>
+    <div class="botao-escolher-livro">Escolher um livro</div>
+  </header>
+
+  <main class="main-perfil-usuario">
+    <div class="conteudo-perfil-usuario">
+      <div class="coluna-perfil-usuario-1">
+        <img src="./img/person.png" alt="" width="168" height="168">
+        <div class="coluna-identificadores">
+          <input type="text" disabled placeholder="Nome do Usuário">
+          <input type="text" disabled placeholder="email@email.com">
+        </div>
+      </div>
+
+      <div class="coluna-perfil-usuario-2">
+        <a href="" class="botao-editar-perfil">Editar Perfil</a>
+      </div>
+    </div>
+
+    <hr>
+
+    <h1>Gerenciar Livros</h1>
+
+    <div class="linha-gerenciar-livro">
+      <div class="grid-colunas-da-linha">
+
+        <div class="coluna-1-gerenciar-livro">
+          <img src="" alt="">
+          <div class="descricoes-coluna-1">
+            <span><strong>Título: </strong><span class="titulo-livro">O Homem Mais Rico...</span></span>
+            <span><strong>Status: </strong><span class="status-livro">Autorizado</span></span>
+            <span><strong>Avaliar: </strong></span>
+          </div>
+        </div>
+
+        <div class="coluna-2-gerenciar-livro">
+          <div class="descricoes-coluna-2">
+            <span><strong>Data empréstimo: </strong><span class="titulo-livro">15/08/2024</span></span>
+            <span><strong>Prazo devolução: </strong><span class="status-livro">30/08/2024</span></span>
+            <span><strong>Data devolução: </strong> - - -</span>
+          </div>
+        </div>
+        <div class="coluna-3-gerenciar-livro">
+          <div class="renovar-livro">
+            <span><strong>Renovar: </strong></span>
+            <button class="botao-renovar">+ 10 dias</button>
+          </div>
+          <div class="finalizar-emprestimo">
+            <span><strong>Finalizar: </strong></span>
+            <button class="botao-finalizar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="linha-gerenciar-livro">
+
+    </div>
+    </div>
+    <div class="linha-gerenciar-livro"></div>
+    <div class="linha-gerenciar-livro"></div>
+
+    <div class="botao-ver-mais-historico">Ver mais</div>
+
+  </main>
+
+  <footer>
+    <p>Redes Sociais:</p>
+    <div class="footer-contatos">
+      <img src="./img/instagram.svg" alt="">
+      <img src="./img/twitter-x.svg" alt="">
+      <img src="./img/github.svg" alt="">
+    </div>
+    <p>Alguns direitos resercados 2024.</p>
+  </footer>
+</body>
+
+</html>
