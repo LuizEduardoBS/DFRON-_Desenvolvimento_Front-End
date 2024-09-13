@@ -437,6 +437,132 @@ body {
 }
 
 /* ########################################### */
+/* CARRINHO DO USUARIO */
+.main-usuario-carrinho {
+  width: 1072px;
+  height: 480px;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px -2px #989898;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.conteudo-bloco-carrinho {
+  width: 1032px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificacao-livro-indisponivel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #F39C11;
+  width: 1032px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.bloco-cards-carrinho {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.card-carrinho {
+  width: 320px;
+  height: 300px;
+  box-shadow: 0 2px 8px -2px #989898;
+  border-radius: 5px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 8px;
+}
+
+.icone-excluir-card {
+  width: 320px;
+  height: 300px;
+  position: absolute;
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.icone-excluir-card svg:hover {
+  fill: #ff0000;
+}
+
+.card-carrinho img {
+  width: 132px;
+  height: 200px;
+}
+
+.status-livro-card {
+  color: #00A65A;
+  font-weight: bold;
+}
+
+.bloco-botoes-carrinho {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.botao-solicitar-emprestimo {
+  width: 215px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #00A65A;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.botao-solicitar-emprestimo:hover {
+  background-color: #00cc70;
+}
+
+.botao-esvaziar-carrinho {
+  width: 215px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F39C11;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.botao-esvaziar-carrinho:hover {
+  background-color: #ffb339;
+}
+
+
+
+
+
+/* ########################################### */
 /* FOOTER - RODAPÉ */
 footer {
   display: flex;
