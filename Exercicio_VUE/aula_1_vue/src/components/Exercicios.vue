@@ -20,9 +20,9 @@
     </p>
     <hr>
     <h2>Exercício 4:</h2>
-    <p>
-      Texto exercicio 4
-    </p>
+    <ul>
+      <li v-for="(item, index) in itens" :key="index">{{ item }}</li>
+    </ul>
     <hr>
     <h2>Exercício 5:</h2>
     <p>
@@ -40,6 +40,7 @@ export default {
       contador: Number(0),
       mostrarTexto: false,
       textoEX3: 'Você está vendo esse texto, porque clicou no botão "texto" !!',
+      // itens: ["Maça", "Uva", "Abacaxi", "Melância"],
     };
   },
   methods: {
