@@ -13,14 +13,20 @@
       Contador: {{ contador }}
     </p>
     <hr>
-    <h2>Exercício 1:</h2>
-    <p>
-      Texto exercicio 1
+    <h2>Exercício 3:</h2>
+    <button @click="visualizacaoTexto">Texto</button>
+    <p v-if="mostrarTexto">
+      {{ textoEX3 }}
     </p>
     <hr>
-    <h2>Exercício 1:</h2>
+    <h2>Exercício 4:</h2>
     <p>
-      Texto exercicio 1
+      Texto exercicio 4
+    </p>
+    <hr>
+    <h2>Exercício 5:</h2>
+    <p>
+      Texto exercicio 5
     </p>
 
   </div>
@@ -32,11 +38,20 @@ export default {
     return {
       ex1: 'Olá mundo VUE JS !!!',
       contador: Number(0),
+      mostrarTexto: false,
+      textoEX3: 'Você está vendo esse texto, porque clicou no botão "texto" !!',
     };
   },
   methods: {
     incrementarContador() {
       this.contador += 1;
+    },
+    visualizacaoTexto() {
+      if (this.mostrarTexto === false) {
+        this.mostrarTexto = true;
+      } else if (this.mostrarTexto === true) {
+        this.mostrarTexto = false;
+      }
     },
   },
   name: 'HelloWorld',

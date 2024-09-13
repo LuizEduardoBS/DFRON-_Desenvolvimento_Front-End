@@ -1,7 +1,6 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <Exercicios msg="Aula 1 - Exercícios VUE"/>
-  <Exercicios ex1="Olá mundo VUE.js"/>
 </template>
 
 <script>
