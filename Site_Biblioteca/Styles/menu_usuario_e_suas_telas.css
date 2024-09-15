@@ -448,6 +448,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: 18px;
 }
 
 .conteudo-bloco-carrinho {
@@ -467,6 +468,7 @@ body {
   width: 1032px;
   height: 40px;
   border-radius: 10px;
+  margin-bottom: 5px;
 }
 
 .bloco-cards-carrinho {
@@ -534,6 +536,7 @@ body {
   font-weight: bold;
   color: #fff;
   border-radius: 10px;
+  box-shadow: 0 2px 8px -2px #989898;
 }
 
 .botao-solicitar-emprestimo:hover {
@@ -552,14 +555,103 @@ body {
   font-weight: bold;
   color: #fff;
   border-radius: 10px;
+  box-shadow: 0 2px 8px -2px #989898;
 }
 
 .botao-esvaziar-carrinho:hover {
   background-color: #ffb339;
 }
 
+/* ########################################### */
+/* RESERVAS DO USUARIO */
+.main-usuario-reservas {
+  width: 1072px;
+  height: 480px;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px -2px #989898;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
 
+.conteudo-bloco-reservas {
+  width: 1032px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
+.bloco-cards-reservas {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.card-reserva {
+  width: 320px;
+  height: 342px;
+  box-shadow: 0 2px 8px -2px #989898;
+  border-radius: 5px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 8px;
+}
+
+.icone-excluir-card-reserva {
+  width: 320px;
+  height: 300px;
+  position: absolute;
+  display: flex;
+  justify-content: end;
+  margin-top: -25px;
+  margin-right: 10px;
+}
+
+.icone-excluir-card-reserva svg:hover {
+  fill: #ff0000;
+}
+
+.card-reserva img {
+  width: 132px;
+  height: 200px;
+}
+
+.status-livro-reservado {
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.bloco-botao-reservas {
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.botao-solicitar-emprestimo-reservas {
+  width: 215px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  font-size: 18px;
+  font-weight: bold;
+  color: #8e8e8e;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px -2px #989898;
+}
+
+.botao-solicitar-emprestimo-reservas:hover {
+  background-color: #e7e7e7;
+}
 
 
 /* ########################################### */
