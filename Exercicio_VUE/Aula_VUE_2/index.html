@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula VUE 2</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <h1>{{ message }}</h1>
+
+    <h2>Exercício 1</h2>
+    <button @click="incrementar">Incrementar Contador</button>
+    <button @click="decrementar">Decrementar Contador</button>
+    <p>Contador: {{ contador }}</p>
+
+    <hr>
+
+    <h2>Exercício 2</h2>
+    <button @click="texto">{{ !mostrarTexto ? "Mostrar texto" : "Esconder Texto" }}</button>
+    <p v-if="mostrarTexto">Olá, esse é o exercício 2</p>
+
+    <hr>
+
+    <h2>Exercício 3</h2>
+    <input v-model="itemLista" placeholder="Digite um item">
+    <button @click="adicionar">Adicionar</button>
+    <ul>
+      <li v-for="(item, index) in itens" :key="index" @click="remover(index)">{{ item }}</li>
+    </ul>
+
+    <hr>
+
+    <h2>Exercício 4</h2>
+    <input v-model="nome">
+    <p v-if="nome">Bem vindo {{ nome }} !!!</p>
+  </div>
+
+
+
+  <script>
+    const { createApp, ref } = Vue
+
+    createApp({
+      setup() {
+        const message = ref('Aula 2 VUE');
+        let contador = ref(0);
+        let mostrarTexto = ref(false);
+        let itens = ref(["Arroz", "Feijão", "Contra-filé", "Batata Frita"]);
+        let itemLista = ref("")
+        let nome = ref("")
+
+        const incrementar = () => {
+          contador.value++;
+        }
+        const decrementar = () => {
+          contador.value--;
+        }
+
+        const texto = () => {
+          if (mostrarTexto.value === false) {
+            mostrarTexto.value = true;
+          } else if (mostrarTexto.value === true) {
+            mostrarTexto.value = false;
+          }
+        }
+
+        const adicionar = () => {
+          if (itemLista.value.trim() !== "") {
+            itens.value.push(itemLista.value);
+            itemLista.value = ""; // Limpa o campo de entrada após adicionar
+          }
+        }
+
+        const remover = (index) => {
+          itens.value.splice(index, 1);
+        }
+
+        return {
+          message,
+          contador,
+          incrementar,
+          decrementar,
+          mostrarTexto,
+          texto,
+          itens,
+          itemLista,
+          adicionar,
+          remover,
+          nome
+        }
+      }
+    }).mount('#app')
+  </script>
+
+
+</body>
+
+</html>
