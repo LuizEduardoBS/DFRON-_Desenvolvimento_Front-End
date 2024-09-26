@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "aula_vue_1": "file:",
     "vue": "^3.4.29"
   },
   "devDependencies": {
