@@ -17,6 +17,20 @@
         book: this.bookToEdit || { title: '', author: '', year: null },  // Inicializa o livro
       };
     },
+
+    watch: {
+    // Observa mudanças na prop bookToEdit
+    bookToEdit: {
+      immediate: true, // Executa a função imediatamente na inicialização
+      handler(newVal) {
+        // Atualiza os dados do livro quando a prop mudar
+        this.book = newVal || { title: '', author: '', year: null }; 
+      },
+    },
+  },
+
+
+
     methods: {
       // Função para enviar o formulário
       handleSubmit() {
