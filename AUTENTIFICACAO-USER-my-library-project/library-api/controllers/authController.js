@@ -41,6 +41,6 @@ exports.login = async (req, res) => {
         res.json({ token }); // Responde com o token JWT
     } catch (error) {
         console.error(error)
-        res.status(500).json({ error: 'Erro ao fazer login '}); // Responde com erro ao fazer login
+        res.status(500).json({ error: 'Erro ao fazer login'}); // Responde com erro ao fazer login
     }
 };
