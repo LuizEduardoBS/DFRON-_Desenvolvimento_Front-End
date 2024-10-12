@@ -14,6 +14,7 @@ exports.register = async (req, res) => {
         // Cria um novo usuário com o nome de usuário e senha criptografada
         const newUser = new User({ username, password: hashedPassword });
         await newUser.save(); // Salva o usuário no banco de dados
+        res.status(201).json({ message: 'Usuário registrado com sucesso' }); // Responde com sucesso ao registrar
         
     } catch (error) {
         res.status(500).json({ error: "Erro ao registrar usuário" }) // Retorna com erro ao registrar
