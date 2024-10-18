@@ -1,17 +1,104 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./Styles/menu_sem_logar_e_suas_telas.css">
+  <title>Inicio</title>
+</head>
+
+<body>
+  <header class="bloco-do-menu">
+    <div class="top-bar-index">
+
+      <div class="logo">
+        <!-- <img src="./img/Bliblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca"> -->
+      </div>
+
+      <section class="opcoes-sem-login">
+        <a href="./index.html" style="color: #0C8CE9;">Home</a>
+        <a href="./acervo.html">Acervo</a>
+        <a href="./politicas.html">Políticas</a>
+        <a href="./sobre.html">Sobre</a>
+        <router-link to="../src/views/LoginPage.vue">Login</router-link>
+        <a href="./cadastro.html">Cadastre-se</a>
+      </section>
+    </div>
+  </header>
+
+  <main class="main-index">
+    <div class="bloco-index-busca">
+      <span class="texto-bem-vindo">Bem-vindo!</span>
+      <p>Faça login para ter acesso a empréstimos de livros ou Cadastre-se aqui.</p>
+      <form>
+        <input type="text" placeholder="  Digite aqui o livro que você procura">
+        <button>Buscar</button>
+      </form>
+    </div>
+
+    <div class="bloco-destaques-index">
+      <p class="titulo-livros-destaque">Livros em destaque:</p>
+      <div class="bloco-cards-destaques">
+        <div class="card-livro-destaque">
+          <img src="" alt="">
+          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
+          <button class="botao-adicionar-index">Adicionar</button>
+        </div>
+        <div class="card-livro-destaque">
+          <img src="" alt="">
+          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
+          <button class="botao-adicionar-index">Adicionar</button>
+        </div>
+        <div class="card-livro-destaque">
+          <img src="" alt="">
+          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
+          <button class="botao-adicionar-index">Adicionar</button>
+        </div>
+        <div class="card-livro-destaque">
+          <img src="" alt="">
+          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
+          <button class="botao-adicionar-index">Adicionar</button>
+        </div>
+        <div class="card-livro-destaque">
+          <img src="" alt="">
+          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
+          <button class="botao-adicionar-index">Adicionar</button>
+        </div>
+        <div class="card-livro-destaque">
+          <img src="" alt="">
+          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
+          <button class="botao-adicionar-index">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bloco-categoria">
+      <div class="texto-categoria-index">
+        <span>Categorias</span>
+      </div>
+      <div class="lista-categorias">
+        <a href="#">Literatura e Ficção</a>
+        <a href="#">Infantil e HQ’s</a>
+        <a href="#" class="textos-cada-categoria">Informática e Técnologia</a>
+
+        <a href="#">Técnicos e Acadêmicos</a>
+        <a href="#">Saúde e Bem Estar</a>
+        <a href="#">Autoajuda e Espiritualidade</a>
+      </div>
+    </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Redes Sociais:</p>
+    <div class="footer-contatos">
+      <img src="./img/instagram.svg" alt="">
+      <img src="./img/twitter-x.svg" alt="">
+      <img src="./img/github.svg" alt="">
+    </div>
+    <p>Alguns direitos resercados 2024.</p>
+  </footer>
+</body>
+
 </html>

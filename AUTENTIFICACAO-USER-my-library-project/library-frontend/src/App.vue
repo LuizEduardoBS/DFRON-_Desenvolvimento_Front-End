@@ -1,36 +1,21 @@
 <template>
   <div id="app">
-    <!-- Formulário para adicionar ou editar um livro -->
-    <BookForm :bookToEdit="bookToEdit" @book-added="fetchBooks" @book-updated="fetchBooks" />
-    <!-- Lista de livros -->
-    <BookList @edit-book="setBookToEdit" ref="bookList" />
+    <nav>
+      <router-link to="/login">Login</router-link>
+      <router-link to="/dashboard">Dashboard</router-link>
+    </nav>
+    <router-view></router-view> <!-- Renderiza o componente da rota ativa -->
   </div>
-</template>
-
-<script>
-import BookList from './components/BookList.vue';
-import BookForm from './components/BookForm.vue';
-
-export default {
-  data() {
-    return {
-      bookToEdit: null, // Inicializa o estado do livro a ser editado
-    };
-  },
-  components: {
-    BookList,
-    BookForm,
-  },
-  methods: {
-    // Função para definir o livro que será editado
-    setBookToEdit(book) {
-      this.bookToEdit = book;
-    },
-    // Função para atualizar a lista de livros após adicionar ou editar
-    fetchBooks() {
-      this.$refs.bookList.fetchBooks();
-      this.bookToEdit = null; // Limpa o formulário após a ação
-    },
-  },
-};
-</script>
+  </template>
+  
+  <script>
+  export default {
+    name: 'App',
+  }
+  </script>
+  
+  <style>
+  nav{
+    margin-bottom: 20px;
+  }
+  </style>
