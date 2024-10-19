@@ -4123,6 +4123,7 @@ levn@^0.4.1:
     core-js "^3.8.3"
     library-frontend "file:"
     vue "^3.2.13"
+    vue-router "^4.4.5"
 
 lilconfig@^2.0.3:
   version "2.1.0"

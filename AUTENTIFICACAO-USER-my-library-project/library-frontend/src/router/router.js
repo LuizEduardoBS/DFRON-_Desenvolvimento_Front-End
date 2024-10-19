@@ -1,18 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Login from '../views/LoginPage.vue'; 
+import LoginPage from '../views/LoginPage.vue'; 
 
 const routes = [
+  
   {
-    path: '/login',
-    component: Login,
+    path: "/login",
+    name: "Login",
+    component: LoginPage
   },
-  // outras rotas podem ser adicionadas aqui
+  // outras rotas
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL), // Verifique se está configurado assim para Vite
   routes,
 });
 
 export default router;
-

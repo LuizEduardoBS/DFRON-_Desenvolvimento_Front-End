@@ -1,37 +1,9 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./Styles/menu_sem_logar_e_suas_telas.css">
-  <title>Inicio</title>
-</head>
-
-<body>
-  <header class="bloco-do-menu">
-    <div class="top-bar-index">
-
-      <div class="logo">
-        <img src="./img/Bliblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
-      </div>
-
-      <section class="opcoes-sem-login">
-        <a href="./index.html">Home</a>
-        <a href="./acervo.html">Acervo</a>
-        <a href="./politicas.html">Políticas</a>
-        <a href="./sobre.html" style="color: #0C8CE9;">Sobre</a>
-        <a href="./login.html">Login</a>
-        <a href="./cadastro.html">Cadastre-se</a>
-      </section>
-    </div>
-  </header>
-
+<template>
   <main class="main-sobre">
     <h1>SOBRE NÓS</h1>
     <div class="bloco-sobre">
 
-      <img src="./img/img-1-sobre.png" alt="">
+      <img src="@/assets/img/img-1-sobre.png" alt="">
 
       <div class="texto-sobre">
         <p>
@@ -47,8 +19,8 @@
         </p>
       </div>
 
-      <img src="./img/img-2-sobre.png" alt="">
-      <img src="./img/img-3-sobre.png" alt="">
+      <img src="@/assets/img/img-2-sobre.png" alt="">
+      <img src="@/assets/img/img-3-sobre.png" alt="">
 
       <div class="texto-sobre">
         <p>
@@ -59,16 +31,56 @@
 
     </div>
   </main>
+</template>
 
-  <footer>
-    <p>Redes Sociais:</p>
-    <div class="footer-contatos">
-      <img src="./img/instagram.svg" alt="">
-      <img src="./img/twitter-x.svg" alt="">
-      <img src="./img/github.svg" alt="">
-    </div>
-    <p>Alguns direitos resercados 2024.</p>
-  </footer>
-</body>
+<style scoped>
+.main-sobre {
+  height: calc(100% - 90px);
+  max-width: 1072px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-</html>
+.main-sobre h1 {
+  font-size: 25px;
+  font-weight: bold;
+  align-self: center;
+  padding: 0;
+  margin: 28px;
+}
+
+.bloco-sobre {
+  width: 1072px;
+  height: 1059px;
+  background-color: #fff;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  box-shadow: 0 2px 8px -2px #989898;
+}
+
+.bloco-sobre img {
+  max-width: 536px; 
+}
+
+.texto-sobre {
+  max-width: 536px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.texto-sobre strong {
+  font-size: 20px;
+}
+
+.texto-sobre p {
+  font-size: 18px;
+  width: 500px;
+  line-height: 1.4;
+}
+</style>

@@ -1,7 +1,9 @@
+  // main.js
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router/router'; // Certifique-se de que o caminho está correto
+import router from './router/router'; // Importa o roteador
 
-createApp(App)
-  .use(router)
-  .mount('#app');
+const app = createApp(App);
+
+app.use(router); // Registra o roteador na aplicação
+app.mount('#app');
