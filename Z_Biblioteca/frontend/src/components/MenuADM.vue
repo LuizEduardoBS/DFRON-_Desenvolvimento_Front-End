@@ -1,21 +1,55 @@
 <template>
   <header class="bloco-do-menu">
     <div class="top-bar-index">
-
       <div class="logo">
         <img src="@/assets/img/Biblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
       </div>
 
       <section class="opcoes-logado-adm">
-        <a href="./index.html" class="opcao-menu">Home</a>
-        <a href="./acervo.html" class="opcao-menu">Acervo</a>
-        <a href="./politicas.html" class="opcao-menu">Políticas</a>
-        <a href="./sobre.html" class="opcao-menu">Sobre</a>
-        <a href="./login.html" class="opcao-menu" id="usuario-menu">"nome-ADM"<img src="@/assets/img/person.png"></a>
+        <router-link to="/" class="opcao-menu">Home</router-link>
+        <router-link to="/acervo" class="opcao-menu">Acervo</router-link>
+        <router-link to="/politicas" class="opcao-menu">Políticas</router-link>
+        <router-link to="/sobre" class="opcao-menu">Sobre</router-link>
+        <a href="#" class="opcao-menu" id="usuario-menu" @click="toggleMenu">
+          "ADM nome" <img src="@/assets/img/person.png">
+        </a>
       </section>
+    </div>
+
+    <div v-if="menuVisible" class="bloco-do-submenu">
+      <div class="opcoes-submenu-adm">
+        <a href="/perfilusuario" class="opcao-menu">Perfil</a>
+        <a href="./" class="opcao-menu">Notificações</a>
+        <a href="./" class="opcao-menu">Carrinho</a>
+        <a href="./" class="opcao-menu">Reservas</a>
+        <button @click="logout" class="opcao-menu">Sair</button>
+      </div>
     </div>
   </header>
 </template>
+
+<script>
+import { useAuthStore } from '../stores/authStore'; // ajuste o caminho se necessário
+
+export default {
+  data() {
+    return {
+      menuVisible: false,
+    };
+  },
+  methods: {
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+    },
+    logout() {
+      const authStore = useAuthStore(); // Obtenha a instância da store
+      authStore.logout(); // Chame o método de logout da store
+      this.$router.push('/login'); // Redirecione para a página de login
+    },
+  },
+};
+</script>
+
 
 <style scoped>
 .bloco-do-menu {
@@ -27,6 +61,7 @@
   justify-content: center;
   background-color: #fff;
   box-shadow: 0 2px 8px -2px #989898;
+  position: relative; /* Para permitir que o submenu seja posicionado em relação ao menu */
 }
 
 .top-bar-index {
@@ -37,7 +72,6 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  
 }
 
 .bloco-do-menu img {
@@ -53,6 +87,7 @@
   padding-right: 20px;
   gap: 20px;
 }
+
 .opcoes-logado-adm .opcao-menu {
   text-decoration: none;
   color: black;
@@ -83,39 +118,37 @@
 }
 
 .bloco-do-submenu {
-  width: 1072px;
-  height: 80px;
+  width: 150px; /* Largura do submenu */
   background-color: #fff;
-  margin-top: 3px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  position: absolute; /* Para que não afete o layout do menu principal */
+  top: 100%; /* Coloca o submenu diretamente abaixo do menu principal */
+  right: 0; /* Alinha à esquerda do menu */
+  margin-top: 3px; /* Espaço entre o menu do usuário e o submenu */
   box-shadow: 0 2px 8px -2px #989898;
-  justify-content: space-between;
+  z-index: 10; /* Garante que o submenu fique sobre outros elementos */
 }
 
 .opcoes-submenu-adm {
   display: flex;
-  flex-direction: row;
-  padding-right: 20px;
-  gap: 20px;
-  margin-left: 32px;
+  flex-direction: column; /* Muda para coluna */
+  padding: 10px 0; /* Espaçamento vertical */
+  gap: 10px; /* Espaçamento entre as opções */
 }
 
 .opcoes-submenu-adm .opcao-menu {
   text-decoration: none;
   color: black;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px; /* Tamanho da fonte ajustado */
   display: block;
-  height: 44px;
-  place-content: center;
-  gap: 0;
-  padding: 0;
+  padding: 10px; /* Espaçamento interno */
+  width: 100%; /* Largura total */
+  box-sizing: border-box; /* Inclui o padding no cálculo da largura */
   cursor: pointer;
 }
+
 .opcoes-submenu-adm .opcao-menu:hover {
+  background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
   color: #0C8CE9;
-  text-decoration: underline;
 }
 </style>

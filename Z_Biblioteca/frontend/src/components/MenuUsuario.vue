@@ -6,10 +6,10 @@
       </div>
 
       <section class="opcoes-logado-adm">
-        <a href="./index.html" class="opcao-menu">Home</a>
-        <a href="./acervo.html" class="opcao-menu">Acervo</a>
-        <a href="./politicas.html" class="opcao-menu">Políticas</a>
-        <a href="./sobre.html" class="opcao-menu">Sobre</a>
+        <router-link to="/" class="opcao-menu">Home</router-link>
+        <router-link to="/acervo" class="opcao-menu">Acervo</router-link>
+        <router-link to="/politicas" class="opcao-menu">Políticas</router-link>
+        <router-link to="/sobre" class="opcao-menu">Sobre</router-link>
         <a href="#" class="opcao-menu" id="usuario-menu" @click="toggleMenu">
           "usuario" <img src="@/assets/img/person.png">
         </a>
@@ -18,8 +18,10 @@
 
     <div v-if="menuVisible" class="bloco-do-submenu">
       <div class="opcoes-submenu-adm">
-        <a href="./perfil.html" class="opcao-menu">Perfil</a>
-        <a href="./dashboard.html" class="opcao-menu">Dashboard</a>
+        <a href="/perfilusuario" class="opcao-menu">Perfil</a>
+        <a href="./" class="opcao-menu">Notificações</a>
+        <a href="./" class="opcao-menu">Carrinho</a>
+        <a href="./" class="opcao-menu">Reservas</a>
         <button @click="logout" class="opcao-menu">Sair</button>
       </div>
     </div>

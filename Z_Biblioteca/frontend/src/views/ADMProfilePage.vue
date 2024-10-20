@@ -1,8 +1,5 @@
 <template>
-  <h1>Logado ADM</h1>
-  <button @click="logout">Sair</button>
-
-  <header class="bloco-do-submenu">
+   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-adm">
       <a href="./homepage_administrador.html" class="opcao-menu" style="color: #0C8CE9;">Dashboard</a>
       <a href="./adm_usuarios.html" class="opcao-menu">Usuários</a>
