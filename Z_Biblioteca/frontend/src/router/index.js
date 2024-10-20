@@ -16,7 +16,7 @@ const router = createRouter({
     },
     {
       path: '/:catchAll(.*)', // Sintaxe para rota coringa
-      name: '/',
+      redirect: '/login',
     },
     {
       path: '/cadastro',

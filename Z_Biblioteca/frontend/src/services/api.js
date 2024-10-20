@@ -51,7 +51,7 @@ export const booksService = {
 // Exporta funções relacionadas ao usuário/login
 export const userService = {
     login(credentials) {
-        return apiClient.post('/login', credentials);
+        return apiClient.post('/auth/login', credentials);
     },
     register(userData) {
         return apiClient.post('/register', userData);

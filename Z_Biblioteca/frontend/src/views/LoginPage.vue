@@ -36,10 +36,13 @@ export default {
   methods: {
     async loginUser() {
       try {
-        const response = await api.post('/auth/login', {
+        const response = await userService.login({
           username: this.username,
           password: this.password,
         });
+
+        
+
         this.message = 'Login bem-sucedido!';
         localStorage.setItem('token', response.data.token);
         this.$router.push('/perfilusuario');
