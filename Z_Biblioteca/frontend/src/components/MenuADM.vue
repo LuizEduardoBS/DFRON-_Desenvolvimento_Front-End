@@ -3,7 +3,7 @@
     <div class="top-bar-index">
 
       <div class="logo">
-        <img src="./img/Bliblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
+        <img src="@/assets/img/Biblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
       </div>
 
       <section class="opcoes-logado-adm">
@@ -11,7 +11,7 @@
         <a href="./acervo.html" class="opcao-menu">Acervo</a>
         <a href="./politicas.html" class="opcao-menu">Políticas</a>
         <a href="./sobre.html" class="opcao-menu">Sobre</a>
-        <a href="./login.html" class="opcao-menu" id="usuario-menu">"nome-ADM"<img src="./img/person.png"></a>
+        <a href="./login.html" class="opcao-menu" id="usuario-menu">"nome-ADM"<img src="@/assets/img/person.png"></a>
       </section>
     </div>
   </header>
