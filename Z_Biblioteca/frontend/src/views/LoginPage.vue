@@ -24,6 +24,7 @@
 
 <script>
 import { userService } from '../services/api'; // Verifique o caminho do axios
+import { useAuthStore } from '../stores/authStore'; // ajuste o caminho se necessário
 
 export default {
   data() {
@@ -41,9 +42,9 @@ export default {
           password: this.password,
         });
 
-        // Armazenar token e permissão no localStorage
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('permissions', response.data.permissions);
+        const authStore = useAuthStore();
+        // Chama o método de login da loja
+        authStore.login(response.data.token, response.data.permissions);
 
         this.message = 'Login bem-sucedido!';
 
@@ -65,6 +66,7 @@ export default {
   }
 };
 </script>
+
 
 
 <style scoped>
