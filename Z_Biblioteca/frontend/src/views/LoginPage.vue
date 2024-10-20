@@ -22,7 +22,7 @@
   </main>
 </template>
 
-<script>
+<!-- <script>
 import { userService } from '../services/api'; // Verifique o caminho do axios
 
 export default {
@@ -54,7 +54,52 @@ export default {
     }
   }
 };
+</script> -->
+
+<script>
+import { userService } from '../services/api'; // Verifique o caminho do axios
+
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      message: ''
+    };
+  },
+  methods: {
+    async loginUser() {
+      try {
+        const response = await userService.login({
+          username: this.username,
+          password: this.password,
+        });
+
+        // Armazenar token e permissão no localStorage
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('permissions', response.data.permissions);
+
+        this.message = 'Login bem-sucedido!';
+
+        // Redirecionar com base na permissão
+        if (response.data.permissions === 'Usuario') {
+          this.$router.push('/perfilusuario'); // Redireciona para a página do usuário
+        } else if (response.data.permissions === 'ADM') {
+          this.$router.push('/perfiladm'); // Redireciona para a página de administrador
+        } else {
+          this.message = 'Permissão desconhecida!';
+        }
+      } catch (error) {
+        this.message = 
+          error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : 'Erro ao fazer login.';
+      }
+    }
+  }
+};
 </script>
+
 
 <style scoped>
 .main-login {
