@@ -1,5 +1,5 @@
 <template>
-  <h1>Logado Usuário Comum</h1>
+  <h1>Logado ADM</h1>
   <button @click="logout">Sair</button>
 </template>
 
