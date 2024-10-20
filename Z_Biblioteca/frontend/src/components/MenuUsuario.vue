@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { useAuthStore } from '../stores/authStore'; // ajuste o caminho se necessário
+
 export default {
   data() {
     return {
@@ -38,12 +40,14 @@ export default {
       this.menuVisible = !this.menuVisible;
     },
     logout() {
-      localStorage.removeItem('token');
-      this.$router.push('/login');
+      const authStore = useAuthStore(); // Obtenha a instância da store
+      authStore.logout(); // Chame o método de logout da store
+      this.$router.push('/login'); // Redirecione para a página de login
     },
   },
 };
 </script>
+
 
 <style scoped>
 .bloco-do-menu {
