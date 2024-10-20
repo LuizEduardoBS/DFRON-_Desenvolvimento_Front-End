@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true }, // Nome de usuário obrigatório e único
     password: { type: String, required: true }, // Senha obrigatória
+    permissions: { type: String, default: 'Usuario' }
 });
 
 // Exporta o modelo de usuário
