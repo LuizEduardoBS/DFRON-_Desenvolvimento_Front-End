@@ -1,12 +1,12 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import MenuDeslogado from './components/MenuDesgado.vue'
+import MenuLogado from './components/MenuDesgado.vue'
 import Rodape from './components/Rodape.vue';
 </script>
 
 <template>
   <header>
-    <MenuDeslogado />
+    <MenuLogado />
   </header>
 
   <RouterView />

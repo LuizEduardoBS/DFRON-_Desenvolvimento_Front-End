@@ -22,40 +22,6 @@
   </main>
 </template>
 
-<!-- <script>
-import { userService } from '../services/api'; // Verifique o caminho do axios
-
-export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      message: ''
-    };
-  },
-  methods: {
-    async loginUser() {
-      try {
-        const response = await userService.login({
-          username: this.username,
-          password: this.password,
-        });
-
-        
-
-        this.message = 'Login bem-sucedido!';
-        localStorage.setItem('token', response.data.token);
-        this.$router.push('/perfilusuario');
-      } catch (error) {
-        this.message = error.response && error.response.data && error.response.data.message
-        ? error.response.data.message
-        : 'Erro ao fazer login.';
-      }
-    }
-  }
-};
-</script> -->
-
 <script>
 import { userService } from '../services/api'; // Verifique o caminho do axios
 
