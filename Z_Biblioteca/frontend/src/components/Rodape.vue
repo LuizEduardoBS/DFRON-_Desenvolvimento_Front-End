@@ -2,7 +2,7 @@
   <footer>
     <p>Redes Sociais:</p>
     <div class="footer-contatos">
-      <a href="">
+      <a href="https://www.instagram.com/">
         <img src="@/assets/img/instagram.svg" alt="">
       </a>
       <a href="">

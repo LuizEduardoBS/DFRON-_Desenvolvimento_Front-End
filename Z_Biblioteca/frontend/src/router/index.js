@@ -15,6 +15,10 @@ const router = createRouter({
       component: () => import('../views/LoginPage.vue')
     },
     {
+      path: '/:catchAll(.*)', // Sintaxe para rota coringa
+      name: '/',
+    },
+    {
       path: '/cadastro',
       name: 'cadastro',
       component: () => import('../views/RegisterPage.vue')
@@ -33,8 +37,25 @@ const router = createRouter({
       path: '/sobre',
       name: 'sobre',
       component: () => import('../views/AboutPage.vue')
+    },
+    {
+      path: '/perfilusuario',
+      name: 'perfilusuario',
+      component: () => import('../views/UserProfilePage.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })
+
+// Proteção das rotas
+router.beforeEach((to, from, next) => {
+  const loggedIn = localStorage.getItem('token');
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router

@@ -4,13 +4,14 @@
       <div class="bloco-login-interno">
         <h1>Logar</h1>
         <!-- <div> -->
-        <form action="/login" method="POST">
+        <form @submit.prevent="loginUser">
           <span>Seu e-mail</span>
-          <input type="text" placeholder="  exemplo@exemplo.com">
+          <input v-model="username" placeholder="  exemplo@exemplo.com">
           <span>Sua senha</span>
-          <input type="text" placeholder="  senha@123">
-          <button>Logar</button>
+          <input type="password" v-model="password" placeholder="  senha@123">
+          <button type="submit">Logar</button>
         </form>
+        <p v-if="message">{{ message }}</p>
         <!-- </div> -->
       </div>
       <div class="nao-possui-conta">
@@ -20,6 +21,37 @@
     </div>
   </main>
 </template>
+
+<script>
+import { userService } from '../services/api'; // Verifique o caminho do axios
+
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      message: ''
+    };
+  },
+  methods: {
+    async loginUser() {
+      try {
+        const response = await api.post('/auth/login', {
+          username: this.username,
+          password: this.password,
+        });
+        this.message = 'Login bem-sucedido!';
+        localStorage.setItem('token', response.data.token);
+        this.$router.push('/perfilusuario');
+      } catch (error) {
+        this.message = error.response && error.response.data && error.response.data.message
+        ? error.response.data.message
+        : 'Erro ao fazer login.';
+      }
+    }
+  }
+};
+</script>
 
 <style scoped>
 .main-login {
