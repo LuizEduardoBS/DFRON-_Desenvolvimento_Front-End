@@ -6,7 +6,7 @@
       <a href="./carrinho.html" class="opcao-menu" style="text-align: center;">Carrinho de<br>Empréstimos</a>
       <a href="./reservas.html" class="opcao-menu">Reservas</a>
     </section>
-    <a href="./acervo.html" class="botao-escolher-livro">Escolher um livro</a>
+    <router-link to="/acervo" class="botao-escolher-livro">Escolher um livro</router-link>
   </header>
 
   <main class="main-perfil-usuario">
@@ -180,6 +180,8 @@
 </template>
 
 <script>
+import { RouterLink, RouterView } from 'vue-router'
+
 export default {
   methods: {
     logout() {
