@@ -1,9 +1,9 @@
 <template>
    <header class="bloco-do-submenu">
     <section class="opcoes-submenu-adm">
-      <a href="./homepage_administrador.html" class="opcao-menu" style="color: #0C8CE9;">Dashboard</a>
-      <a href="./adm_usuarios.html" class="opcao-menu">Usuários</a>
-      <a href="./adm_livros.html" class="opcao-menu">Livros</a>
+      <router-link to="./perfiladm" class="opcao-menu" style="color: #0C8CE9;">Dashboard</router-link>
+      <router-link to="./admusers" class="opcao-menu">Usuários</router-link>
+      <router-link to="./admlivros" class="opcao-menu">Livros</router-link>
     </section>
   </header>
 
@@ -31,6 +31,19 @@
     </div>
   </main>
 </template>
+
+<script>
+import { RouterLink, RouterView } from 'vue-router'
+
+export default {
+  methods: {
+    logout() {
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    }
+  }
+}
+</script>
 
 <style scoped>
 .bloco-do-submenu {
@@ -153,13 +166,4 @@
 }
 </style>
 
-<script>
-export default {
-  methods: {
-    logout() {
-      localStorage.removeItem('token');
-      this.$router.push('/login');
-    }
-  }
-}
-</script>
+

@@ -45,9 +45,45 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/notificacaousuario',
+      name: 'notificacaousuario',
+      component: () => import('../views/UserNotifPage.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/carrinho',
+      name: 'carrinho',
+      component: () => import('../views/UserLoanCart.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/reservas',
+      name: 'reservas',
+      component: () => import('../views/UserReservationsPage.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/perfiladm',
       name: 'perfiladm',
       component: () => import('../views/ADMProfilePage.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/admusers',
+      name: 'admusers',
+      component: () => import('../views/ADMUsersPage.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/admlivros',
+      name: 'admulivros',
+      component: () => import('../views/ADMBooksPage.vue'),
+      meta: { requiresAuth: true }
+    } ,
+    {
+      path: '/admnotificacoes',
+      name: 'admnotificacoes',
+      component: () => import('../views/ADMNotifPage.vue'),
       meta: { requiresAuth: true }
     }
   ]

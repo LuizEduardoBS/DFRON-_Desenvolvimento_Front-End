@@ -1,10 +1,10 @@
 <template>
   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-usuario">
-      <a href="./perfil_usuario.html" class="opcao-menu" style="text-align: center;  color: #0C8CE9;">Perfil</a>
-      <a href="./notificacoes_do_usuario.html" class="opcao-menu">Notificações</a>
-      <a href="./carrinho.html" class="opcao-menu" style="text-align: center;">Carrinho de<br>Empréstimos</a>
-      <a href="./reservas.html" class="opcao-menu">Reservas</a>
+      <router-link to="./perfilusuario" class="opcao-menu" style="text-align: center;  color: #0C8CE9;">Perfil</router-link>
+      <router-link to="./notificacaousuario" class="opcao-menu">Notificações</router-link>
+      <router-link to="./carrinho" class="opcao-menu" style="text-align: center;">Carrinho de<br>Empréstimos</router-link>
+      <router-link to="./reservas" class="opcao-menu">Reservas</router-link>
     </section>
     <router-link to="/acervo" class="botao-escolher-livro">Escolher um livro</router-link>
   </header>

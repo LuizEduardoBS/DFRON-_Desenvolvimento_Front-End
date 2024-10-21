@@ -18,10 +18,10 @@
 
     <div v-if="menuVisible" class="bloco-do-submenu">
       <div class="opcoes-submenu-adm">
-        <a href="/perfilusuario" class="opcao-menu">Perfil</a>
-        <a href="./" class="opcao-menu">Notificações</a>
-        <a href="./" class="opcao-menu">Carrinho</a>
-        <a href="./" class="opcao-menu">Reservas</a>
+        <router-link to="./perfilusuario" class="opcao-menu">Perfil</router-link>
+        <router-link to="./notificacaousuario" class="opcao-menu">Notificações</router-link>
+        <router-link to="./carrinho" class="opcao-menu" style="text-align: left;">Carrinho de<br>Empréstimos</router-link>
+        <router-link to="./reservas" class="opcao-menu" >Reservas</router-link>
         <button @click="logout" class="opcao-menu">Sair</button>
       </div>
     </div>
@@ -30,6 +30,7 @@
 
 <script>
 import { useAuthStore } from '../stores/authStore'; // ajuste o caminho se necessário
+import { RouterLink, RouterView } from 'vue-router'
 
 export default {
   data() {

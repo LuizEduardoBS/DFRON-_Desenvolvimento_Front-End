@@ -1,0 +1,263 @@
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+</script>
+
+<template>
+  <header class="bloco-do-submenu">
+    <section class="opcoes-submenu-usuario">
+      <router-link to="./perfilusuario" class="opcao-menu">Perfil</router-link>
+      <router-link to="./notificacaousuario" class="opcao-menu">Notificações</router-link>
+      <router-link to="./carrinho" class="opcao-menu" style="text-align: center; color: #0C8CE9;">Carrinho de<br>Empréstimos</router-link>
+      <router-link to="./reservas" class="opcao-menu">Reservas</router-link>
+    </section>
+  </header>
+
+  <main class="main-usuario-carrinho">
+    <div class="conteudo-bloco-carrinho">
+      <div>
+        <span class="notificacao-livro-indisponivel">*Livros com status indisponível serão enviados para a sessão de reservados. Quando ficar disponível você será notificado.</span>
+      </div>
+
+      <div class="bloco-cards-carrinho">
+
+        <div class="card-carrinho">
+          <div class="icone-excluir-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+            </svg>
+          </div>
+          <img src="" alt="">
+          <div>
+            <span>Nome do livro<br>Aparece aqui</span>
+          </div>
+          <div>
+            <span><strong>Status</strong> <span class="status-livro-card" id="">Disponivel</span></span>
+          </div>
+        </div>
+
+        <div class="card-carrinho">
+          <div class="icone-excluir-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+            </svg>
+          </div>
+          <img src="" alt="">
+          <div>
+            <span>Nome do livro<br>Aparece aqui</span>
+          </div>
+          <div>
+            <span><strong>Status</strong> <span class="status-livro-card" id="">Disponivel</span></span>
+          </div>
+        </div>
+
+        <div class="card-carrinho">
+          <div class="icone-excluir-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+            </svg>
+          </div>
+          <img src="" alt="">
+          <div>
+            <span>Nome do livro<br>Aparece aqui</span>
+          </div>
+          <div>
+            <span><strong>Status</strong> <span class="status-livro-card" id="">Disponivel</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloco-botoes-carrinho">
+        <div class="botao-solicitar-emprestimo"><span>Solicitar Empréstimo</span></div>
+        <div class="botao-esvaziar-carrinho"><span>Esvaziar Carrinho</span></div>
+      </div>
+    </div>
+  </main>
+</template>
+
+<style scoped>
+.bloco-do-submenu {
+  width: 1072px;
+  height: 80px;
+  background-color: #fff;
+  margin-top: 3px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0 2px 8px -2px #989898;
+  justify-content: space-between;
+}
+
+.opcoes-submenu-usuario {
+  display: flex;
+  flex-direction: row;
+  padding-right: 20px;
+  gap: 20px;
+  margin-left: 32px;
+}
+
+.opcoes-submenu-usuario .opcao-menu {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  display: block;
+  height: 44px;
+  place-content: center;
+  gap: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.opcoes-submenu-usuario .opcao-menu:hover {
+  color: #0C8CE9;
+  text-decoration: underline;
+}
+
+.botao-escolher-livro {
+  width: 173px;
+  height: 47px;
+  background-color: #0C8CE9;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.botao-escolher-livro:hover {
+  color: #0C8CE9;
+  background-color: #fff;
+  border: 1px solid #0C8CE9;
+}
+
+/* ########################################### */
+/* CARRINHO DO USUARIO */
+.main-usuario-carrinho {
+  width: 1072px;
+  height: 480px;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px -2px #989898;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.conteudo-bloco-carrinho {
+  width: 1032px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificacao-livro-indisponivel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #F39C11;
+  width: 1032px;
+  height: 40px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.bloco-cards-carrinho {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.card-carrinho {
+  width: 320px;
+  height: 300px;
+  box-shadow: 0 2px 8px -2px #989898;
+  border-radius: 5px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 8px;
+}
+
+.icone-excluir-card {
+  width: 320px;
+  height: 300px;
+  position: absolute;
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.icone-excluir-card svg:hover {
+  fill: #ff0000;
+}
+
+.card-carrinho img {
+  width: 132px;
+  height: 200px;
+}
+
+.status-livro-card {
+  color: #00A65A;
+  font-weight: bold;
+}
+
+.bloco-botoes-carrinho {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.botao-solicitar-emprestimo {
+  width: 215px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #00A65A;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px -2px #989898;
+}
+
+.botao-solicitar-emprestimo:hover {
+  background-color: #00cc70;
+}
+
+.botao-esvaziar-carrinho {
+  width: 215px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F39C11;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px -2px #989898;
+}
+
+.botao-esvaziar-carrinho:hover {
+  background-color: #ffb339;
+}
+</style>
