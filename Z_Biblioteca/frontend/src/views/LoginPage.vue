@@ -16,7 +16,7 @@
       </div>
       <div class="nao-possui-conta">
         <span>Ainda não tem conta?</span>
-        <a href="./cadastro">Cadastre-se</a>
+        <router-link to="/cadastro">Cadastre-se</router-link>
       </div>
     </div>
   </main>
@@ -25,6 +25,7 @@
 <script>
 import { userService } from '../services/api'; // Verifique o caminho do axios
 import { useAuthStore } from '../stores/authStore'; // ajuste o caminho se necessário
+import { RouterLink, RouterView } from 'vue-router'
 
 export default {
   data() {

@@ -22,7 +22,7 @@
 
       <div class="ja-possui-conta">
         <span>Já possui uma conta?</span>
-        <a href="./login.html">Logar</a>
+        <router-link to="/login">Login</router-link>
       </div>
     </div>
   </main>
@@ -30,6 +30,7 @@
 
 <script>
 import { userService } from '../services/api'; // Importe o serviço da API
+import { RouterLink, RouterView } from 'vue-router'
 
 export default {
   data() {
