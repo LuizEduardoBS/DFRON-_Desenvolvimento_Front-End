@@ -3,28 +3,72 @@
     <div class="bloco-cadastro">
       <div class="bloco-cadastro-interno">
         <h1>Cadastro</h1>
-        <!-- <div> -->
-        <form action="/cadastro" method="POST">
+        <form @submit.prevent="registerUser">
           <span>Nome de usuário *</span>
-          <input type="text" placeholder="  exemplo@exemplo.com">
+          <input v-model="username" type="text" placeholder="  exemplo@exemplo.com" required />
+
           <span>E-mail *</span>
-          <input type="text" placeholder="  exemplo@exemplo.com">
+          <input v-model="email" type="email" placeholder="  exemplo@exemplo.com" required />
+
           <span>Senha *</span>
-          <input type="text" placeholder="  senha@123">
+          <input v-model="password" type="password" placeholder="  senha@123" required />
+
           <span>Confirme a senha *</span>
-          <input type="text" placeholder="  senha@123">
-          <button>Logar</button>
+          <input v-model="confirmPassword" type="password" placeholder="  senha@123" required />
+
+          <button type="submit">Cadastrar</button>
         </form>
-        <!-- </div> -->
       </div>
+
       <div class="ja-possui-conta">
         <span>Já possui uma conta?</span>
         <a href="./login.html">Logar</a>
       </div>
-
     </div>
   </main>
 </template>
+
+<script>
+import { userService } from '../services/api'; // Importe o serviço da API
+
+export default {
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    };
+  },
+  methods: {
+    async registerUser() {
+      if (this.password !== this.confirmPassword) {
+        alert('As senhas não coincidem!');
+        return;
+      }
+
+      try {
+        const userData = {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+        };
+
+        const response = await userService.register(userData);
+        console.log('Usuário registrado com sucesso:', response.data);
+
+        // Redirecionar para a página de login ou mostrar uma mensagem de sucesso
+        alert('Usuário cadastrado com sucesso!');
+        this.$router.push('/login'); // Exemplo de redirecionamento
+      } catch (error) {
+        console.error('Erro ao registrar usuário:', error.response?.data || error.message);
+        alert('Erro ao registrar usuário.');
+      }
+    },
+  },
+};
+</script>
+
 
 <style scoped>
 .main-cadastro {
