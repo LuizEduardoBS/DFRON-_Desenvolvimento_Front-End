@@ -17,7 +17,7 @@ import { RouterLink, RouterView } from 'vue-router'
         </svg>
       </button>
     </form>
-    <a href="./adicionar_livro.html" class="botao-adicionar-livro">Adicionar Livro</a>
+    <router-link to="./adicionarlivro" class="botao-adicionar-livro">Adicionar Livro</router-link>
   </header>
 
 

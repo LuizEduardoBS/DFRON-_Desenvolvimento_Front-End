@@ -35,28 +35,31 @@ attachInterceptor(apiClient);
 // Exporta funções CRUD para livros
 export const booksService = {
     getBooks() {
-        return booksApiClient.get('/');
+        return booksApiClient.get('/'); // Obtém todos os livros
     },
     addBook(book) {
-        return booksApiClient.post('/', book);
+        return booksApiClient.post('/', book); // Adiciona um novo livro
     },
     updateBook(id, book) {
-        return booksApiClient.put(`/${id}`, book);
+        return booksApiClient.put(`/${id}`, book); // Atualiza um livro existente
     },
     deleteBook(id) {
-        return booksApiClient.delete(`/${id}`);
+        return booksApiClient.delete(`/${id}`); // Deleta um livro pelo ID
     },
 };
 
 // Exporta funções relacionadas ao usuário/login
 export const userService = {
     login(credentials) {
-        return apiClient.post('/auth/login', credentials);
+        return apiClient.post('/auth/login', credentials); // Realiza login
     },
     register(userData) {
-        return apiClient.post('/auth/register', userData);
+        return apiClient.post('/auth/register', userData); // Registra um novo usuário
     },
     getProfile() {
-        return apiClient.get('/profile');
+        return apiClient.get('/profile'); // Obtém perfil do usuário
     },
 };
+
+// Exporta os clientes de API para uso em outros módulos
+export { booksApiClient, apiClient };

@@ -85,6 +85,12 @@ const router = createRouter({
       name: 'admnotificacoes',
       component: () => import('../views/ADMNotifPage.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/adicionarlivro',
+      name: 'adicionarlivro',
+      component: () => import('../views/AddBooksPage.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })
