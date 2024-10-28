@@ -60,7 +60,7 @@
 
       <div class="botoes-add-livro">
         <button type="submit" class="botao-salvar texto-botao" @click="enviarFormulario">Salvar</button>
-        <button type="reset" class="botao-cancelar texto-botao">Cancelar</button>
+        <button type="reset" class="botao-cancelar texto-botao" @click="cancelarEnvio">Cancelar</button>
       </div>
       
     </div>
@@ -110,11 +110,15 @@ export default {
         });
         console.log('Livro adicionado:', response.data);
         alert('Livro cadastrado com sucesso!');
+        this.$router.push('/admlivros');
       } catch (error) {
         console.error('Erro ao adicionar livro:', error);
         alert('Erro ao cadastrar o livro.');
       }
     },
+    cancelarEnvio() {
+      this.$router.push('/admlivros');
+    }
   },
 };
 </script>
