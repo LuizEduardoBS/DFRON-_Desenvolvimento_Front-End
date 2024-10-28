@@ -11,8 +11,9 @@
     <div class="conteudo-add-livro">
       <div class="título-pagina-disponibilidade">
         <h1>Adicionar livro:</h1>
-        <form id="form-disponibilidade" class="form-add-livro">
-          <select name="availability" required>
+
+        <form id="form-livro" class="form-add-livro" @submit.prevent="enviarFormulario">
+          <select v-model="availability" required>
             <option value="" disabled selected>Disponibilidade *</option>
             <option value="indisponivel">Indisponível</option>
             <option value="disponivel">Disponível</option>
@@ -20,45 +21,45 @@
         </form>
       </div>
 
-      <form id="form-livro" class="form-add-livro" enctype="multipart/form-data">
+      <form id="form-livro" class="form-add-livro" @submit.prevent="enviarFormulario">
         <div class="coluna-add-livro">
           <label class="titulo-dos-campos">Título *</label>
-          <input type="text" name="title" placeholder="Nome do livro" class="campo-tamanho-comum" required>
+          <input type="text" v-model="title" placeholder="Nome do livro" class="campo-tamanho-comum" required />
 
           <label class="titulo-dos-campos">Autor *</label>
-          <input type="text" name="author" placeholder="Nome do autor" class="campo-tamanho-comum" required>
+          <input type="text" v-model="author" placeholder="Nome do autor" class="campo-tamanho-comum" required>
 
           <label class="titulo-dos-campos">Gênero *</label>
-          <select name="genre" class="campo-tamanho-comum-select" required>
-            <option value="literatura">Literatura e Ficção</option>
-            <option value="infantil">Infantil e HQ's</option>
-            <option value="tecnologia">Informática e Tecnologia</option>
-            <option value="tecnicos">Técnicos e Acadêmicos</option>
-            <option value="saude">Saúde e Bem Estar</option>
-            <option value="autoajuda">Autoajuda e Espiritualidade</option>
+          <select v-model="genre" class="campo-tamanho-comum-select" required>
+            <option value="Literatura e Ficção">Literatura e Ficção</option>
+            <option value="Infantil e HQ's">Infantil e HQ's</option>
+            <option value="Informática e Tecnologia">Informática e Tecnologia</option>
+            <option value="Técnicos e Acadêmicos">Técnicos e Acadêmicos</option>
+            <option value="Saúde e Bem Estar">Saúde e Bem Estar</option>
+            <option value="Autoajuda e Espiritualidade">Autoajuda e Espiritualidade</option>
           </select>
 
           <label class="titulo-dos-campos">Data da publicação *</label>
-          <input type="number" name="year" min="1000" max="2024" placeholder="Ano da publicação" class="campo-tamanho-comum" required>
+          <input type="number" v-model="year" min="1000" max="2030" placeholder="Ano da publicação" class="campo-tamanho-comum" required />
 
           <label class="titulo-dos-campos">ISBN *</label>
-          <input type="text" name="isbn" placeholder="978-65-89xxx-xx-x" class="campo-tamanho-comum" required>
+          <input type="text" v-model="isbn" placeholder="978-65-89xxx-xx-x" class="campo-tamanho-comum" required />
 
           <label class="titulo-dos-campos" for="imagem">Capa *</label>
-          <input type="file" id="imagem" name="imagem" accept="image/*" class="campo-tamanho-comum" required>
+          <input type="file" @change="handleFileUpload" accept="image/*" class="campo-tamanho-comum" required />
         </div>
 
         <div class="coluna-add-livro">
           <label class="titulo-dos-campos">Número de cópias *</label>
-          <input type="number" name="copies" min="1" placeholder="Número de cópias" class="campo-tamanho-comum" required>
+          <input type="number" v-model="copies" min="1" placeholder="Número de cópias" class="campo-tamanho-comum" required />
 
           <label class="titulo-dos-campos">Descrição *</label>
-          <textarea name="description" class="campo-descricao" placeholder="Breve resumo do livro" required></textarea>
+          <textarea v-model="description" class="campo-descricao" placeholder="Breve resumo do livro" required></textarea>
         </div>
       </form>
 
       <div class="botoes-add-livro">
-        <button type="button" class="botao-salvar texto-botao" @click="enviarFormulario">Salvar</button>
+        <button type="submit" class="botao-salvar texto-botao" @click="enviarFormulario">Salvar</button>
         <button type="reset" class="botao-cancelar texto-botao">Cancelar</button>
       </div>
       
@@ -77,6 +78,7 @@ export default {
       year: '',
       availability: '',
       genre: '',
+      isbn: '',
       copies: '',
       description: '',
       coverImage: null,
@@ -88,11 +90,12 @@ export default {
     },
     async enviarFormulario() {
       const formData = new FormData();
+      formData.append('availability', this.availability);
       formData.append('title', this.title);
       formData.append('author', this.author);
       formData.append('year', this.year);
-      formData.append('availability', this.availability);
       formData.append('genre', this.genre);
+      formData.append('isbn', this.isbn);
       formData.append('copies', this.copies);
       formData.append('description', this.description);
       if (this.coverImage) {
@@ -100,14 +103,16 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:3000/books', formData, {
+        const response = await axios.post('http://localhost:3000/api/books', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
         console.log('Livro adicionado:', response.data);
+        alert('Livro cadastrado com sucesso!');
       } catch (error) {
         console.error('Erro ao adicionar livro:', error);
+        alert('Erro ao cadastrar o livro.');
       }
     },
   },
