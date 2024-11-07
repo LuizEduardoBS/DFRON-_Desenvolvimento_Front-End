@@ -3,23 +3,22 @@
     <h1>ACERVO</h1>
     <div class="bloco-acervo-busca">
       <p>Faça login para ter acesso a empréstimos de livros ou Cadastre-se aqui.</p>
-      <form>
-        <input type="text" placeholder="  Digite aqui o livro que você procura">
-        <button>Buscar</button>
+      <form @submit.prevent>
+        <input type="text" v-model="searchQuery" placeholder="  Digite aqui o livro que você procura">
+        <button @click="applyFilter">Buscar</button>
       </form>
     </div>
 
     <div class="bloco-livros-acervo">
       <div class="bloco-interno-livros-acervo">
         <div class="acervo-filtros">
-          <p>Filtros aplicados: Nenhum</p>
+          <p>Filtros aplicados: {{ searchQuery ? searchQuery : 'Nenhum' }}</p>
           <p>Filtros</p>
         </div>
         <hr>
         <div class="bloco-cards-acervo">
-
           <router-link
-            v-for="book in books"
+            v-for="book in filteredBooks"
             :key="book._id"
             :to="{ name: 'descricaolivro', params: { id: book._id } }"
             class="card-link"
@@ -31,6 +30,7 @@
             </div>
           </router-link>
           
+          <!-- Paginação, se necessário -->
           <div class="paginas-acervo">
             <a href="">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill passador-acervo" viewBox="0 0 16 16">
@@ -47,35 +47,56 @@
             </a>
           </div>
         </div>
-
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import { booksService } from '@/services/api'; // Importa o serviço de livros
+import { booksService } from '@/services/api';
 
 export default {
   data() {
-    return { books: [] }; // Estado local da lista de livros
+    return {
+      books: [], // Lista completa de livros
+      searchQuery: '', // Consulta de pesquisa
+    };
+  },
+  computed: {
+    filteredBooks() {
+      // Filtra os livros com base na busca
+      if (!this.searchQuery) {
+        return this.books;
+      }
+      return this.books.filter(book => {
+        const query = this.searchQuery.toLowerCase();
+        return (
+          book.title.toLowerCase().includes(query) ||
+          (book.author && book.author.toLowerCase().includes(query)) ||
+          (book.year && book.year.toString().includes(query))
+        );
+      });
+    }
   },
   methods: {
-    fetchBooks() { // Busca os livros do back-end
+    fetchBooks() {
       booksService.getBooks().then(response => {
-        this.books = response.data; // Atualiza a lista de livros
+        this.books = response.data;
       });
     },
+    applyFilter() {
+      // Método acionado pelo botão de busca, mantém o comportamento reativo
+    },
     formatImagePath(path) {
-      // Corrige as barras e adiciona o caminho completo da URL
       return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
     }
   },
   mounted() {
-    this.fetchBooks(); // Busca os livros ao montar o componente
+    this.fetchBooks();
   }
 };
 </script>
+
 
 <style scoped>
 .bloco-cards-acervo .card-link {
