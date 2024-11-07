@@ -46,6 +46,10 @@ export const booksService = {
     deleteBook(id) {
         return booksApiClient.delete(`/${id}`); // Deleta um livro pelo ID
     },
+    fetchBookById(id) {
+        console.log(`Buscando livro com ID: ${id}`);
+        return booksApiClient.get(`/${id}`).then(response => response.data);
+    }
 };
 
 // Exporta funções relacionadas ao usuário/login

@@ -1,17 +1,21 @@
 <template>
 <main class="main-descricao-livro">
   <div class="conteudo-descricao-livro">
-    <span>Gênero: </span><span>Categoria</span>
+    <span>Gênero: </span>
+    <span v-if="book">{{ book.genre }}</span>
+    <span v-else>Carregando gênero do livro</span>
   </div>
 
   <div class="capa-titulo-descricao">
     <div>
-      <img src="#" alt="" class="capa-livro-descricao">
+      <img :src="formatImagePath(book.coverImage)" alt="" class="capa-livro-descricao" v-if="book">
+      <img src="#" alt="" class="capa-livro-descricao" v-else>
     </div>
     <div class="titulo-descriçao-botoes">
       <div>
         <div>
-          <h1 class="titulo-livro-descricao">-Título-</h1>
+          <h1 class="titulo-livro-descricao" v-if="book">{{ book.title }}</h1>
+          <h1 class="titulo-livro-descricao" v-else>Carregando título do livro...</h1>
         </div>
         <div class="nota-numero-leitores">
           <div><span>Nota: </span><span>0,0</span></div>
@@ -19,20 +23,30 @@
           <div><span>0</span><span> pessoas leram esse título</span></div>
         </div>
         <div class="texto-descricao-livro">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit nec nisi quis congue. Phasellus suscipit sed ex in sodales. In eu ipsum vitae justo elementum tincidunt sagittis id mi. Duis ac eros ornare, convallis enim sodales, feugiat arcu. Nullam eu sollicitudin ipsum. Quisque diam sem, bibendum in vestibulum vel, pellentesque non justo. Fusce cursus, magna sit amet maximus ultrices, ipsum elit ultricies felis, id maximus nulla magna vel lectus. Nam massa orci, luctus a blandit quis, cursus vel sem.</p>
+          <p v-if="book">{{ book.description }}</p>
+          <p v-else>Carregando descrição...</p>
         </div>
         <div class="qtde-autor-publicacao">
           <div class="info-card">
             <div><span>Qnt Disponível</span></div>
-            <div><span>0</span></div>
+            <div>
+              <span v-if="book">{{ book.copies }}</span>
+              <span v-else>Carregando info...</span>
+            </div>
           </div>
           <div class="info-card">
             <div><span>Autor(a)</span></div>
-            <div><span>0</span></div>
+            <div>
+              <span v-if="book">{{ book.author }}</span>
+              <span v-else>Carregando info...</span>
+            </div>
           </div>
           <div class="info-card">
             <div><span>Publicação</span></div>
-            <div><span>0</span></div>
+            <div>
+              <span v-if="book">{{ book.year }}</span>
+              <span v-else>Carregando info...</span>
+            </div>
           </div>
         </div>
       </div>
@@ -79,6 +93,45 @@
   </div>
 </main>
 </template>
+
+<script>
+import { booksService } from '@/services/api'; // Importa o serviço de livros
+
+export default {
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      book: null,
+    };
+  },
+  watch: {
+    // Quando a prop 'id' mudar, a função fetchBook será chamada para atualizar os dados
+    id: 'fetchBook'
+  },
+  mounted() {
+    this.fetchBook();  // Chama a função fetchBook ao montar
+  },
+  methods: {
+    fetchBook() {
+      booksService.fetchBookById(this.id)
+        .then(data => {
+          this.book = data;
+        })
+        .catch(error => console.error("Erro ao buscar dados do livro:", error));
+    },
+    formatImagePath(path) {
+      // Corrige as barras e adiciona o caminho completo da URL
+      return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    }
+  }
+};
+</script>
+
 
 <style scoped>
 /* ########################################### */
@@ -151,6 +204,7 @@
   flex-direction: column;
   justify-items: center;
   column-gap: 10px;
+  text-align: center;
 }
 
 .botoes-da-descricao {

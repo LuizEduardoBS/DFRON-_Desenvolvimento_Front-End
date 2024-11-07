@@ -21,7 +21,7 @@
           <router-link
             v-for="book in books"
             :key="book._id"
-            :to="{ path: '/descricaolivro', query: { id: book._id } }"
+            :to="{ name: 'descricaolivro', params: { id: book._id } }"
             class="card-link"
           >
             <div class="card-livro-acervo">

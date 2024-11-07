@@ -93,10 +93,11 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
-      path: '/descricaolivro',
+      path: '/descricaolivro/:id',
       name: 'descricaolivro',
       component: () => import('../views/BookDescription.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
+      props: true
     }
   ]
 })
