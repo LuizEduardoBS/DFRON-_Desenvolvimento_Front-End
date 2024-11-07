@@ -17,12 +17,20 @@
         </div>
         <hr>
         <div class="bloco-cards-acervo">
-          <div class="card-livro-acervo" v-for="book in books" :key="book._id">
-            <img :src="formatImagePath(book.coverImage)" alt="">
-            <span class="titulo-livros-acervo">{{ book.title }}</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
 
+          <router-link
+            v-for="book in books"
+            :key="book._id"
+            :to="{ path: '/descricaolivro', query: { id: book._id } }"
+            class="card-link"
+          >
+            <div class="card-livro-acervo">
+              <img :src="formatImagePath(book.coverImage)" alt="" />
+              <span class="titulo-livros-acervo">{{ book.title }}</span>
+              <button class="botao-adicionar-acervo">Adicionar</button>
+            </div>
+          </router-link>
+          
           <div class="paginas-acervo">
             <a href="">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill passador-acervo" viewBox="0 0 16 16">
@@ -70,6 +78,12 @@ export default {
 </script>
 
 <style scoped>
+.bloco-cards-acervo .card-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
 .main-acervo {
   height: calc(100% - 90px);
   max-width: 1072px;
