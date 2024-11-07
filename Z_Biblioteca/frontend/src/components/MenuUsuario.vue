@@ -18,10 +18,10 @@
 
     <div v-if="menuVisible" class="bloco-do-submenu">
       <div class="opcoes-submenu-adm">
-        <router-link to="./perfilusuario" class="opcao-menu">Perfil</router-link>
-        <router-link to="./notificacaousuario" class="opcao-menu">Notificações</router-link>
-        <router-link to="./carrinho" class="opcao-menu" style="text-align: left;">Carrinho de<br>Empréstimos</router-link>
-        <router-link to="./reservas" class="opcao-menu" >Reservas</router-link>
+        <router-link to="/perfilusuario" class="opcao-menu">Perfil</router-link>
+        <router-link to="/notificacaousuario" class="opcao-menu">Notificações</router-link>
+        <router-link to="/carrinho" class="opcao-menu" style="text-align: left;">Carrinho de<br>Empréstimos</router-link>
+        <router-link to="/reservas" class="opcao-menu" >Reservas</router-link>
         <button @click="logout" class="opcao-menu">Sair</button>
       </div>
     </div>
