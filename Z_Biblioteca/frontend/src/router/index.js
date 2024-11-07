@@ -96,7 +96,6 @@ const router = createRouter({
       path: '/descricaolivro/:id',
       name: 'descricaolivro',
       component: () => import('../views/BookDescription.vue'),
-      meta: { requiresAuth: true },
       props: true
     }
   ]

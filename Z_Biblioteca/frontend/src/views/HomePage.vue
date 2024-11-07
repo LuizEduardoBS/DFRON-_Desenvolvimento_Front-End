@@ -3,45 +3,28 @@
     <div class="bloco-index-busca">
       <span class="texto-bem-vindo">Bem-vindo!</span>
       <p>Faça login para ter acesso a empréstimos de livros ou Cadastre-se aqui.</p>
-      <form>
-        <input type="text" placeholder="  Digite aqui o livro que você procura">
-        <button>Buscar</button>
+      <form @submit.prevent>
+        <input type="text" v-model="searchQuery" placeholder="  Digite aqui o livro que você procura">
+        <button @click="applyFilter">Buscar</button>
       </form>
     </div>
 
     <div class="bloco-destaques-index">
       <p class="titulo-livros-destaque">Livros em destaque:</p>
       <div class="bloco-cards-destaques">
-        <div class="card-livro-destaque">
-          <img src="" alt="">
-          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
-          <button class="botao-adicionar-index">Adicionar</button>
-        </div>
-        <div class="card-livro-destaque">
-          <img src="" alt="">
-          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
-          <button class="botao-adicionar-index">Adicionar</button>
-        </div>
-        <div class="card-livro-destaque">
-          <img src="" alt="">
-          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
-          <button class="botao-adicionar-index">Adicionar</button>
-        </div>
-        <div class="card-livro-destaque">
-          <img src="" alt="">
-          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
-          <button class="botao-adicionar-index">Adicionar</button>
-        </div>
-        <div class="card-livro-destaque">
-          <img src="" alt="">
-          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
-          <button class="botao-adicionar-index">Adicionar</button>
-        </div>
-        <div class="card-livro-destaque">
-          <img src="" alt="">
-          <span class="titulo-livros-index">Aqui aparecerá o título do livro!!!</span>
-          <button class="botao-adicionar-index">Adicionar</button>
-        </div>
+        
+        <router-link
+          v-for="book in highlightedBooks"
+          :key="book._id"
+          :to="{ name: 'descricaolivro', params: { id: book._id } }"
+          class="card-link"
+        >
+          <div class="card-livro-destaque">
+            <img :src="formatImagePath(book.coverImage)" alt="" />
+            <span class="titulo-livros-index">{{ book.title }}</span>
+            <button class="botao-adicionar-index">Adicionar</button>
+          </div>
+        </router-link>
       </div>
     </div>
 
@@ -52,8 +35,7 @@
       <div class="lista-categorias">
         <a href="#">Literatura e Ficção</a>
         <a href="#">Infantil e HQ’s</a>
-        <a href="#" class="textos-cada-categoria">Informática e Técnologia</a>
-
+        <a href="#" class="textos-cada-categoria">Informática e Tecnologia</a>
         <a href="#">Técnicos e Acadêmicos</a>
         <a href="#">Saúde e Bem Estar</a>
         <a href="#">Autoajuda e Espiritualidade</a>
@@ -62,7 +44,49 @@
   </main>
 </template>
 
+<script>
+import { booksService } from '@/services/api';
+
+export default {
+  data() {
+    return {
+      books: [], // Lista completa de livros
+      searchQuery: '', // Consulta de pesquisa para o campo de busca
+      highlightedBooks: [] // Lista de livros em destaque, últimos 6 cadastrados
+    };
+  },
+  methods: {
+    fetchBooks() {
+      booksService.getBooks().then(response => {
+        this.books = response.data;
+        // Define os 6 últimos livros cadastrados, ordenados por customId
+        this.highlightedBooks = [...this.books]
+          .sort((a, b) => b.customId - a.customId) // Ordena do maior para o menor customId
+          .slice(0, 6); // Pega os primeiros 6 livros após a ordenação
+      });
+    },
+    applyFilter() {
+      // Redireciona para a página '/acervo' com a query de busca como parâmetro
+      this.$router.push({ name: 'acervo', query: { search: this.searchQuery } });
+    },
+    formatImagePath(path) {
+      return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    }
+  },
+  mounted() {
+    this.fetchBooks();
+  }
+};
+</script>
+
+
 <style scoped>
+.bloco-cards-destaques .card-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
 .main-index {
   height: calc(100% - 90px);
   max-width: 1072px;

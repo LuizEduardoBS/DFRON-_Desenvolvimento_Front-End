@@ -12,7 +12,7 @@
     <div class="bloco-livros-acervo">
       <div class="bloco-interno-livros-acervo">
         <div class="acervo-filtros">
-          <p>Filtros aplicados: {{ searchQuery ? searchQuery : 'Nenhum' }}</p>
+          <p>Filtros aplicados: {{ searchApplied ? searchApplied : 'Nenhum' }}</p>
           <p>Filtros</p>
         </div>
         <hr>
@@ -59,24 +59,30 @@ export default {
   data() {
     return {
       books: [], // Lista completa de livros
-      searchQuery: '', // Consulta de pesquisa
+      searchQuery: this.$route.query.search || '', // Valor digitado na barra de busca
+      searchApplied: '', // Valor aplicado ao filtro após clicar em "Buscar"
     };
+  },
+  watch: {
+    '$route.query.search'(newSearch) {
+      this.searchQuery = newSearch;
+    }
   },
   computed: {
     filteredBooks() {
-      // Filtra os livros com base na busca
-      if (!this.searchQuery) {
-        return this.books;
-      }
-      return this.books.filter(book => {
-        const query = this.searchQuery.toLowerCase();
-        return (
-          book.title.toLowerCase().includes(query) ||
-          (book.author && book.author.toLowerCase().includes(query)) ||
-          (book.year && book.year.toString().includes(query))
-        );
-      });
-    }
+  if (!this.searchApplied) {
+    return this.books;
+  }
+  const query = this.searchApplied.toLowerCase();
+  return this.books.filter(book => {
+    return (
+      book.title.toLowerCase().includes(query) ||
+      (book.author && book.author.toLowerCase().includes(query)) ||
+      (book.year && book.year.toString().includes(query)) ||
+      (book.genre && book.genre.toLowerCase().includes(query)) // Corrigido para buscar no gênero
+    );
+  });
+}
   },
   methods: {
     fetchBooks() {
@@ -85,17 +91,21 @@ export default {
       });
     },
     applyFilter() {
-      // Método acionado pelo botão de busca, mantém o comportamento reativo
+      // Aplica a busca ao clicar no botão "Buscar"
+      this.searchApplied = this.searchQuery;
     },
     formatImagePath(path) {
       return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
     }
   },
   mounted() {
-    this.fetchBooks();
-  }
+  this.fetchBooks();
+  if (this.searchQuery) {
+    this.applyFilter();
+  }}
 };
 </script>
+
 
 
 <style scoped>
