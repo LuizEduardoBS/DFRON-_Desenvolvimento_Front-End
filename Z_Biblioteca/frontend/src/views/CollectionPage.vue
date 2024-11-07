@@ -17,94 +17,9 @@
         </div>
         <hr>
         <div class="bloco-cards-acervo">
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
-            <button class="botao-adicionar-acervo">Adicionar</button>
-          </div>
-          <div class="card-livro-acervo">
-            <img src="" alt="">
-            <span class="titulo-livros-acervo">Aqui aparecerá o título do livro!!!</span>
+          <div class="card-livro-acervo" v-for="book in books" :key="book._id">
+            <img :src="formatImagePath(book.coverImage)" alt="">
+            <span class="titulo-livros-acervo">{{ book.title }}</span>
             <button class="botao-adicionar-acervo">Adicionar</button>
           </div>
 
@@ -129,6 +44,30 @@
     </div>
   </main>
 </template>
+
+<script>
+import { booksService } from '@/services/api'; // Importa o serviço de livros
+
+export default {
+  data() {
+    return { books: [] }; // Estado local da lista de livros
+  },
+  methods: {
+    fetchBooks() { // Busca os livros do back-end
+      booksService.getBooks().then(response => {
+        this.books = response.data; // Atualiza a lista de livros
+      });
+    },
+    formatImagePath(path) {
+      // Corrige as barras e adiciona o caminho completo da URL
+      return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    }
+  },
+  mounted() {
+    this.fetchBooks(); // Busca os livros ao montar o componente
+  }
+};
+</script>
 
 <style scoped>
 .main-acervo {
