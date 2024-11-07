@@ -11,7 +11,7 @@
         <router-link to="/politicas" class="opcao-menu">Políticas</router-link>
         <router-link to="/sobre" class="opcao-menu">Sobre</router-link>
         <a href="#" class="opcao-menu" id="usuario-menu" @click="toggleMenu">
-          "ADM nome" <img src="@/assets/img/person.png">
+          {{ user ? user.username : 'Usuário' }} <img src="@/assets/img/person.png">
         </a>
       </section>
     </div>
@@ -35,11 +35,13 @@
 
 <script>
 import { useAuthStore } from '../stores/authStore'; // ajuste o caminho se necessário
+import { userService } from '@/services/api'; // Importa o serviço de buscar perfil do usuário
 
 export default {
   data() {
     return {
       menuVisible: false,
+      user: {} // Defina um objeto vazio para evitar problemas de acesso nulo
     };
   },
   methods: {
@@ -51,7 +53,18 @@ export default {
       authStore.logout(); // Chame o método de logout da store
       this.$router.push('/login'); // Redirecione para a página de login
     },
+    async fetchUser() { // Busca os livros do back-end
+      try {
+        const response = await userService.getProfile();
+        this.user = response.data; // Atualiza a lista de livros
+      } catch (error) {
+        console.error('Erro ao buscar perfil do usuário:', error);
+      }
+    }
   },
+  mounted() {
+    this.fetchUser(); // Busca os livros ao montar o componente
+  }
 };
 </script>
 

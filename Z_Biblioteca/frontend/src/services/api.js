@@ -57,7 +57,7 @@ export const userService = {
         return apiClient.post('/auth/register', userData); // Registra um novo usuário
     },
     getProfile() {
-        return apiClient.get('/profile'); // Obtém perfil do usuário
+        return apiClient.get('/auth/profile'); // Obtém perfil do usuário
     },
 };
 

@@ -5,7 +5,11 @@ const authController = require('../controllers/authController')
 // Rota para registrar novos usuários
 router.post('/register', authController.register);
 
-// Rota para registrar novos usuários
+// Rota para login
 router.post('/login', authController.login);
+
+// Rota para login
+router.get('/profile', authController.getProfile);
+
 
 module.exports = router; // Exporta o roteador para uso no app.js

@@ -52,3 +52,22 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: 'Erro ao fazer login' });
     }
 };
+
+// Função para obter o perfil do usuário autenticado
+exports.getProfile = async (req, res) => {
+    try {
+        // Decodifica o token para obter o ID do usuário
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        // Busca o usuário pelo ID decodificado
+        const user = await User.findById(decoded.id).select('-password'); // Remove o campo "password" da resposta
+        if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
+
+        // Retorna os dados do usuário
+        res.status(200).json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar perfil do usuário' });
+    }
+};
