@@ -18,7 +18,7 @@
         <hr>
         <div class="bloco-cards-acervo">
           <router-link
-            v-for="book in filteredBooks"
+            v-for="book in paginatedBooks"
             :key="book._id"
             :to="{ name: 'descricaolivro', params: { id: book._id } }"
             class="card-link"
@@ -29,17 +29,17 @@
               <button class="botao-adicionar-acervo">Adicionar</button>
             </div>
           </router-link>
-          
-          <!-- Paginação, se necessário -->
+
+          <!-- Paginação -->
           <div class="paginas-acervo">
-            <a href="">
+            <a href="#" @click.prevent="goToPreviousPage">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill passador-acervo" viewBox="0 0 16 16">
                 <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
               </svg>
               <p>Anterior</p>
             </a>
-            <p>1 / 2532</p>
-            <a href="">
+            <p>{{ currentPage }} / {{ totalPages }}</p>
+            <a href="#" @click.prevent="goToNextPage">
               <p>Próximo</p>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
                 <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
@@ -61,6 +61,8 @@ export default {
       books: [], // Lista completa de livros
       searchQuery: this.$route.query.search || '', // Valor da pesquisa do parâmetro da URL
       searchApplied: '', // Valor aplicado ao filtro após clicar em "Buscar"
+      currentPage: 1, // Página atual
+      booksPerPage: 18, // Quantidade de livros por página
     };
   },
   watch: {
@@ -83,6 +85,13 @@ export default {
           (book.genre && book.genre.toLowerCase().includes(query))
         );
       });
+    },
+    paginatedBooks() {
+      const start = (this.currentPage - 1) * this.booksPerPage;
+      return this.filteredBooks.slice(start, start + this.booksPerPage);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredBooks.length / this.booksPerPage);
     }
   },
   methods: {
@@ -97,6 +106,16 @@ export default {
     },
     formatImagePath(path) {
       return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    },
+    goToNextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    goToPreviousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
     }
   },
   mounted() {
@@ -107,7 +126,6 @@ export default {
   }
 };
 </script>
-
 
 
 
