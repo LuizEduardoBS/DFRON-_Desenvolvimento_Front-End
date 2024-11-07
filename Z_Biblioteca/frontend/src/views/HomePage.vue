@@ -33,13 +33,13 @@
         <span>Categorias</span>
       </div>
       <div class="lista-categorias">
-        <a href="#">Literatura e Ficção</a>
-        <a href="#">Infantil e HQ’s</a>
-        <a href="#" class="textos-cada-categoria">Informática e Tecnologia</a>
-        <a href="#">Técnicos e Acadêmicos</a>
-        <a href="#">Saúde e Bem Estar</a>
-        <a href="#">Autoajuda e Espiritualidade</a>
-      </div>
+    <a href="#" @click="applyCategoryFilter('Literatura e Ficção')">Literatura e Ficção</a>
+    <a href="#" @click="applyCategoryFilter('Infantil e HQ')">Infantil e HQ’s</a>
+    <a href="#" @click="applyCategoryFilter('Informática e Tecnologia')">Informática e Tecnologia</a>
+    <a href="#" @click="applyCategoryFilter('Técnicos e Acadêmicos')">Técnicos e Acadêmicos</a>
+    <a href="#" @click="applyCategoryFilter('Saúde e Bem Estar')">Saúde e Bem Estar</a>
+    <a href="#" @click="applyCategoryFilter('Autoajuda e Espiritualidade')">Autoajuda e Espiritualidade</a>
+  </div>
     </div>
   </main>
 </template>
@@ -71,6 +71,10 @@ export default {
     },
     formatImagePath(path) {
       return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    },
+    applyCategoryFilter(category) {
+      // Define o valor de searchQuery como o nome da categoria e redireciona para o acervo
+      this.$router.push({ name: 'acervo', query: { search: category } });
     }
   },
   mounted() {

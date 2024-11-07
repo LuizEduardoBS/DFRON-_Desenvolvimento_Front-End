@@ -59,30 +59,31 @@ export default {
   data() {
     return {
       books: [], // Lista completa de livros
-      searchQuery: this.$route.query.search || '', // Valor digitado na barra de busca
+      searchQuery: this.$route.query.search || '', // Valor da pesquisa do parâmetro da URL
       searchApplied: '', // Valor aplicado ao filtro após clicar em "Buscar"
     };
   },
   watch: {
     '$route.query.search'(newSearch) {
       this.searchQuery = newSearch;
+      this.applyFilter(); // Aplica o filtro ao mudar o parâmetro de busca
     }
   },
   computed: {
     filteredBooks() {
-  if (!this.searchApplied) {
-    return this.books;
-  }
-  const query = this.searchApplied.toLowerCase();
-  return this.books.filter(book => {
-    return (
-      book.title.toLowerCase().includes(query) ||
-      (book.author && book.author.toLowerCase().includes(query)) ||
-      (book.year && book.year.toString().includes(query)) ||
-      (book.genre && book.genre.toLowerCase().includes(query)) // Corrigido para buscar no gênero
-    );
-  });
-}
+      if (!this.searchApplied) {
+        return this.books;
+      }
+      const query = this.searchApplied.toLowerCase();
+      return this.books.filter(book => {
+        return (
+          book.title.toLowerCase().includes(query) ||
+          (book.author && book.author.toLowerCase().includes(query)) ||
+          (book.year && book.year.toString().includes(query)) ||
+          (book.genre && book.genre.toLowerCase().includes(query))
+        );
+      });
+    }
   },
   methods: {
     fetchBooks() {
@@ -91,7 +92,7 @@ export default {
       });
     },
     applyFilter() {
-      // Aplica a busca ao clicar no botão "Buscar"
+      // Aplica a pesquisa no filtro
       this.searchApplied = this.searchQuery;
     },
     formatImagePath(path) {
@@ -99,12 +100,14 @@ export default {
     }
   },
   mounted() {
-  this.fetchBooks();
-  if (this.searchQuery) {
-    this.applyFilter();
-  }}
+    this.fetchBooks();
+    if (this.searchQuery) {
+      this.applyFilter();
+    }
+  }
 };
 </script>
+
 
 
 
