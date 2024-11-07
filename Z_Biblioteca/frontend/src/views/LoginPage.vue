@@ -6,7 +6,7 @@
         <!-- <div> -->
         <form @submit.prevent="loginUser">
           <span>Seu e-mail</span>
-          <input v-model="username" placeholder="  exemplo@exemplo.com">
+          <input v-model="email" placeholder="  exemplo@exemplo.com">
           <span>Sua senha</span>
           <input type="password" v-model="password" placeholder="  senha@123">
           <button type="submit">Logar</button>
@@ -30,7 +30,7 @@ import { RouterLink, RouterView } from 'vue-router'
 export default {
   data() {
     return {
-      username: '',
+      email: '',
       password: '',
       message: ''
     };
@@ -39,7 +39,7 @@ export default {
     async loginUser() {
       try {
         const response = await userService.login({
-          username: this.username,
+          email: this.email,
           password: this.password,
         });
 

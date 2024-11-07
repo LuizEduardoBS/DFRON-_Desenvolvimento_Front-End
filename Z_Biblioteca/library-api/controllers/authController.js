@@ -4,19 +4,19 @@ const jwt = require('jsonwebtoken');
 
 // Função para registrar novos usuários
 exports.register = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
     try {
         // Verifica se o usuário já existe
-        const existingUser = await User.findOne({ username });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ error: 'Usuário já existe' });
+            return res.status(400).json({ error: 'E-mail já cadastrado.' });
         }
 
         // Criptografa a senha antes de salvar no banco
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Cria um novo usuário com permissão padrão "Usuario"
-        const newUser = new User({ username, password: hashedPassword, permissions: 'Usuario' });
+        const newUser = new User({ username, email, password: hashedPassword, permissions: 'Usuario' });
         await newUser.save();
         res.status(201).json({ message: 'Usuário registrado com sucesso' });
     } catch (error) {
@@ -27,11 +27,11 @@ exports.register = async (req, res) => {
 
 // Função para fazer login de usuários
 exports.login = async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
         // Busca usuário pelo nome
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ error: 'Usuário não encontrado' });
 
         // Compara a senha fornecida com a senha armazenada
