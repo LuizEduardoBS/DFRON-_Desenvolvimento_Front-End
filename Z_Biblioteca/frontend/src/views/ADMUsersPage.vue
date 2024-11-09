@@ -138,7 +138,7 @@ export default {
       successMessage: '', // Mensagem de sucesso para operações bem-sucedidas
       loading: false, // Estado para indicar se os dados estão sendo carregados
       modalVisible: false,
-    userIdToDelete: null,
+      userIdToDelete: null,
     };
   },
   mounted() {
@@ -171,6 +171,40 @@ export default {
     }
   },
 
+    // Exibe o modal de confirmação
+  showDeleteModal(userId) {
+    this.modalVisible = true;
+    this.userIdToDelete = userId;
+  },
+
+  // Cancela a exclusão
+  cancelDelete() {
+    this.modalVisible = false;
+    this.userIdToDelete = null;
+  },
+
+  // Confirma a exclusão
+  confirmDelete() {
+    // Chame sua função para deletar o usuário do banco de dados
+    this.deleteUser(this.userIdToDelete);
+    this.modalVisible = false;
+    this.userIdToDelete = null;
+  },
+
+  // Função para excluir o usuário (essa função deve se conectar ao backend)
+  deleteUser(userId) {
+    // Aqui você faria uma chamada para o seu backend para deletar o usuário
+    // Exemplo usando axios:
+    axios.delete(`http://localhost:3000/api/auth/${userId}`)
+      .then(response => {
+        // Atualize a lista de usuários após a exclusão
+        this.users = this.users.filter(user => user._id !== userId);
+      })
+      .catch(error => {
+        console.error("Erro ao excluir o usuário:", error);
+      });
+  },
+
     clearMessages() {
       this.errorMessage = '';
       this.successMessage = '';
@@ -188,6 +222,30 @@ export default {
 
 
 <style scoped>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.modal-content button {
+  margin: 10px;
+}
+
 .icone-verde {
   width: 15px;
   height: 15px;
