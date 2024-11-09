@@ -1,7 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
 <header class="bloco-do-submenu">
   <section class="opcoes-submenu-adm">
@@ -19,7 +15,6 @@ import { RouterLink, RouterView } from 'vue-router'
     </button>
   </form>
 </header>
-
 
 <main class="main-usuarios-adm">
   <div class="bloco-adm-usuarios">
@@ -42,19 +37,28 @@ import { RouterLink, RouterView } from 'vue-router'
 
     <table class="tabela-principal">
       <tbody>
-        <tr>
-          <td id="coluna-1">1</td>
-          <td id="coluna-2">Luíz Eduardo</td>
-          <td id="coluna-3">administrador@adm.com</td>
-          <td id="coluna-4">
-            <select name="" id="">
-              <option value="">ADM</option>
-              <option value="">Bibliotecario(a)</option>
-              <option value="">Usuário</option>
+        <tr v-for="user in users" :key="user._id">
+          <td id="coluna-1">{{ user ? user.customId : 'ID' }}</td>
+          <td id="coluna-2">{{ user ? user.username : 'Nome do usuário' }}</td>
+          <td id="coluna-3">{{ user ? user.email : 'E-mail' }}</td>
+          <td id="coluna-4" v-if="user">
+            <select name="" id="" v-model="user.permissions" @change="atualizarPermissao(user._id, $event)">
+              <option value="" disabled selected style="background-color: #989898; color: #fff;">{{ user.permissions }}</option>
+              <option value="ADM" :selected="user.permissions === 'ADM'">ADM</option>
+              <option value="Bibliotecario(a)" :selected="user.permissions === 'Bibliotecario(a)'">Bibliotecario(a)</option>
+              <option value="Usuário" :selected="user.permissions === 'Usuário'">Usuário</option>
             </select>
           </td>
-          <td id="coluna-5">Verde</td>
-          <td id="coluna-6">
+          <td id="coluna-4" v-else>
+            <select name="" id="" >
+              <option value="">Permissão</option>
+            </select>
+          </td>
+          <td id="coluna-5" v-if="user">
+            <div v-if="user.permissions === 'ADM' || user.permissions === 'Bibliotecario(a)'" class="icone-verde"></div>
+            <span v-else>-</span>
+          </td>          
+          <td id="coluna-6" v-if="user">
             <a href="./perfil_usuarios_adm.html" class="icone-acessar-perfil">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
                 <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
@@ -62,35 +66,7 @@ import { RouterLink, RouterView } from 'vue-router'
               </svg>
             </a>
           </td>
-          <td id="coluna-7">
-            <select name="" id="">
-              <option value="">Ativo</option>
-              <option value="">Bloqueado</option>
-            </select>
-          </td>
-          <td id="coluna-8">
-            <a href="" class="deletar-usuario">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-              </svg>
-            </a>
-          </td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">2</td>
-          <td id="coluna-2">Bibliotecario(a)</td>
-          <td id="coluna-3">adm.blog@blog.com</td>
-          <td id="coluna-4">
-            <select name="" id="">
-              <option value="">ADM</option>
-              <option value="" selected>Bibliotecario(a)</option>
-              <option value="">Usuário</option>
-            </select>
-          </td>
-          <td id="coluna-5">Verde</td>
-          <td id="coluna-6">
+          <td id="coluna-6" v-else>
             <a href="./perfil_usuarios_adm.html" class="icone-acessar-perfil">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
                 <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
@@ -98,14 +74,30 @@ import { RouterLink, RouterView } from 'vue-router'
               </svg>
             </a>
           </td>
-          <td id="coluna-7">
+          <td id="coluna-7" v-if="user">
             <select name="" id="">
-              <option value="">Ativo</option>
-              <option value="">Bloqueado</option>
+              <option value="" disabled selected style="background-color: #989898; color: #fff;">{{ user.status }}</option>
+              <option value="Ativo">Ativo</option>
+              <option value="Bloqueado">Bloqueado</option>
             </select>
           </td>
-          <td id="coluna-8">
-            <a href="#" class="deletar-usuario">
+          <td id="coluna-7" v-else>
+            <select name="" id="">
+              <option value="" disabled>Status</option>
+            </select>
+          </td>
+          <!-- Modal de Confirmação -->
+          <div v-if="modalVisible" class="modal">
+            <div class="modal-content">
+              <p>Tem certeza que deseja excluir esse usuário?</p>
+              <button @click="confirmDelete">Sim</button>
+              <button @click="cancelDelete">Não</button>
+            </div>
+          </div>
+
+          <!-- Excluir Ícone -->
+          <td id="coluna-8" v-if="user">
+            <a href="#" @click.prevent="showDeleteModal(user._id)" class="deletar-usuario">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
@@ -113,153 +105,6 @@ import { RouterLink, RouterView } from 'vue-router'
             </a>
           </td>
         </tr>
-
-        <tr>
-          <td id="coluna-1">3</td>
-          <td id="coluna-2">Usuário comum</td>
-          <td id="coluna-3">usuario.leior@gmail.com</td>
-          <td id="coluna-4">
-            <select name="" id="">
-              <option value="">ADM</option>
-              <option value="">Bibliotecario(a)</option>
-              <option value="" selected>Usuário</option>
-            </select>
-          </td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6">
-            <a href="./perfil_usuarios_adm.html" class="icone-acessar-perfil">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
-                <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
-                <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
-              </svg>
-            </a>
-          </td>
-          <td id="coluna-7">
-            <select name="" id="">
-              <option value="">Ativo</option>
-              <option value="">Bloqueado</option>
-            </select>
-          </td>
-          <td id="coluna-8">
-            <a href="#" class="deletar-usuario">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-              </svg>
-            </a>
-          </td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
-        <tr>
-          <td id="coluna-1">-</td>
-          <td id="coluna-2"></td>
-          <td id="coluna-3"></td>
-          <td id="coluna-4"></td>
-          <td id="coluna-5"></td>
-          <td id="coluna-6"></td>
-          <td id="coluna-7"></td>
-          <td id="coluna-8"></td>
-        </tr>
-
       </tbody>
     </table>
 
@@ -283,10 +128,77 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <script>
-import { RouterLink, RouterView } from 'vue-router'
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      users: [], // Array que armazenará os dados dos usuários
+      errorMessage: '', // Mensagem de erro, caso ocorra algum problema
+      successMessage: '', // Mensagem de sucesso para operações bem-sucedidas
+      loading: false, // Estado para indicar se os dados estão sendo carregados
+      modalVisible: false,
+    userIdToDelete: null,
+    };
+  },
+  mounted() {
+    this.fetchUsers(); // Carrega os dados dos usuários quando o componente é montado
+  },
+  methods: {
+    async fetchUsers() {
+      this.loading = true; // Marca o início do carregamento
+      this.clearMessages(); // Limpa mensagens anteriores
+
+      try {
+        const response = await axios.get('http://localhost:3000/api/auth/');
+        this.users = response.data; // Armazena os usuários na variável 'users'
+      } catch (error) {
+        this.handleError(error, 'Erro ao buscar dados');
+      } finally {
+        this.loading = false; // Marca o fim do carregamento
+      }
+    },
+
+    async atualizarPermissao(userId, event) {
+    const novaPermissao = event.target.value;
+    try {
+      const response = await axios.put(`http://localhost:3000/api/auth/${userId}/permissions`, {
+        permissions: novaPermissao
+      });
+      console.log('Permissão atualizada:', response.data);
+    } catch (error) {
+      console.error('Erro ao atualizar permissão:', error);
+    }
+  },
+
+    clearMessages() {
+      this.errorMessage = '';
+      this.successMessage = '';
+    },
+
+    handleError(error, message) {
+      console.error(message, error);
+      this.errorMessage = message;
+    }
+  },
+};
 </script>
 
+
+
+
 <style scoped>
+.icone-verde {
+  width: 15px;
+  height: 15px;
+  background-color: #39FF14;
+  border-radius: 50%;
+  display: inline-block;
+  align-self: center;
+  justify-self: center;
+  margin-top: 6px;
+}
+
 .bloco-do-submenu {
   width: 1072px;
   height: 80px;

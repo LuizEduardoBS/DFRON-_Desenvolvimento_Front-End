@@ -8,7 +8,11 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true }, // Nome de usuário obrigatório e único
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true }, // Senha obrigatória
-    permissions: { type: String, default: 'Usuario' }
+    permissions: { 
+        type: String,
+        enum: ['Admin', 'Usuário', 'Bibliotecario(a)'], // Define as permissões possíveis
+        default: 'Usuário' }, 
+    status: { type: String, default: 'Ativo' }
 });
 
 // Hook 'pre-save' para calcular o ID customizado

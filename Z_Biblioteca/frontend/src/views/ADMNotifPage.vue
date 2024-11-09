@@ -1,7 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-adm">

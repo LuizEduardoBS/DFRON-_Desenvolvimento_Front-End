@@ -50,11 +50,13 @@ export default {
         this.message = 'Login bem-sucedido!';
 
         // Redirecionar com base na permissão
-        if (response.data.permissions === 'Usuario') {
+        if (response.data.permissions === 'Usuário') {
           this.$router.push('/perfilusuario'); // Redireciona para a página do usuário
         } else if (response.data.permissions === 'ADM') {
           this.$router.push('/perfiladm'); // Redireciona para a página de administrador
-        } else {
+        } else if (response.data.permissions === 'Bibliotecario(a)') {
+          this.$router.push('/perfiladm'); // Redireciona para a página de administrador
+        }else {
           this.message = 'Permissão desconhecida!';
         }
       } catch (error) {

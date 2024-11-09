@@ -18,7 +18,7 @@ onMounted(() => {
 <template>
   <header>
     <component 
-      :is="authStore.isLoggedIn ? (authStore.userPermission === 'ADM' ? MenuADM : MenuUsuario) : MenuDeslogado" />
+      :is="authStore.isLoggedIn ? (authStore.userPermission === 'ADM' || authStore.userPermission === 'Bibliotecario(a)' ? MenuADM : MenuUsuario) : MenuDeslogado" />
   </header>
 
   <RouterView />
