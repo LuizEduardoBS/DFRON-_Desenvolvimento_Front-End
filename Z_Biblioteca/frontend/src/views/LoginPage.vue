@@ -37,37 +37,40 @@ export default {
   },
   methods: {
     async loginUser() {
-      try {
-        const response = await userService.login({
-          email: this.email,
-          password: this.password,
-        });
+  try {
+    const response = await userService.login({
+      email: this.email,
+      password: this.password,
+    });
 
-        const authStore = useAuthStore();
-        // Chama o método de login da loja
-        authStore.login(response.data.token, response.data.permissions);
+    const authStore = useAuthStore();
+    const { token, permissions, status } = response.data;
 
-        this.message = 'Login bem-sucedido!';
-
-        // Redirecionar com base na permissão
-        if (response.data.permissions === 'Usuário') {
-          this.$router.push('/perfilusuario'); // Redireciona para a página do usuário
-        } else if (response.data.permissions === 'ADM') {
-          this.$router.push('/perfiladm'); // Redireciona para a página de administrador
-        } else if (response.data.permissions === 'Bibliotecario(a)') {
-          this.$router.push('/perfiladm'); // Redireciona para a página de administrador
-        }else {
-          this.message = 'Permissão desconhecida!';
-        }
-      } catch (error) {
-        this.message = 
-          error.response && error.response.data && error.response.data.message
-            ? error.response.data.message
-            : 'Erro ao fazer login.';
-      }
+    if (status === 'Bloqueado') {
+      this.message = 'Conta bloqueada. Procure o(a) bibliotecario(a)';
+      return;  // Impede o login de continuar
     }
+
+    authStore.login(token, permissions, status); // Armazenando status na store
+
+    this.message = 'Login bem-sucedido!';
+
+    if (permissions === 'Usuário') {
+      this.$router.push('/perfilusuario');
+    } else if (permissions === 'ADM' || permissions === 'Bibliotecario(a)') {
+      this.$router.push('/perfiladm');
+    } else if (status === 'Bloqueado') {
+      this.$router.push('/acervo');
+    }else {
+      this.message = 'Permissão desconhecida!';
+    }
+  } catch (error) {
+    this.message = error.response && error.response.data && error.response.data.message
+      ? error.response.data.message
+      : 'Erro ao fazer login.';
   }
-};
+}
+}}
 </script>
 
 

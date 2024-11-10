@@ -27,7 +27,7 @@ exports.register = async (req, res) => {
 
 // Função para fazer login de usuários
 exports.login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, status } = req.body;
 
     try {
         // Busca usuário pelo nome
@@ -45,7 +45,8 @@ exports.login = async (req, res) => {
         res.status(200).json({
             message: 'Login realizado',
             token: token,
-            permissions: user.permissions // Envia a permissão
+            permissions: user.permissions, // Envia a permissão
+            status: user.status
         });
     } catch (error) {
         console.error(error); // Loga o erro
