@@ -75,10 +75,10 @@
             </a>
           </td>
           <td id="coluna-7" v-if="user">
-            <select name="" id="">
+            <select name="" id="" v-model="user.status" @change="atualizarStatus(user._id, $event)">
               <option value="" disabled selected style="background-color: #989898; color: #fff;">{{ user.status }}</option>
-              <option value="Ativo">Ativo</option>
-              <option value="Bloqueado">Bloqueado</option>
+              <option value="Ativo" :selected="user.status === 'Ativo'">Ativo</option>
+              <option value="Bloqueado" :selected="user.status === 'Bloqueado'">Bloqueado</option>
             </select>
           </td>
           <td id="coluna-7" v-else>
@@ -213,6 +213,18 @@ export default {
       console.log('Permissão atualizada:', response.data);
     } catch (error) {
       console.error('Erro ao atualizar permissão:', error);
+    }
+  },
+
+  async atualizarStatus(userId, event) {
+    const novoStatus = event.target.value;
+    try {
+      const response = await axios.put(`http://localhost:3000/api/auth/${userId}/status`, {
+        status: novoStatus
+      });
+      console.log('Status atualizado:', response.data);
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
     }
   },
 

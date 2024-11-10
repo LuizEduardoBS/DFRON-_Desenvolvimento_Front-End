@@ -65,6 +65,29 @@ router.put('/:userId/permissions', async (req, res) => {
     }
 });
 
+// Rota para atualizar as permissões de um usuário
+router.put('/:userId/status', async (req, res) => {
+    const { userId } = req.params;
+    const { status } = req.body; // Nova permissão
+
+    try {
+        // Atualiza as permissões do usuário
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { status },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        res.status(200).json({ message: 'Status atualizada com sucesso', user: updatedUser });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao atualizar status', error });
+    }
+});
+
 // Rota para deletar um usuário
 router.delete('/:userId', async (req, res) => {
     const { userId } = req.params;
