@@ -6,9 +6,9 @@
     <router-link to="./admlivros" class="opcao-menu">Livros</router-link>
     <router-link to="./admnotificacoes" class="opcao-menu" style="text-align: center;">Notificação<br>Geral</router-link>
   </section>
-  <form action="" id="formulario-buscar-usuario">
-    <input type="text" placeholder="   Pesquisar por ID, nome, e-mail, hierarquia ou status">
-    <button class="botao-busca">
+  <form id="formulario-buscar-usuario" @submit.prevent>
+    <input type="text" v-model="searchQuery" placeholder="   Pesquisar por ID, nome, e-mail, hierarquia ou status">
+    <button class="botao-busca" @click="applyFilter">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
       </svg>
@@ -37,7 +37,7 @@
 
     <table class="tabela-principal">
       <tbody>
-        <tr v-for="user in users" :key="user._id">
+        <tr v-for="user in paginatedUsers" :key="user._id">
           <td id="coluna-1">{{ user ? user.customId : 'ID' }}</td>
           <td id="coluna-2">{{ user ? user.username : 'Nome do usuário' }}</td>
           <td id="coluna-3">{{ user ? user.email : 'E-mail' }}</td>
@@ -109,19 +109,19 @@
     </table>
 
     <div class="paginas-tabela">
-      <a href="" class="passador-paginas">
+      <a href="javascript:void(0)" class="passador-paginas" @click="prevPage" :disabled="currentPage === 1">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle-fill sgv" viewBox="0 0 16 16">
           <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
         </svg>
         <p>Anterior</p>
       </a>
-      <p>1 / 643</p>
-      <a href="" class="passador-paginas">
-        <p>Próximo</p>
+      <p>{{ currentPage }} / {{ totalPages }}</p>
+      <a href="javascript:void(0)" class="passador-paginas" @click="nextPage" :disabled="currentPage === totalPages">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right-circle-fill sgv" viewBox="0 0 16 16">
           <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z" />
         </svg>
-      </a>
+        <p>Próximo</p>
+      </a> 
     </div>
   </div>
 </main>  
@@ -139,11 +139,52 @@ export default {
       loading: false, // Estado para indicar se os dados estão sendo carregados
       modalVisible: false,
       userIdToDelete: null,
+      currentPage: 1, // Página atual
+      usersPerPage: 13, // Quantidade de usuários por página
+      searchQuery: this.$route.query.search || '', // Valor da pesquisa do parâmetro da URL
+      searchApplied: '', // Valor aplicado ao filtro após clicar em "Buscar"
     };
   },
+  watch: {
+    '$route.query.search'(newSearch) {
+      this.searchQuery = newSearch;
+      this.applyFilter(); // Aplica o filtro ao mudar o parâmetro de busca
+    }
+  },
+
   mounted() {
     this.fetchUsers(); // Carrega os dados dos usuários quando o componente é montado
+    if (this.searchQuery) {
+      this.applyFilter();
+    }
   },
+
+  computed: {
+    filteredUsers() {
+      if (!this.searchApplied) {
+        return this.users;
+      }
+      const query = this.searchApplied.toLowerCase();
+      return this.users.filter(user => {
+        return (
+          user.customId.toLowerCase().includes(query) ||
+          (user.username && user.username.toLowerCase().includes(query)) ||
+          (user.email && user.email.toLowerCase().includes(query)) ||
+          (user.permissions && user.permissions.toLowerCase().includes(query)) ||
+          (user.status && user.status.toLowerCase().includes(query))
+        );
+      });
+    },
+    paginatedUsers() {
+    const start = (this.currentPage - 1) * this.usersPerPage;
+    const end = start + this.usersPerPage;
+    return this.users.slice(start, end);
+  },
+  totalPages() {
+    return Math.ceil(this.users.length / this.usersPerPage);
+  }
+  },
+
   methods: {
     async fetchUsers() {
       this.loading = true; // Marca o início do carregamento
@@ -159,51 +200,65 @@ export default {
       }
     },
 
+    applyFilter() {
+      // Aplica a pesquisa no filtro
+      this.searchApplied = this.searchQuery;
+      this.currentPage = 1; // Reinicia para a primeira página após a busca
+    },
+
+    // Funções de paginação
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+
     async atualizarPermissao(userId, event) {
-    const novaPermissao = event.target.value;
-    try {
-      const response = await axios.put(`http://localhost:3000/api/auth/${userId}/permissions`, {
-        permissions: novaPermissao
-      });
-      console.log('Permissão atualizada:', response.data);
-    } catch (error) {
-      console.error('Erro ao atualizar permissão:', error);
-    }
-  },
+      const novaPermissao = event.target.value;
+      try {
+        const response = await axios.put(`http://localhost:3000/api/auth/${userId}/permissions`, {
+          permissions: novaPermissao
+        });
+        console.log('Permissão atualizada:', response.data);
+      } catch (error) {
+        console.error('Erro ao atualizar permissão:', error);
+      }
+    },
 
     // Exibe o modal de confirmação
-  showDeleteModal(userId) {
-    this.modalVisible = true;
-    this.userIdToDelete = userId;
-  },
+    showDeleteModal(userId) {
+      this.modalVisible = true;
+      this.userIdToDelete = userId;
+    },
 
-  // Cancela a exclusão
-  cancelDelete() {
-    this.modalVisible = false;
-    this.userIdToDelete = null;
-  },
+    // Cancela a exclusão
+    cancelDelete() {
+      this.modalVisible = false;
+      this.userIdToDelete = null;
+    },
 
-  // Confirma a exclusão
-  confirmDelete() {
-    // Chame sua função para deletar o usuário do banco de dados
-    this.deleteUser(this.userIdToDelete);
-    this.modalVisible = false;
-    this.userIdToDelete = null;
-  },
+    // Confirma a exclusão
+    confirmDelete() {
+      this.deleteUser(this.userIdToDelete);
+      this.modalVisible = false;
+      this.userIdToDelete = null;
+    },
 
-  // Função para excluir o usuário (essa função deve se conectar ao backend)
-  deleteUser(userId) {
-    // Aqui você faria uma chamada para o seu backend para deletar o usuário
-    // Exemplo usando axios:
-    axios.delete(`http://localhost:3000/api/auth/${userId}`)
-      .then(response => {
-        // Atualize a lista de usuários após a exclusão
-        this.users = this.users.filter(user => user._id !== userId);
-      })
-      .catch(error => {
-        console.error("Erro ao excluir o usuário:", error);
-      });
-  },
+    deleteUser(userId) {
+      axios.delete(`http://localhost:3000/api/auth/${userId}`)
+        .then(response => {
+          this.users = this.users.filter(user => user._id !== userId);
+        })
+        .catch(error => {
+          console.error("Erro ao excluir o usuário:", error);
+        });
+    },
 
     clearMessages() {
       this.errorMessage = '';
@@ -217,6 +272,7 @@ export default {
   },
 };
 </script>
+
 
 
 

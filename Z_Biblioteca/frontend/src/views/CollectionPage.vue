@@ -13,7 +13,7 @@
       <div class="bloco-interno-livros-acervo">
         <div class="acervo-filtros">
           <p>Filtros aplicados: {{ searchApplied ? searchApplied : 'Nenhum' }}</p>
-          <p>Filtros</p>
+          
         </div>
         <hr>
         <div class="bloco-cards-acervo">
