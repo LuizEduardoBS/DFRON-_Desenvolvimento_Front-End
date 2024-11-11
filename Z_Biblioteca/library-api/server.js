@@ -41,6 +41,8 @@ app.use('/api/books', booksRoutes);
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
+const GeneralNotifications = require('./routes/generalNotif');
+app.use('/api/generalnotifications', GeneralNotifications);
 
 
 const PORT = process.env.PORT || 3000;
