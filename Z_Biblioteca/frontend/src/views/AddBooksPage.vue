@@ -32,7 +32,7 @@
           <label class="titulo-dos-campos">Gênero *</label>
           <select v-model="genre" class="campo-tamanho-comum-select" required>
             <option value="Literatura e Ficção">Literatura e Ficção</option>
-            <option value="Infantil e HQ's">Infantil e HQ's</option>
+            <option value="Infantil e HQ">Infantil e HQ</option>
             <option value="Informática e Tecnologia">Informática e Tecnologia</option>
             <option value="Técnicos e Acadêmicos">Técnicos e Acadêmicos</option>
             <option value="Saúde e Bem Estar">Saúde e Bem Estar</option>

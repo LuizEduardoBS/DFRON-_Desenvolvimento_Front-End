@@ -50,6 +50,7 @@ export default {
       this.message = 'Conta bloqueada. Procure o(a) bibliotecario(a)';
       return;  // Impede o login de continuar
     }
+    console.log(response.data.status)
 
     authStore.login(token, permissions, status); // Armazenando status na store
 

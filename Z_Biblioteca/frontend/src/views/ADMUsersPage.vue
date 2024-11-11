@@ -6,9 +6,9 @@
     <router-link to="./admlivros" class="opcao-menu">Livros</router-link>
     <router-link to="./admnotificacoes" class="opcao-menu" style="text-align: center;">Notificação<br>Geral</router-link>
   </section>
-  <form id="formulario-buscar-usuario" @submit.prevent>
+  <form id="formulario-buscar-usuario" @submit.prevent="applyFilter">
     <input type="text" v-model="searchQuery" placeholder="   Pesquisar por ID, nome, e-mail, hierarquia ou status">
-    <button class="botao-busca" @click="applyFilter">
+    <button type="submit" class="botao-busca" @click="applyFilter">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
       </svg>
@@ -39,10 +39,11 @@
       <tbody>
         <tr v-for="user in users" :key="user._id">
           <td id="coluna-1">{{ user ? user.customId : 'ID' }}</td>
-          <td id="coluna-2">{{ user ? user.username : 'Nome do usuário' }}</td>
+          <td id="coluna-2">  {{ user && user.username.length > 25 ? user.username.slice(0, 25) + '...' : (user ? user.username : 'Nome do usuário') }}
+          </td>
           <td id="coluna-3">{{ user ? user.email : 'E-mail' }}</td>
           <td id="coluna-4" v-if="user">
-            <select name="" id="" v-model="user.permissions" @change="atualizarPermissao(user._id, $event)">
+            <select name="" id="" v-model="user.permissions" @change="atualizarPermissao(user._id, $event)" :disabled="user.permissions === 'ADM'">
               <option value="" disabled selected style="background-color: #989898; color: #fff;">{{ user.permissions }}</option>
               <option value="ADM" :selected="user.permissions === 'ADM'">ADM</option>
               <option value="Bibliotecario(a)" :selected="user.permissions === 'Bibliotecario(a)'">Bibliotecario(a)</option>
@@ -75,7 +76,7 @@
             </a>
           </td>
           <td id="coluna-7" v-if="user">
-            <select name="" id="" v-model="user.status" @change="atualizarStatus(user._id, $event)">
+            <select name="" id="" v-model="user.status" @change="atualizarStatus(user._id, $event)" :disabled="user.permissions === 'ADM'">
               <option value="" disabled selected style="background-color: #989898; color: #fff;">{{ user.status }}</option>
               <option value="Ativo" :selected="user.status === 'Ativo'">Ativo</option>
               <option value="Bloqueado" :selected="user.status === 'Bloqueado'">Bloqueado</option>
@@ -97,7 +98,7 @@
 
           <!-- Excluir Ícone -->
           <td id="coluna-8" v-if="user">
-            <a href="#" @click.prevent="showDeleteModal(user._id)" class="deletar-usuario">
+            <a href="#" @click.prevent="showDeleteModal(user._id)" class="deletar-usuario" :class="{'deletar-usuario': true, 'nao-clicavel': user.permissions === 'ADM'}">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
@@ -143,6 +144,7 @@ export default {
       usersPerPage: 13, // Quantidade de usuários por página
       searchQuery: this.$route.query.search || '', // Valor da pesquisa do parâmetro da URL
       searchApplied: '', // Valor aplicado ao filtro após clicar em "Buscar"
+      // userPermission: '', // Permissão do usuário que está visualizando a tela /////////////////////////////////////// Verificar
     };
   },
   watch: {
@@ -153,6 +155,25 @@ export default {
   },
 
   mounted() {
+    // this.fetchUsers(); // Carrega os dados dos usuários quando o componente é montado
+
+    // // Verifica e obtém a permissão armazenada no localStorage
+    // const permissions = localStorage.getItem("permissions");  
+    // if (permissions) {
+    //   console.log("Permissão do usuário:", permissions);
+    //   this.userPermission = permissions; // Armazena a permissão
+    //   console.log(this.userPermission, "aaaaaaaaaaaaa"); // Verifique se o valor de userPermission está correto
+
+    // } else {
+    //   console.log("Permissão não encontrada no localStorage.");
+    // } //////////////////// FUNCIONA PARA PEGAR A PERMISSION, MAS NÃO GERA A COMPARAÇÃO NECESSARIA
+
+
+    // Se houver um valor de busca na URL, aplica o filtro
+    if (this.searchQuery) {
+      this.applyFilter();
+    }
+
     this.fetchUsers(); // Carrega os dados dos usuários quando o componente é montado
     if (this.searchQuery) {
       this.applyFilter();
@@ -200,9 +221,14 @@ export default {
     },
 
     applyFilter() {
-      // Aplica a pesquisa no filtro
-      this.searchApplied = this.searchQuery;
-    },
+    // Filtra a lista de usuários com base na searchQuery
+    this.filteredUsers = this.users.filter(user => {
+      return user.username.includes(this.searchQuery) || 
+             user.email.includes(this.searchQuery) || 
+             user.customId.includes(this.searchQuery) ||
+             user.status.includes(this.searchQuery);
+    });
+  },
 
     async atualizarPermissao(userId, event) {
     const novaPermissao = event.target.value;
@@ -228,7 +254,7 @@ export default {
     }
   },
 
-    // Exibe o modal de confirmação
+  // Exibe o modal de confirmação
   showDeleteModal(userId) {
     this.modalVisible = true;
     this.userIdToDelete = userId;
@@ -279,6 +305,11 @@ export default {
 
 
 <style scoped>
+.nao-clicavel {
+  pointer-events: none;
+  opacity: 0.5; /* opcional, para dar um efeito visual */
+}
+
 .modal {
   position: fixed;
   top: 0;

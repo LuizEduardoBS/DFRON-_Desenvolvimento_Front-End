@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue';
 export const useAuthStore = defineStore('auth', () => {
   const isLoggedIn = ref(false);
   const userPermission = ref(null);
-  const userStatus = ref(null); // Valor padrão como 'Ativo'
+  const userStatus = ref(null); 
 
   const checkAuthStatus = () => {
     const token = localStorage.getItem('token');
