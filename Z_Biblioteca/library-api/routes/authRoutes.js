@@ -22,6 +22,21 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Rota para buscar um usuário específico pelo ID
+router.get('/:userId', async (req, res) => {
+    const { userId } = req.params; // Obtém o ID do usuário dos parâmetros da URL
+
+    try {
+        const user = await User.findById(userId); // Busca um usuário específico pelo ID
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+        res.status(200).json(user); // Retorna o usuário encontrado
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar o usuário', error });
+    }
+});
+
 // Rota para atualizar um usuário específico
 router.put('/:userId', async (req, res) => {
     const { userId } = req.params; // Obtém o ID do usuário dos parâmetros da URL

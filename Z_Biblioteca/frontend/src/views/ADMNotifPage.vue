@@ -11,24 +11,50 @@
   <main class="main-notificacoes-gerais">
     <div class="conteudo-notificacao-geral">
       <div class="aviso-notificacao-geral"><span>*Observação: essa notificação aparecerá para todos os usuário. Para um usuário específico notifique-o através de seu perfil privado.</span></div>
-      <form action="">
+      <form @submit.prevent="NotifGeneral">
         <div class="coluna-notificacoes-gerais">
           <div class="titulo-e-botao-enviar-geral">
             <div class="titulo-e-campo-titulo">
               <label class="titulo-dos-campos">Título da notificação *</label>
-              <input type="text" placeholder=" Ex: Novidades: 20 cópias do livro: Manual de Javascript " class="campo-titulo-notificacao">
+              <input v-model="title" type="text" placeholder=" Ex: Novidades: 20 cópias do livro: Manual de Javascript " class="campo-titulo-notificacao">
             </div>
             <div id="bloco-posicao-botao-notificacao">
-              <div class="botao-enviar-notificacao-geral">Enviar</div>
+              <button class="botao-enviar-notificacao-geral">Enviar</button>
             </div>
           </div>
-          <textarea type="text" class="campo-texto-notificacao-geral" placeholder=" Texto da notificação"></textarea>
+          <textarea v-model="textNotifGeneral" class="campo-texto-notificacao-geral" placeholder=" Texto da notificação"></textarea>
         </div>
       </form>
     </div>
 
   </main>
 </template>
+
+<script>
+import { generalNotif } from '@/services/api';
+
+export default {
+  data() {
+    return {
+      title: '', // Define o título como uma string vazia
+      textNotifGeneral: '', // Define o texto como uma string vazia
+    };
+  },
+  methods: {
+    async NotifGeneral() {
+      try {
+        const response = await generalNotif.notifgeralPost({
+          title: this.title,
+          textNotifGeneral: this.textNotifGeneral, // Altere 'text' para 'textNotifGeneral'
+        });
+        console.log('Notificação enviada com sucesso:', response.data);
+      } catch (error) {
+        console.error('Erro ao enviar notificações:', error);
+      }
+    }
+  }
+}
+</script>
 
 <style scoped>
 .bloco-do-submenu {

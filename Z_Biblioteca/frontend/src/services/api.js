@@ -16,6 +16,15 @@ const apiClient = axios.create({
     },
 });
 
+// Cria instância do Axios para gerenciamento de livros
+const notifApiClient = axios.create({
+    baseURL: 'http://localhost:3000/api/generalnotifications', // API para livros
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+
 // Adiciona interceptores a ambas as instâncias para enviar token JWT
 const attachInterceptor = (client) => {
     client.interceptors.request.use((config) => {
@@ -63,7 +72,19 @@ export const userService = {
     getProfile() {
         return apiClient.get('/auth/profile'); // Obtém perfil do usuário
     },
+    getProfileById(id) {
+        return apiClient.get(`/auth/${id}`); // Obtém perfil do usuário por ID
+    }
 };
+
+export const generalNotif = {
+    getNotifGeral() {
+      return notifApiClient.get('/');
+    },
+    notifgeralPost(data) {
+      return notifApiClient.post('/', data);
+    },
+  }
 
 // Exporta os clientes de API para uso em outros módulos
 export { booksApiClient, apiClient };

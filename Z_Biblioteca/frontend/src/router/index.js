@@ -97,6 +97,12 @@ const router = createRouter({
       name: 'descricaolivro',
       component: () => import('../views/BookDescription.vue'),
       props: true
+    },
+    {
+      path: '/admperfilusuarios/:id',
+      name: 'admperfilusuarios',
+      component: () => import('../views/ADMUserProfile.vue'),
+      props: true
     }
   ]
 })

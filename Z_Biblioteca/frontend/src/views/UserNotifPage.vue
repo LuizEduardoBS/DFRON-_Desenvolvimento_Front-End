@@ -1,7 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-usuario">
@@ -15,40 +11,63 @@ import { RouterLink, RouterView } from 'vue-router'
   <main class="main-usuario-notificacoes">
     <h1>Notificações</h1>
 
-    <div class="card-notificacoes-usuario">
+    <div class="card-notificacoes-usuario" v-for="notificacao in notificacoes" :key="notificacao._id">
       <div class="tipo-da-notificacao">
         <span><strong>Notificação</strong></span>
-        <span><strong>PRIVADA</strong></span>
+        <span><strong>{{ notificacao.status }}</strong></span>
       </div>
       <div class="texto-da-notificacao">
-        <P>Caro usuário, notamos que possui livros com prazos de devolução vencidos. Por gentileza compareça a biblioteca e regularize sua situação para continuar aproveitando nossos livros.</P>
+        <h2><strong>{{ notificacao.title }} - {{ formatDate(notificacao.dataNotif) }}</strong></h2>
+        <P>{{ notificacao.textNotifGeneral }}</P>
       </div>
     </div>
 
-    <div class="card-notificacoes-usuario">
-
-    </div>
-
-    <div class="card-notificacoes-usuario">
-
-    </div>
-
-    <div class="card-notificacoes-usuario">
-
-    </div>
-
-    <div class="card-notificacoes-usuario">
-
-    </div>
-
-    <div class="card-notificacoes-usuario">
-
-    </div>
 
     <div class="botao-ver-mais-historico-notificacoes">Ver mais</div>
 
   </main>
 </template>
+
+<script setup>
+import { onMounted, ref } from 'vue';
+import { generalNotif } from '@/services/api';
+
+const notificacoes = ref([]); // Define o estado das notificações como um array reativo
+
+// Função para formatar a data
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const options = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false, // 24h format
+  };
+
+  return new Intl.DateTimeFormat('pt-BR', options).format(date);
+};
+
+const fetchGeneralNotifications = async () => {
+  try {
+    const response = await generalNotif.getNotifGeral();
+    notificacoes.value = response.data;
+
+    // Ordena as notificações pela data de forma decrescente (mais recente primeiro)
+    notificacoes.value.sort((a, b) => new Date(b.dataNotif) - new Date(a.dataNotif));
+  } catch (error) {
+    console.error('Erro ao buscar notificações:', error);
+  }
+};
+
+// Carrega as notificações quando o componente é montado
+onMounted(() => {
+  fetchGeneralNotifications();
+});
+</script>
+
+
 
 <style scoped>
 .bloco-do-submenu {
@@ -88,25 +107,6 @@ import { RouterLink, RouterView } from 'vue-router'
   text-decoration: underline;
 }
 
-.botao-escolher-livro {
-  width: 173px;
-  height: 47px;
-  background-color: #0C8CE9;
-  margin-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 5px;
-}
-
-.botao-escolher-livro:hover {
-  color: #0C8CE9;
-  background-color: #fff;
-  border: 1px solid #0C8CE9;
-}
 
 /* ########################################### */
 /* NOTIFICAÇÕES DO USUARIO */
@@ -129,7 +129,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
 .card-notificacoes-usuario {
   width: 1012px;
-  height: 100px;
+  min-height: 100px;
   box-shadow: 0 2px 8px -2px #989898;
   margin-top: 10px;
   display: flex;
@@ -149,14 +149,21 @@ import { RouterLink, RouterView } from 'vue-router'
 }
 
 .texto-da-notificacao {
-  max-width: 850px;
-  max-height: 90px;
+  width: 850px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0;
   padding: 0;
+  font-size: 18px;
+  
+}
+
+.texto-da-notificacao h2 {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 20px;
 }
 
 
