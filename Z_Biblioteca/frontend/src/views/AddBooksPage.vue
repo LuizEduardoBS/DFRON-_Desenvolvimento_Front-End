@@ -31,6 +31,7 @@
 
           <label class="titulo-dos-campos">Gênero *</label>
           <select v-model="genre" class="campo-tamanho-comum-select" required>
+            <option value="" selected disabled>Selecione o gênero do livro:</option>
             <option value="Literatura e Ficção">Literatura e Ficção</option>
             <option value="Infantil e HQ">Infantil e HQ</option>
             <option value="Informática e Tecnologia">Informática e Tecnologia</option>

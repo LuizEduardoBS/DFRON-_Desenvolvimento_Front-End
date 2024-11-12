@@ -1,6 +1,8 @@
 const express = require('express');
 const Book = require('../models/Book'); // Modelo do livro
 const router = express.Router();
+const fs = require('fs'); // Módulo para manipulação do sistema de arquivos
+const path = require('path');
 
 // *** CRIAÇÃO (POST) ***
 module.exports = (upload) => {
@@ -67,9 +69,27 @@ module.exports = (upload) => {
         }
     });
 
-    // *** EXCLUSÃO (DELETE) ***
+    /// *** EXCLUSÃO (DELETE) ***
     router.delete('/:id', async (req, res) => {
         try {
+            // Busca o livro pelo ID antes de deletar
+            const book = await Book.findById(req.params.id);
+            if (!book) {
+                return res.status(404).json({ message: 'Livro não encontrado' });
+            }
+
+            // Remove a imagem associada ao livro, se existir
+            if (book.coverImage) {
+                const filePath = path.join(__dirname, '..', book.coverImage);
+                fs.unlink(filePath, (err) => {
+                    if (err) {
+                        console.error('Erro ao deletar a imagem:', err);
+                        return res.status(500).json({ message: 'Erro ao deletar a imagem do livro', error: err });
+                    }
+                });
+            }
+
+            // Deleta o livro do banco de dados
             await Book.findByIdAndDelete(req.params.id);
             res.status(200).json({ message: 'Livro deletado com sucesso' });
         } catch (error) {
