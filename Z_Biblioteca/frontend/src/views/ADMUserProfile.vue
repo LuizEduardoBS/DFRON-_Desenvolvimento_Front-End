@@ -1,23 +1,72 @@
+<!-- O registro do emprestimo vai ser feito em outra tela, mas vai ser nessa que o status vai ser  alterado para autorizado, deve ser aqui que coloco a função
+
+const emprestimo = {
+  bookId: book._id,
+  title: book.title,
+  status: 'Autorizado',
+  dataEmprestimo: new Date(), // data atual
+  prazoDevolucao: calcularPrazoDevolucao(), // Função para calcular a data de devolução
+  dataDevolucao: null // A data de devolução será preenchida quando o livro for devolvido
+};
+
+// Função para calcular a data de devolução (por exemplo, 7 dias após a data de empréstimo)
+function calcularPrazoDevolucao() {
+  const prazo = 7; // Prazo de 7 dias
+  const dataEmprestimo = new Date();
+  dataEmprestimo.setDate(dataEmprestimo.getDate() + prazo);
+  return dataEmprestimo;
+}
+
+// Salvar o empréstimo no usuário
+User.findByIdAndUpdate(userId, {
+  $push: { emprestimos: emprestimo }
+}, { new: true }, (err, user) => {
+  if (err) {
+      console.error("Erro ao salvar empréstimo:", err);
+  } else {
+      console.log("Empréstimo registrado:", user);
+  }
+}); -->
+
+
+
 <template>
   <main class="main-perfil-usuarios-adm">
     <div class="conteudo-perfil-usuarios-adm">
       <div class="coluna-perfil-usuarios-adm-1">
         <img src="./img/person.png" alt="" class="foto-do-perfil">
-        <div class="coluna-identificadores">
-          <span><strong>ID: </strong> <span id="id-usuario">user.customId</span></span>
-          <span><strong>Usuário: </strong><span id="nome-usuario">user.username</span></span>
-          <span><strong>E-mail: </strong><span id="email-usuario">user.email</span></span>
+        <div v-if="user" class="coluna-identificadores">
+          <span><strong>ID: </strong><span id="id-usuario">{{ user.data.customId }}</span></span>       
+          <span><strong>Usuário: </strong><span id="nome-usuario">{{ user.data.username }}</span></span>
+          <span><strong>E-mail: </strong><span id="email-usuario">{{ user.data.email }}</span></span>
+          <span><strong>Permissões: </strong><span id="permissoes-usuario">
+            <select name="" id="" v-model="user.data.permissions" @change="atualizarPermissao(user.data._id, $event)" :disabled="user.data.permissions === 'ADM'">
+              <option value="ADM" disabled :selected="user.data.permissions === 'ADM'">ADM</option>
+              <option value="Bibliotecario(a)" :selected="user.data.permissions === 'Bibliotecario(a)'">Bibliotecario(a)</option>
+              <option value="Usuário" :selected="user.data.permissions === 'Usuário'">Usuário</option>
+            </select></span>
+          </span>
+          <span><strong>Status:</strong> <span id="status-usuario">
+            <select name="" id="" v-model="user.data.status" @change="atualizarStatus(user.data._id, $event)" :disabled="user.data.permissions === 'ADM'">
+              <option value="Ativo" :selected="user.data.status === 'Ativo'">Ativo</option>
+              <option value="Bloqueado" :selected="user.data.status === 'Bloqueado'">Bloqueado</option>
+            </select>
+            </span>
+          </span>
+        </div>
+
+        <div v-else class="coluna-identificadores">
+          <span><strong>ID: </strong><span id="id-usuario">...</span></span>       
+          <span><strong>Usuário: </strong><span id="nome-usuario">...</span></span>
+          <span><strong>E-mail: </strong><span id="email-usuario">...</span></span>
           <span><strong>Permissões: </strong><span id="permissoes-usuario">
               <select name="" id="">
-                <option value="">ADM</option>
-                <option value="">Bibliotecario(a)</option>
-                <option value="">Usuário</option>
+                <option value="" selected disabled>...</option>
               </select></span>
           </span>
           <span><strong>Status:</strong> <span id="status-usuario">
               <select name="" id="">
-                <option value="">Ativo</option>
-                <option value="">Bloqueado</option>
+                <option value="" selected disabled>...</option>
               </select>
             </span>
           </span>
@@ -63,6 +112,7 @@
             <select name="" id="">
               <option value="">Solicitado</option>
               <option value="">Autorizado</option>
+              <option value="">Devolvido</option>
               <option value="">Negado</option>
             </select>
           </td>
@@ -115,6 +165,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { userService } from '@/services/api';
 
 export default {
@@ -132,7 +183,29 @@ export default {
       } catch (error) {
         console.error('Erro ao buscar o perfil do usuário:', error);
       }
-    }
+    },
+    async atualizarPermissao(userId, event) {
+      const novaPermissao = event.target.value;
+      try {
+        const response = await axios.put(`http://localhost:3000/api/auth/${userId}/permissions`, {
+          permissions: novaPermissao
+        });
+        console.log('Permissão atualizada:', response.data);
+      } catch (error) {
+        console.error('Erro ao atualizar permissão:', error);
+      }
+    },
+    async atualizarStatus(userId, event) {
+      const novoStatus = event.target.value;
+      try {
+        const response = await axios.put(`http://localhost:3000/api/auth/${userId}/status`, {
+          status: novoStatus
+        });
+        console.log('Status atualizado:', response.data);
+      } catch (error) {
+        console.error('Erro ao atualizar status:', error);
+      }
+    },
   },
   mounted() {
     this.fetchUser(); // Chama o método ao montar o componente
@@ -193,6 +266,7 @@ export default {
   text-align: center;
   border: none;
   box-shadow: 0 2px 8px -2px #989898;
+  width: 150px;
 }
 
 .coluna-perfil-usuarios-adm-2 {

@@ -12,7 +12,30 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['Admin', 'Usuário', 'Bibliotecario(a)'], // Define as permissões possíveis
         default: 'Usuário' }, 
-    status: { type: String, default: 'Ativo' }
+    status: { type: String, default: 'Ativo' },
+    emprestimos: [
+        {
+            bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Referência para o livro
+            title: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
+            status: { type: String, enum: ['Solicitado', 'Autorizado', 'Devolvido', 'Negado'] },
+            dataEmprestimo: { type: Date },
+            prazoDevolucao: { type: Date },
+            dataDevolucao: { type: Date },
+            qtdeBook: { type: Number },
+        }, 
+    ],
+    reservas: [
+        {
+            bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Referência para o livro
+            title: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
+        },
+    ],
+    carrinho: [
+        {
+            bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Referência para o livro
+            availabilityBook: { type: Boolean },  // Disponibilidade como booleano
+        },
+    ],
 });
 
 // Hook 'pre-save' para calcular o ID customizado

@@ -44,8 +44,7 @@
           <td id="coluna-3">{{ user ? user.email : 'E-mail' }}</td>
           <td id="coluna-4" v-if="user">
             <select name="" id="" v-model="user.permissions" @change="atualizarPermissao(user._id, $event)" :disabled="user.permissions === 'ADM'">
-              <option value="" disabled selected style="background-color: #989898; color: #fff;">{{ user.permissions }}</option>
-              <option value="ADM" :selected="user.permissions === 'ADM'">ADM</option>
+              <option value="ADM" disabled :selected="user.permissions === 'ADM'">ADM</option>
               <option value="Bibliotecario(a)" :selected="user.permissions === 'Bibliotecario(a)'">Bibliotecario(a)</option>
               <option value="Usuário" :selected="user.permissions === 'Usuário'">Usuário</option>
             </select>
@@ -64,7 +63,7 @@
             :to="{ name: 'admperfilusuarios', params: { id: user._id } }"
             class="card-link"
           >
-            <a href="./perfil_usuarios_adm.html" class="icone-acessar-perfil">
+            <a href="#" class="icone-acessar-perfil">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
                 <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
                 <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
@@ -82,7 +81,6 @@
           </td>
           <td id="coluna-7" v-if="user">
             <select name="" id="" v-model="user.status" @change="atualizarStatus(user._id, $event)" :disabled="user.permissions === 'ADM'">
-              <option value="" disabled selected style="background-color: #989898; color: #fff;">{{ user.status }}</option>
               <option value="Ativo" :selected="user.status === 'Ativo'">Ativo</option>
               <option value="Bloqueado" :selected="user.status === 'Bloqueado'">Bloqueado</option>
             </select>
@@ -236,16 +234,16 @@ export default {
   },
 
     async atualizarPermissao(userId, event) {
-    const novaPermissao = event.target.value;
-    try {
-      const response = await axios.put(`http://localhost:3000/api/auth/${userId}/permissions`, {
-        permissions: novaPermissao
-      });
-      console.log('Permissão atualizada:', response.data);
-    } catch (error) {
-      console.error('Erro ao atualizar permissão:', error);
-    }
-  },
+      const novaPermissao = event.target.value;
+      try {
+        const response = await axios.put(`http://localhost:3000/api/auth/${userId}/permissions`, {
+          permissions: novaPermissao
+        });
+        console.log('Permissão atualizada:', response.data);
+      } catch (error) {
+        console.error('Erro ao atualizar permissão:', error);
+      }
+    },
 
   async atualizarStatus(userId, event) {
     const novoStatus = event.target.value;

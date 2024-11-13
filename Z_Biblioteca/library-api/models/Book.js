@@ -11,6 +11,14 @@ const BookSchema = new mongoose.Schema({
     copies: { type: Number, required: true }, 
     description: { type: String, required: true }, 
     coverImage: { type: String },
+    reviews: [
+        {
+            userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+            rating: { type: Number }, // Referência para o livro
+            comment: { type: String },
+            reviewsDate: { type: Date },
+        },
+    ],
 });
 
 // Hook 'pre-save' para calcular o ID customizado

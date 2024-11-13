@@ -17,18 +17,25 @@
         </div>
         <hr>
         <div class="bloco-cards-acervo">
-          <router-link
-            v-for="book in paginatedBooks"
-            :key="book._id"
-            :to="{ name: 'descricaolivro', params: { id: book._id } }"
-            class="card-link"
-          >
-            <div class="card-livro-acervo">
+          <div 
+            v-for="book in paginatedBooks" 
+            :key="book._id" 
+            class="card-livro-acervo">
+            <!-- Router link envolve apenas a imagem e o título -->
+            <router-link 
+              :to="{ name: 'descricaolivro', params: { id: book._id } }" 
+              class="card-link">
               <img :src="formatImagePath(book.coverImage)" alt="" />
               <span class="titulo-livros-acervo">{{ book.title }}</span>
-              <button class="botao-adicionar-acervo">Adicionar</button>
-            </div>
-          </router-link>
+            </router-link>
+
+            <!-- Botão "Adicionar" fora do router-link -->
+            <button 
+              @click.stop="addToCart(book)" 
+              class="botao-adicionar-acervo">
+              Adicionar
+            </button>
+          </div>
 
           <!-- Paginação -->
           <div class="paginas-acervo">
@@ -73,11 +80,12 @@ export default {
   },
   computed: {
     filteredBooks() {
-      if (!this.searchApplied) {
-        return this.books;
-      }
+    let books = this.books;
+
+    // Aplica o filtro de busca, se necessário
+    if (this.searchApplied) {
       const query = this.searchApplied.toLowerCase();
-      return this.books.filter(book => {
+      books = books.filter(book => {
         return (
           book.title.toLowerCase().includes(query) ||
           (book.author && book.author.toLowerCase().includes(query)) ||
@@ -85,6 +93,10 @@ export default {
           (book.genre && book.genre.toLowerCase().includes(query))
         );
       });
+    }
+
+    // Ordena os livros em ordem alfabética pelo título
+    return books.sort((a, b) => a.title.localeCompare(b.title));
     },
     paginatedBooks() {
       const start = (this.currentPage - 1) * this.booksPerPage;
@@ -133,7 +145,9 @@ export default {
 .bloco-cards-acervo .card-link {
   text-decoration: none;
   color: inherit;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .main-acervo {
@@ -251,13 +265,14 @@ export default {
 
 .card-livro-acervo {
   width: 143px;
-  height: 248px;
+  height: 255px;
   border-radius: 10px;
   box-shadow: 0 2px 8px -2px #989898;
   display: flex;
   flex-direction: column;
   align-items: center;
   row-gap: 5px;
+  justify-content: space-between;
 }
 
 .card-livro-acervo img {
@@ -285,6 +300,7 @@ export default {
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .botao-adicionar-acervo:hover {

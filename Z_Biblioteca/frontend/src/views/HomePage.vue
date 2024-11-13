@@ -12,19 +12,26 @@
     <div class="bloco-destaques-index">
       <p class="titulo-livros-destaque">Livros em destaque:</p>
       <div class="bloco-cards-destaques">
-        
-        <router-link
-          v-for="book in highlightedBooks"
-          :key="book._id"
-          :to="{ name: 'descricaolivro', params: { id: book._id } }"
-          class="card-link"
-        >
-          <div class="card-livro-destaque">
-            <img :src="formatImagePath(book.coverImage)" alt="" />
-            <span class="titulo-livros-index">{{ book.title }}</span>
-            <button class="botao-adicionar-index">Adicionar</button>
+
+        <div 
+            v-for="book in highlightedBooks" 
+            :key="book._id" 
+            class="card-livro-destaque">
+            <!-- Router link envolve apenas a imagem e o título -->
+            <router-link 
+              :to="{ name: 'descricaolivro', params: { id: book._id } }" 
+              class="card-link">
+              <img :src="formatImagePath(book.coverImage)" alt="" />
+              <span class="titulo-livros-index">{{ book.title }}</span>
+            </router-link>
+
+            <!-- Botão "Adicionar" fora do router-link -->
+            <button 
+              @click.stop="addToCart(book)" 
+              class="botao-adicionar-index">
+              Adicionar
+            </button>
           </div>
-        </router-link>
       </div>
     </div>
 
@@ -88,7 +95,9 @@ export default {
 .bloco-cards-destaques .card-link {
   text-decoration: none;
   color: inherit;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .main-index {
@@ -196,7 +205,7 @@ form {
 
 .card-livro-destaque {
   width: 143px;
-  height: 248px;
+  height: 255px;
   border-radius: 10px;
   box-shadow: 0 2px 8px -2px #989898;
   display: flex;
@@ -205,6 +214,7 @@ form {
   row-gap: 5px;
   transition: .35s;
   cursor: pointer;
+  justify-content: space-between;
 }
 
 .card-livro-destaque img {
@@ -232,6 +242,8 @@ form {
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  margin-bottom: 10px;
+
 }
 
 .botao-adicionar-index:hover {
