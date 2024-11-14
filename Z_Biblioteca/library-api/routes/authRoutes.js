@@ -158,5 +158,27 @@ router.post('/:userId/reservas', async (req, res) => {
     }
 });
 
+// Rota para adicionar uma notificação privada
+router.post('/:userId/notificacao_privada', async (req, res) => {
+    const { userId } = req.params;
+    const { textNotif } = req.body;
+
+    try {
+        // Encontra o usuário pelo ID e adiciona a nova notificação
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Adiciona a notificação
+        user.privateNotif.push({ textNotif });
+        await user.save();
+
+        res.status(200).json({ message: 'Notificação adicionada com sucesso', user });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao adicionar notificação', error });
+    }
+});
+
 
 module.exports = router;
