@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema({
         enum: ['ADM', 'Usuário', 'Bibliotecario(a)'], // Define as permissões possíveis
         default: 'Usuário' }, 
     status: { type: String, default: 'Ativo' },
+    privateNotif: [
+        {
+        textNotif: { type: String },
+        }
+    ],
     emprestimos: [
         {
             bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Referência para o livro

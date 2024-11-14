@@ -118,12 +118,15 @@ export default {
   },
   mounted() {
     this.fetchBook();  // Chama a função fetchBook ao montar
+
+    
   },
   methods: {
     fetchBook() {
       booksService.fetchBookById(this.id)
         .then(data => {
           this.book = data;
+          console.log(this.book.availability)
         })
         .catch(error => console.error("Erro ao buscar dados do livro:", error));
     },
@@ -145,6 +148,11 @@ export default {
 
         if (!userId) {
           alert("ID do usuário não encontrado.");
+          return;
+        }
+
+        if (this.book.availability !== "Disponível") {
+          alert("O livro esta indisponivel no momento. Voce pode reservar para pegar emprestado assim que ficar disponível!");
           return;
         }
 
