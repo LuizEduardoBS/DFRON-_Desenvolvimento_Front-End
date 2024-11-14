@@ -80,7 +80,7 @@ router.put('/:userId/permissions', async (req, res) => {
     }
 });
 
-// Rota para atualizar as permissões de um usuário
+// Rota para atualizar o status de um usuário
 router.put('/:userId/status', async (req, res) => {
     const { userId } = req.params;
     const { status } = req.body; // Nova permissão
@@ -119,5 +119,44 @@ router.delete('/:userId', async (req, res) => {
         res.status(500).json({ message: 'Erro ao deletar usuário', error });
     }
 });
+
+// Rota para adicionar um livro ao carrinho do usuário
+router.post('/:userId/carrinho', async (req, res) => {
+    const { userId } = req.params;
+    const { bookId } = req.body; // ID do livro que será adicionado ao carrinho
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        // Adiciona o livro ao carrinho do usuário
+        user.carrinho.push({ bookId });
+        await user.save();
+
+        res.status(200).json({ message: 'Livro adicionado ao carrinho', carrinho: user.carrinho });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao adicionar livro ao carrinho', error });
+    }
+});
+
+// Rota para adicionar um livro às reservas do usuário
+router.post('/:userId/reservas', async (req, res) => {
+    const { userId } = req.params;
+    const { bookId } = req.body; // ID do livro que será adicionado às reservas
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        // Adiciona o livro às reservas do usuário
+        user.reservas.push({ bookId });
+        await user.save();
+
+        res.status(200).json({ message: 'Livro adicionado às reservas', reservas: user.reservas });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao adicionar livro às reservas', error });
+    }
+});
+
 
 module.exports = router;

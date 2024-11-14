@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true }, // Senha obrigatória
     permissions: { 
         type: String,
-        enum: ['Admin', 'Usuário', 'Bibliotecario(a)'], // Define as permissões possíveis
+        enum: ['ADM', 'Usuário', 'Bibliotecario(a)'], // Define as permissões possíveis
         default: 'Usuário' }, 
     status: { type: String, default: 'Ativo' },
     emprestimos: [
