@@ -84,9 +84,10 @@ export const userService = {
     postNotifPrivate(id, data) {
         return apiClient.post(`/auth/${id}/notificacao_privada`, data); 
     },
-    getNotifPrivate(id, data) {
-        return apiClient.get(`/auth/${id}/notificacoes_privadas`, data); 
-    }
+    getNotifPrivate(id) {
+        return apiClient.get(`/auth/${id}/notificacoes_privadas`).then(response => response.data.privateNotif);
+    }   
+    
 };
 
 export const generalNotif = {

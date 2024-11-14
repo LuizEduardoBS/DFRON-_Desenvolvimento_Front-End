@@ -14,7 +14,7 @@
     <div class="card-notificacoes-usuario" v-for="notificacao in notificacoes" :key="notificacao._id">
       <div class="tipo-da-notificacao">
         <span><strong>Notificação</strong></span>
-        <span><strong>{{ notificacao.status }}</strong></span>
+        <span><strong>{{ notificacao.status || notificacao.status }}</strong></span>
       </div>
       <div class="texto-da-notificacao">
         <h2><strong>{{ notificacao.title || "123" }} - {{ formatDate(notificacao.dataNotif) }}</strong></h2>
@@ -64,24 +64,27 @@ const fetchGeneralNotifications = async () => {
 const fetchPrivateNotifications = async (userId) => {
   try {
     const response = await userService.getNotifPrivate(userId);
-    return response.data;
+    console.log(response); // Log para verificar a resposta antes de mesclar
+    return response; // Retorna a lista de notificações privadas
   } catch (error) {
     console.error('Erro ao buscar notificações privadas:', error);
     return [];
   }
 };
 
+
 // Carrega as notificações quando o componente é montado
 onMounted(async () => {
-  const userId = "id_do_usuario"; // Substitua pelo ID do usuário atual
+  const userId = localStorage.getItem("userId");
+
   const publicNotifications = await fetchGeneralNotifications();
   const privateNotifications = await fetchPrivateNotifications(userId);
 
   notificacoes.value = [...publicNotifications, ...privateNotifications];
 
-  // Ordena as notificações pela data (mais recente primeiro)
   notificacoes.value.sort((a, b) => new Date(b.dataNotif) - new Date(a.dataNotif));
 });
+
 </script>
 
 
