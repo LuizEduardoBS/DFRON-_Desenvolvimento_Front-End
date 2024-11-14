@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="botoes-da-descricao">
-        <button class="botao-adicionar-da-descricao">Adicionar ao carrinho</button>
+        <button class="botao-adicionar-da-descricao" @click.stop="addToCart(book)"  >Adicionar ao carrinho</button>
         <button class="botao-reservar-da-descricao">Reservar</button>
       </div>
     </div>
