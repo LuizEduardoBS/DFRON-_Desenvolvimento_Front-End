@@ -45,7 +45,7 @@ export default {
       try {
         const response = await generalNotif.notifgeralPost({
           title: this.title,
-          textNotifGeneral: this.textNotifGeneral, // Altere 'text' para 'textNotifGeneral'
+          textNotifGeneral: this.textNotifGeneral,
         });
         console.log('Notificação enviada com sucesso:', response.data);
       } catch (error) {
