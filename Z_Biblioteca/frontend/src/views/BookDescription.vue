@@ -51,8 +51,8 @@
         </div>
       </div>
       <div class="botoes-da-descricao">
-        <button class="botao-adicionar-da-descricao" @click.stop="addToCart(book)"  >Adicionar ao carrinho</button>
-        <button class="botao-reservar-da-descricao">Reservar</button>
+        <button class="botao-adicionar-da-descricao" @click.stop="addToCart(book)" >Adicionar ao carrinho</button>
+        <button class="botao-reservar-da-descricao" @click.stop="addToReservations(book)">Reservar</button>
       </div>
     </div>
   </div>
@@ -96,6 +96,8 @@
 
 <script>
 import { booksService } from '@/services/api'; // Importa o serviço de livros
+import { userService } from '@/services/api';
+import { useAuthStore } from '@/stores/authStore';
 
 export default {
   props: {
@@ -107,6 +109,7 @@ export default {
   data() {
     return {
       book: null,
+      userId: '',
     };
   },
   watch: {
@@ -127,6 +130,60 @@ export default {
     formatImagePath(path) {
       // Corrige as barras e adiciona o caminho completo da URL
       return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    },
+    async addToCart(book) {
+      try {
+        const authStore = useAuthStore();
+        authStore.checkAuthStatus(); // Verifica o estado de login
+
+        if (!authStore.isLoggedIn) {
+          alert("Você precisa estar logado para adicionar um livro ao carrinho.");
+          return;
+        }
+
+        const userId = localStorage.getItem("userId");
+
+        if (!userId) {
+          alert("ID do usuário não encontrado.");
+          return;
+        }
+
+        const response = await userService.postCart(userId, { bookId: book._id });
+
+        if (response.status === 200) {
+          alert("Livro adicionado ao carrinho com sucesso!");
+        }
+      } catch (error) {
+        console.error("Erro ao adicionar o livro ao carrinho:", error);
+        alert("Ocorreu um erro ao adicionar o livro ao carrinho.");
+      }
+    },
+    async addToReservations(book) {
+      try {
+        const authStore = useAuthStore();
+        authStore.checkAuthStatus(); // Verifica o estado de login
+
+        if (!authStore.isLoggedIn) {
+          alert("Você precisa estar logado para reservar um livro.");
+          return;
+        }
+
+        const userId = localStorage.getItem("userId");
+
+        if (!userId) {
+          alert("ID do usuário não encontrado.");
+          return;
+        }
+
+        const response = await userService.postReservations(userId, { bookId: book._id });
+
+        if (response.status === 200) {
+          alert("Livro reservado com sucesso!");
+        }
+      } catch (error) {
+        console.error("Erro ao adicionar o livro ao carrinho:", error);
+        alert("Ocorreu um erro ao adicionar o livro ao carrinho.");
+      }
     }
   }
 };

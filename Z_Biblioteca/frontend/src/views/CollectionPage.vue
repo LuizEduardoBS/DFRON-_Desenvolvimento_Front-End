@@ -168,8 +168,6 @@ export default {
       this.applyFilter();
     };
 
-    const userId = localStorage.getItem("userId");
-    console.log("userId do usuário:", userId);
   }
 };
 </script>
