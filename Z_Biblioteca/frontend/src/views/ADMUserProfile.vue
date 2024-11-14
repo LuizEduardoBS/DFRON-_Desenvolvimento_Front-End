@@ -74,12 +74,12 @@ User.findByIdAndUpdate(userId, {
       </div>
 
       <div class="coluna-perfil-usuarios-adm-2">
-        <form action="" class="formulario-notificacao-usuario">
+        <form @submit.prevent="sendNotif()" class="formulario-notificacao-usuario">
           <div class="titulo-notificar-e-botao">
             <label><strong>Notificar</strong></label>
             <button type="submit">Enviar</button>
           </div>
-          <textarea type="text" class="campo-notificar-usuario" placeholder=" O que deseja dizer a esse usuário?"></textarea>
+          <textarea v-model="textNotif" type="text" class="campo-notificar-usuario" placeholder=" O que deseja dizer a esse usuário?"></textarea>
         </form>
       </div>
     </div>
@@ -173,6 +173,7 @@ export default {
   data() {
     return {
       user: null, // Variável para armazenar os dados do usuário
+      textNotif: ''
     };
   },
   methods: {
@@ -206,6 +207,16 @@ export default {
         console.error('Erro ao atualizar status:', error);
       }
     },
+    async sendNotif() {
+      try {
+        const response = await userService.postNotifPrivate(this.user.data._id, { textNotif: this.textNotif });
+        console.log('Notificação enviada com sucesso:', response.data);
+        this.textNotif = ''; // Limpa o campo de texto após o envio
+      } catch (error) {
+        console.error('Erro ao enviar notificações:', error);
+      }
+    },
+
   },
   mounted() {
     this.fetchUser(); // Chama o método ao montar o componente

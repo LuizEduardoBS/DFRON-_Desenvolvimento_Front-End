@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     privateNotif: [
         {
         textNotif: { type: String },
+        dataNotif: { type: Date, default: Date.now }
         }
     ],
     emprestimos: [

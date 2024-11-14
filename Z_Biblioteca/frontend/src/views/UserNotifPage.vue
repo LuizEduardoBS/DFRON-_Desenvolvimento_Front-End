@@ -17,8 +17,8 @@
         <span><strong>{{ notificacao.status }}</strong></span>
       </div>
       <div class="texto-da-notificacao">
-        <h2><strong>{{ notificacao.title }} - {{ formatDate(notificacao.dataNotif) }}</strong></h2>
-        <P>{{ notificacao.textNotifGeneral }}</P>
+        <h2><strong>{{ notificacao.title || "123" }} - {{ formatDate(notificacao.dataNotif) }}</strong></h2>
+        <p>{{ notificacao.textNotifGeneral || notificacao.textNotif }}</p>
       </div>
     </div>
 
@@ -30,7 +30,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { generalNotif } from '@/services/api';
+import { generalNotif, userService } from '@/services/api';
 
 const notificacoes = ref([]); // Define o estado das notificações como um array reativo
 
@@ -49,21 +49,38 @@ const formatDate = (dateString) => {
   return new Intl.DateTimeFormat('pt-BR', options).format(date);
 };
 
+// Função para buscar notificações públicas
 const fetchGeneralNotifications = async () => {
   try {
     const response = await generalNotif.getNotifGeral();
-    notificacoes.value = response.data;
-
-    // Ordena as notificações pela data de forma decrescente (mais recente primeiro)
-    notificacoes.value.sort((a, b) => new Date(b.dataNotif) - new Date(a.dataNotif));
+    return response.data;
   } catch (error) {
-    console.error('Erro ao buscar notificações:', error);
+    console.error('Erro ao buscar notificações gerais:', error);
+    return [];
+  }
+};
+
+// Função para buscar notificações privadas do usuário
+const fetchPrivateNotifications = async (userId) => {
+  try {
+    const response = await userService.getNotifPrivate(userId);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar notificações privadas:', error);
+    return [];
   }
 };
 
 // Carrega as notificações quando o componente é montado
-onMounted(() => {
-  fetchGeneralNotifications();
+onMounted(async () => {
+  const userId = "id_do_usuario"; // Substitua pelo ID do usuário atual
+  const publicNotifications = await fetchGeneralNotifications();
+  const privateNotifications = await fetchPrivateNotifications(userId);
+
+  notificacoes.value = [...publicNotifications, ...privateNotifications];
+
+  // Ordena as notificações pela data (mais recente primeiro)
+  notificacoes.value.sort((a, b) => new Date(b.dataNotif) - new Date(a.dataNotif));
 });
 </script>
 

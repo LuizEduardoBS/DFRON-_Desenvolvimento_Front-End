@@ -180,5 +180,24 @@ router.post('/:userId/notificacao_privada', async (req, res) => {
     }
 });
 
+// Rota para obter notificações privadas de um usuário
+router.get('/:userId/notificacoes_privadas', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Encontra o usuário pelo ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Retorna as notificações privadas do usuário
+        res.status(200).json({ privateNotif: user.privateNotif });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar notificações', error });
+    }
+});
+
+
 
 module.exports = router;

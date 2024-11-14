@@ -80,6 +80,12 @@ export const userService = {
     },
     postReservations(id, data) {
         return apiClient.post(`/auth/${id}/reservas`, data); // Obtém perfil do usuário por ID
+    },
+    postNotifPrivate(id, data) {
+        return apiClient.post(`/auth/${id}/notificacao_privada`, data); 
+    },
+    getNotifPrivate(id, data) {
+        return apiClient.get(`/auth/${id}/notificacoes_privadas`, data); 
     }
 };
 
