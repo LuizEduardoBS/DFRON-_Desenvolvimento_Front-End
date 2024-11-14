@@ -44,7 +44,7 @@ export default {
     });
 
     const authStore = useAuthStore();
-    const { token, permissions, status } = response.data;
+    const { token, permissions, status, userId } = response.data;
 
     if (status === 'Bloqueado') {
       this.message = 'Conta bloqueada. Procure o(a) bibliotecario(a)';
@@ -52,7 +52,7 @@ export default {
     }
     console.log(response.data.status)
 
-    authStore.login(token, permissions, status); // Armazenando status na store
+    authStore.login(token, permissions, status, userId); // Armazenando status na store
 
     this.message = 'Login bem-sucedido!';
 

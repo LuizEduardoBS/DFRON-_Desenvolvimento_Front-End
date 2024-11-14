@@ -159,7 +159,7 @@ export default {
 
   mounted() {
     // this.fetchUsers(); // Carrega os dados dos usuários quando o componente é montado
-
+    
     // // Verifica e obtém a permissão armazenada no localStorage
     // const permissions = localStorage.getItem("permissions");  
     // if (permissions) {

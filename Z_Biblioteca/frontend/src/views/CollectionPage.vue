@@ -70,6 +70,7 @@ export default {
       searchApplied: '', // Valor aplicado ao filtro após clicar em "Buscar"
       currentPage: 1, // Página atual
       booksPerPage: 18, // Quantidade de livros por página
+      userId: '',
     };
   },
   watch: {
@@ -132,9 +133,13 @@ export default {
   },
   mounted() {
     this.fetchBooks();
+    
     if (this.searchQuery) {
       this.applyFilter();
-    }
+    };
+
+    const userId = localStorage.getItem("userId");
+    console.log("userId do usuário:", userId);
   }
 };
 </script>

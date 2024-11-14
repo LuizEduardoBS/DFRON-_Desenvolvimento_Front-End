@@ -27,10 +27,10 @@ exports.register = async (req, res) => {
 
 // Função para fazer login de usuários
 exports.login = async (req, res) => {
-    const { email, password, status } = req.body;
+    const { email, password, status, user } = req.body;
 
     try {
-        // Busca usuário pelo nome
+        // Busca usuário pelo e-mail
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ error: 'Usuário não encontrado' });
 
@@ -41,12 +41,13 @@ exports.login = async (req, res) => {
         // Cria web token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        // Retorna o token e a permissão do usuário
+        // Retorna o token, a permissão do usuário, o status e o ID do usuário
         res.status(200).json({
             message: 'Login realizado',
             token: token,
             permissions: user.permissions, // Envia a permissão
-            status: user.status
+            status: user.status,
+            userId: user._id // Adiciona o ID do usuário na resposta
         });
     } catch (error) {
         console.error(error); // Loga o erro
