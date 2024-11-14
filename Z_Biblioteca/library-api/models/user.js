@@ -27,13 +27,11 @@ const userSchema = new mongoose.Schema({
     reservas: [
         {
             bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Referência para o livro
-            title: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
         },
     ],
     carrinho: [
         {
             bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Referência para o livro
-            availabilityBook: { type: Boolean },  // Disponibilidade como booleano
         },
     ],
 });
