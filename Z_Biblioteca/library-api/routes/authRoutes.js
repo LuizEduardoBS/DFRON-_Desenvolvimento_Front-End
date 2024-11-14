@@ -139,6 +139,21 @@ router.post('/:userId/carrinho', async (req, res) => {
     }
 });
 
+// Rota para buscar os livros no carrinho do usuário
+router.get('/:userId/carrinho', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await User.findById(userId).populate('carrinho.bookId'); // Popula os detalhes dos livros no carrinho
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        res.status(200).json({ carrinho: user.carrinho });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar livros do carrinho', error });
+    }
+});
+
+
 // Rota para adicionar um livro às reservas do usuário
 router.post('/:userId/reservas', async (req, res) => {
     const { userId } = req.params;
@@ -155,6 +170,20 @@ router.post('/:userId/reservas', async (req, res) => {
         res.status(200).json({ message: 'Livro adicionado às reservas', reservas: user.reservas });
     } catch (error) {
         res.status(500).json({ message: 'Erro ao adicionar livro às reservas', error });
+    }
+});
+
+// Rota para buscar os livros no carrinho do usuário
+router.get('/:userId/reservas', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await User.findById(userId).populate('reservas.bookId'); // Popula os detalhes dos livros no carrinho
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        res.status(200).json({ reservas: user.reservas });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar livros do reservas', error });
     }
 });
 

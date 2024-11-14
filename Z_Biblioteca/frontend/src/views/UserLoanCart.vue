@@ -77,6 +77,16 @@ import { RouterLink, RouterView } from 'vue-router'
   </main>
 </template>
 
+<script>
+export default {
+  data() {
+    
+  },
+
+}
+
+</script>
+
 <style scoped>
 .bloco-do-submenu {
   width: 1072px;
