@@ -8,7 +8,7 @@ const path = require('path');
 module.exports = (upload) => {
     router.post('/', upload.single('coverImage'), async (req, res) => { // Corrigido para 'coverImage'
         try {
-            const { title, author, year, availability, genre, copies, description } = req.body;
+            const { title, author, year, availability, genre, isbn, copies, description } = req.body;
 
             // Caminho da imagem (caso tenha sido enviada)
             const coverImage = req.file ? req.file.path : '';
@@ -19,6 +19,7 @@ module.exports = (upload) => {
                 year,
                 availability,
                 genre,
+                isbn,
                 copies,
                 description,
                 coverImage,
@@ -56,11 +57,11 @@ module.exports = (upload) => {
 
     // *** ATUALIZAÇÃO (PUT) ***
     router.put('/:id', async (req, res) => {
-        const { title, author, year, availability, genre, copies, description } = req.body;
+        const { title, author, year, availability, genre, isbn, copies, description } = req.body;
         try {
             const updatedBook = await Book.findByIdAndUpdate(
                 req.params.id,
-                { title, author, year, availability, genre, copies, description },
+                { title, author, year, availability, genre, isbn, copies, description },
                 { new: true }
             );
             res.status(200).json(updatedBook);

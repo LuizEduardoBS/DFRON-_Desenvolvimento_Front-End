@@ -5,12 +5,13 @@ const BookSchema = new mongoose.Schema({
     customId: { type: Number, unique: true },  // Campo para o ID customizado
     title: { type: String, required: true },
     author: { type: String, required: true },
-    year: { type: Number },
+    year: { type: Number, required: true },
     availability: { type: String, required: true }, 
     genre: { type: String, required: true }, 
+    isbn: { type: String, required: true },
     copies: { type: Number, required: true }, 
     description: { type: String, required: true }, 
-    coverImage: { type: String },
+    coverImage: { type: String, required: true },
     reviews: [
         {
             userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
