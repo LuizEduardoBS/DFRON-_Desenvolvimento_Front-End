@@ -1,7 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-usuario">
@@ -49,7 +45,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <script>
-import { booksService } from '@/services/api'
+import { userService } from '@/services/api'
 
 export default {
   data() {
@@ -57,12 +53,18 @@ export default {
     books: [], // Lista dos livros no carrinho
   }},
   methods: {
-    fetchBooksCart() {
-      booksService.getCart().then(response => {
-        this.books = response.data;
-      });
-    }
+  fetchBooksCart() {
+    const userId = localStorage.getItem('userId');
+    userService.getCart(userId).then(response => {
+      this.books = response.data.carrinho; // Ajuste para acessar o carrinho no response
+    }).catch(error => {
+      console.error("Erro ao carregar o carrinho:", error);
+    });
   }
+},
+mounted() {
+  this.fetchBooksCart();
+},
 
 }
 

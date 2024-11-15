@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const User = require('../models/user'); // Importa o modelo User
+const Book = require('../models/Book'); // Importa o modelo Book
 
 // Rota para registrar novos usuários
 router.post('/register', authController.register);
@@ -153,6 +154,96 @@ router.get('/:userId/carrinho', async (req, res) => {
     }
 });
 
+// Remove um livro do carrinho do usuário
+router.delete('/:userId/carrinho/:bookId', async (req, res) => {
+    const { userId, bookId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        user.carrinho = user.carrinho.filter(item => item.bookId.toString() !== bookId);
+        await user.save();
+
+        res.status(200).json({ message: 'Livro removido do carrinho', carrinho: user.carrinho });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao remover livro do carrinho', error });
+    }
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// Move um livro do carrinho para empréstimos, subtrai -1 do book.copies e soma +1 no emprestimos.qtdeBook
+router.post('/:userId/carrinho/:bookId/emprestimos', async (req, res) => {
+    const { userId, bookId } = req.params;
+
+    try {
+        console.log(`Iniciando a movimentação do livro para empréstimos. userId: ${userId}, bookId: ${bookId}`);
+
+        // Busca o usuário no banco de dados
+        const user = await User.findById(userId);
+        if (!user) {
+            console.error('Usuário não encontrado');
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Verifica se o livro está no carrinho do usuário
+        const bookIndex = user.carrinho.findIndex(item => item.bookId.toString() === bookId);
+        if (bookIndex === -1) {
+            console.error('Livro não encontrado no carrinho');
+            return res.status(404).json({ message: 'Livro não encontrado no carrinho' });
+        }
+
+        console.log('Livro encontrado no carrinho, movendo para empréstimos');
+
+        // Remove o livro do carrinho
+        user.carrinho.splice(bookIndex, 1);
+
+        // Calcula a data de devolução (15 dias após a data de empréstimo)
+        const dataEmprestimo = new Date();
+        const dataDevolucao = new Date(dataEmprestimo);
+        dataDevolucao.setDate(dataEmprestimo.getDate() + 15);
+
+        // Adiciona o livro à lista de empréstimos com status, data de empréstimo e data de devolução
+        user.emprestimos.push({ bookId, qtdeBook: 1, status: 'Solicitado', dataEmprestimo, dataDevolucao });
+
+        // Busca o livro no banco de dados
+        const book = await Book.findById(bookId);
+        if (book) {
+            console.log(`Livro encontrado no banco de dados: ${book.title}, cópias disponíveis: ${book.copies}`);
+            if (book.copies > 0) {
+                // Reduz a quantidade de cópias do livro
+                book.copies -= 1;
+                await book.save();
+                console.log(`Cópias atualizadas para o livro: ${book.copies}`);
+            } else {
+                console.error('Não há cópias disponíveis do livro');
+                return res.status(400).json({ message: 'Não há cópias disponíveis do livro' });
+            }
+        } else {
+            console.error('Livro não encontrado no banco de dados');
+            return res.status(404).json({ message: 'Livro não encontrado no banco de dados' });
+        }
+
+        // Salva as alterações no usuário
+        await user.save();
+        console.log('Empréstimo atualizado com sucesso para o usuário');
+
+        res.status(200).json({ message: 'Livro movido para empréstimos', emprestimos: user.emprestimos });
+    } catch (error) {
+        console.error('Erro ao mover livro para empréstimos:', error);
+        res.status(500).json({ message: 'Erro ao mover livro para empréstimos', error: error.message || error });
+    }
+});
+
+
+
+
+
+
+
 
 // Rota para adicionar um livro às reservas do usuário
 router.post('/:userId/reservas', async (req, res) => {
@@ -186,6 +277,98 @@ router.get('/:userId/reservas', async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar livros do reservas', error });
     }
 });
+
+// Remove um livro das reservas do usuário
+router.delete('/:userId/reservas/:bookId', async (req, res) => {
+    const { userId, bookId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        user.reservas = user.reservas.filter(item => item.bookId.toString() !== bookId);
+        await user.save();
+
+        res.status(200).json({ message: 'Livro removido das reservas', reservas: user.reservas });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao remover livro das reservas', error });
+    }
+});
+
+// Move um livro das reservas para empréstimos, subtrai -1 do book.copies e soma +1 no emprestimos.qtdeBook
+router.post('/:userId/reservas/:bookId/emprestimos', async (req, res) => {
+    const { userId, bookId } = req.params;
+
+    try {
+        console.log(`Iniciando a movimentação do livro das reservas para empréstimos. userId: ${userId}, bookId: ${bookId}`);
+
+        // Busca o usuário no banco de dados
+        const user = await User.findById(userId);
+        if (!user) {
+            console.error('Usuário não encontrado');
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Verifica se o livro está nas reservas do usuário
+        const reserveIndex = user.reservas.findIndex(item => item.bookId.toString() === bookId);
+        if (reserveIndex === -1) {
+            console.error('Livro não encontrado nas reservas');
+            return res.status(404).json({ message: 'Livro não encontrado nas reservas' });
+        }
+
+        console.log('Livro encontrado nas reservas, movendo para empréstimos');
+
+        // Remove o livro das reservas
+        const reservedBook = user.reservas.splice(reserveIndex, 1)[0];
+
+        // Calcula a data de devolução (15 dias após a data de empréstimo)
+        const dataEmprestimo = new Date();
+        const dataDevolucao = new Date(dataEmprestimo);
+        dataDevolucao.setDate(dataEmprestimo.getDate() + 15);
+
+        // Adiciona o livro à lista de empréstimos com status, data de empréstimo e data de devolução
+        user.emprestimos.push({
+            bookId: reservedBook.bookId, 
+            qtdeBook: 1, 
+            status: 'Solicitado', 
+            dataEmprestimo, 
+            dataDevolucao // Assegurando que a data de devolução é adicionada corretamente
+        });
+
+        // Busca o livro no banco de dados
+        const book = await Book.findById(bookId);
+        if (book) {
+            console.log(`Livro encontrado no banco de dados: ${book.title}, cópias disponíveis: ${book.copies}`);
+            if (book.copies > 0) {
+                // Reduz a quantidade de cópias do livro
+                book.copies -= 1;
+                await book.save();
+                console.log(`Cópias atualizadas para o livro: ${book.copies}`);
+            } else {
+                console.error('Não há cópias disponíveis do livro');
+                return res.status(400).json({ message: 'Não há cópias disponíveis do livro' });
+            }
+        } else {
+            console.error('Livro não encontrado no banco de dados');
+            return res.status(404).json({ message: 'Livro não encontrado no banco de dados' });
+        }
+
+        // Salva as alterações no usuário
+        await user.save();
+        console.log('Empréstimo atualizado com sucesso para o usuário');
+
+        res.status(200).json({ message: 'Livro movido para empréstimos', emprestimos: user.emprestimos });
+    } catch (error) {
+        console.error('Erro ao mover livro para empréstimos:', error);
+        res.status(500).json({ message: 'Erro ao mover livro para empréstimos', error: error.message || error });
+    }
+});
+
+
+
+
+
+
 
 // Rota para adicionar uma notificação privada
 router.post('/:userId/notificacao_privada', async (req, res) => {

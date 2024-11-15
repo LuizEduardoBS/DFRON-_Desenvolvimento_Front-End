@@ -8,7 +8,7 @@ const BookSchema = new mongoose.Schema({
     year: { type: Number, required: true },
     availability: { type: String, required: true }, 
     genre: { type: String, required: true }, 
-    isbn: { type: String, required: true },
+    isbn: { type: String }, // , required: true
     copies: { type: Number, required: true }, 
     description: { type: String, required: true }, 
     coverImage: { type: String, required: true },
