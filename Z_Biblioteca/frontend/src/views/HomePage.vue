@@ -53,6 +53,8 @@
 
 <script>
 import { booksService } from '@/services/api';
+import { userService } from '@/services/api';
+import { useAuthStore } from '@/stores/authStore';
 
 export default {
   data() {
@@ -82,6 +84,33 @@ export default {
     applyCategoryFilter(category) {
       // Define o valor de searchQuery como o nome da categoria e redireciona para o acervo
       this.$router.push({ name: 'acervo', query: { search: category } });
+    },
+    async addToCart(book) {
+      try {
+        const authStore = useAuthStore();
+        authStore.checkAuthStatus(); // Verifica o estado de login
+
+        if (!authStore.isLoggedIn) {
+          alert("Você precisa estar logado para adicionar um livro ao carrinho.");
+          return;
+        }
+
+        const userId = localStorage.getItem("userId");
+
+        if (!userId) {
+          alert("ID do usuário não encontrado.");
+          return;
+        }
+
+        const response = await userService.postCart(userId, { bookId: book._id });
+
+        if (response.status === 200) {
+          alert("Livro adicionado ao carrinho com sucesso!");
+        }
+      } catch (error) {
+        console.error("Erro ao adicionar o livro ao carrinho:", error);
+        alert("Ocorreu um erro ao adicionar o livro ao carrinho.");
+      }
     }
   },
   mounted() {

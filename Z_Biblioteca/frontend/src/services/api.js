@@ -76,10 +76,16 @@ export const userService = {
         return apiClient.get(`/auth/${id}`); // Obtém perfil do usuário por ID
     },
     postCart(id, data) {
-        return apiClient.post(`/auth/${id}/carrinho`, data); // Obtém perfil do usuário por ID
+        return apiClient.post(`/auth/${id}/carrinho`, data); // Envia um livro para o carrinho
+    },
+    getCart(id) {
+        return apiClient.post(`/auth/${id}/carrinho`); // AAAAAAAAAAAAAAAA
     },
     postReservations(id, data) {
-        return apiClient.post(`/auth/${id}/reservas`, data); // Obtém perfil do usuário por ID
+        return apiClient.post(`/auth/${id}/reservas`, data); // Envia um livro para o reservas
+    },
+    getReservations(id) {
+        return apiClient.post(`/auth/${id}/reservas`); // AAAAAAAAAAAAAAAA
     },
     postNotifPrivate(id, data) {
         return apiClient.post(`/auth/${id}/notificacao_privada`, data); 
