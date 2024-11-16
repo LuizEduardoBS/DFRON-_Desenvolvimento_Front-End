@@ -232,9 +232,17 @@ router.post('/:userId/carrinho/emprestimos', async (req, res) => {
             const book = await Book.findById(bookId);
             if (book) {
                 console.log(`Livro encontrado no banco de dados: ${book.title}, cópias disponíveis: ${book.copies}`);
+
                 if (book.copies > 0) {
                     // Reduz a quantidade de cópias disponíveis
                     book.copies -= 1;
+
+                    // Verifica se as cópias chegaram a zero e atualiza a disponibilidade
+                    if (book.copies === 0) {
+                        book.availability = 'Indisponível';
+                        console.log(`Cópias esgotadas para o livro: ${book.title}. Alterando disponibilidade para "Indisponível".`);
+                    }
+
                     await book.save();
                     console.log(`Cópias atualizadas para o livro: ${book.copies}`);
                 } else {
@@ -258,6 +266,7 @@ router.post('/:userId/carrinho/emprestimos', async (req, res) => {
         res.status(500).json({ message: 'Erro ao mover livros para empréstimos', error: error.message || error });
     }
 });
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -373,9 +382,17 @@ router.post('/:userId/reservas/emprestimos', async (req, res) => {
             const book = await Book.findById(bookId);
             if (book) {
                 console.log(`Livro encontrado no banco de dados: ${book.title}, cópias disponíveis: ${book.copies}`);
+
                 if (book.copies > 0) {
                     // Reduz a quantidade de cópias disponíveis
                     book.copies -= 1;
+
+                    // Verifica se as cópias chegaram a zero e atualiza a disponibilidade
+                    if (book.copies === 0) {
+                        book.availability = 'Indisponível';
+                        console.log(`Cópias esgotadas para o livro: ${book.title}. Alterando disponibilidade para "Indisponível".`);
+                    }
+
                     await book.save();
                     console.log(`Cópias atualizadas para o livro: ${book.copies}`);
                 } else {
@@ -388,11 +405,11 @@ router.post('/:userId/reservas/emprestimos', async (req, res) => {
             }
         }
 
-        // Limpa o reservas após mover todos os livros para empréstimos
+        // Limpa o carrinho após mover todos os livros para empréstimos
         user.reservas = [];
         await user.save();
 
-        console.log('Todos os livros foram movidos do reservas para empréstimos com sucesso');
+        console.log('Todos os livros foram movidos do carrinho para empréstimos com sucesso');
         res.status(200).json({ message: 'Todos os livros foram movidos para empréstimos', emprestimos: user.emprestimos });
     } catch (error) {
         console.error('Erro ao mover livros para empréstimos:', error);
