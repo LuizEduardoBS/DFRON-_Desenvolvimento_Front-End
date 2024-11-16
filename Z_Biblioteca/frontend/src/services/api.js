@@ -100,6 +100,15 @@ export const userService = {
     getReservations(id) {
         return apiClient.get(`/auth/${id}/reservas`); // AAAAAAAAAAAAAAAA
     },
+    deleteReservations(userId, bookId) {
+        return apiClient.delete(`/auth/${userId}/reservas/${bookId}`); // Deleta um livro do carrinho pelo id
+    },
+    deleteAllBooksReservations(userId) {
+        return apiClient.delete(`/auth/${userId}/reservas`); // Deleta todos os livros do carrinho
+    },
+    moveReservationsBooksToLoans(userId) {
+        return apiClient.post(`/auth/${userId}/reservas/emprestimos`); // Deleta todos os livros do carrinho
+    },
     ////////////////////////////////////////////////////////////////////////////////////////////
     // ROTAS PARA LIDAR COM O RESERVAS DO USUÁRIO
     postNotifPrivate(id, data) {

@@ -28,7 +28,7 @@
             <span>{{ book.bookId.title || 'Nome do livro não disponível' }}</span>
           </div>
           <div>
-            <span><strong>Status</strong> <span class="status-livro-card" id="">{{ book.availability }}</span></span>
+            <span><strong>Status</strong> <span class="status-livro-card" id="">{{ book.bookId.availability || '...' }}</span></span>
           </div>
         </div>
 

@@ -17,57 +17,19 @@ import { RouterLink, RouterView } from 'vue-router'
 
       <div class="bloco-cards-reservas">
 
-        <div class="card-reserva">
+        <div class="card-reserva" v-for="book in books" :key="book._id">
           <div class="icone-excluir-card-reserva">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+            <svg @click="deleteBookReservations(book.bookId._id)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
             </svg>
           </div>
           <img src="" alt="">
           <div>
-            <span>Nome do livro<br>Aparece aqui</span>
+            <span>{{ book.bookId.title || 'Nome do livro não disponível' }}</span>
           </div>
           <div>
-            <span><strong>Status</strong> <span class="status-livro-reservado" id="">Indisponível</span></span>
-          </div>
-          <div>
-            <span><strong>Previsão</strong> <span id="">03/09/2024</span></span>
-          </div>
-        </div>
-
-        <div class="card-reserva">
-          <div class="icone-excluir-card-reserva">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-            </svg>
-          </div>
-          <img src="" alt="">
-          <div>
-            <span>Nome do livro<br>Aparece aqui</span>
-          </div>
-          <div>
-            <span><strong>Status</strong> <span class="status-livro-reservado" id="">Indisponível</span></span>
-          </div>
-          <div>
-            <span><strong>Previsão</strong> <span id="">03/09/2024</span></span>
-          </div>
-        </div>
-
-        <div class="card-reserva">
-          <div class="icone-excluir-card-reserva">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-            </svg>
-          </div>
-          <img src="" alt="">
-          <div>
-            <span>Nome do livro<br>Aparece aqui</span>
-          </div>
-          <div>
-            <span><strong>Status</strong> <span class="status-livro-reservado" id="">Indisponível</span></span>
+            <span><strong>Status</strong> <span class="status-livro-reservado" id="">{{ book.bookId.availability || '...' }}</span></span>
           </div>
           <div>
             <span><strong>Previsão</strong> <span id="">03/09/2024</span></span>
@@ -75,12 +37,132 @@ import { RouterLink, RouterView } from 'vue-router'
         </div>
       </div>
 
-      <div class="bloco-botao-reservas">
-        <div class="botao-solicitar-emprestimo-reservas"><span>Solicitar Empréstimo</span></div>
+      <div class="bloco-botao-reservas" v-if="books.length > 0">
+        <button class="botao-solicitar-emprestimo-reservas" @click="moveToLoans()"><span>Solicitar Empréstimo</span></button>
+        <button class="botao-esvaziar-reservas" @click="cleanCartBook()"><span>Esvaziar Reservas</span></button>
+      </div>
+      <div class="bloco-botoes-carrinho" v-else>
+        <div style="font-size: 18px;">Seu carrinho está vazio!</div>
       </div>
     </div>
   </main>
 </template>
+
+<script>
+import { userService } from '@/services/api'
+
+export default {
+  data() {
+    return {
+    books: [], // Lista dos livros no carrinho
+  }},
+  methods: {
+  // Busca Os livros no carrinho
+  fetchBooksReservations() {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      console.error("Usuário não encontrado no localStorage");
+      return;
+    }
+
+    userService.getReservations(userId).then(response => {
+      // Verifique se a resposta tem a estrutura esperada
+      if (response.data && response.data.reservas) {
+        this.books = response.data.reservas; // Ajuste para acessar o carrinho no response
+        console.log("Livros reservados:", this.books); // Verifique se os livros estão sendo carregados corretamente
+      } else {
+        console.error("Reservas vazio ou dados inválidos:", response);
+      }
+    }).catch(error => {
+      console.error("Erro ao carregar as reservas:", error);
+    });
+  },
+  deleteBookReservations(bookId) {
+    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário
+    
+    // Verifica se o userId foi recuperado corretamente
+    if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+    }
+
+    userService.deleteReservations(userId, bookId)
+      .then(response => {
+        console.log("Livro removido do reservas com sucesso!");
+        
+        // Atualiza a lista de livros no reservas após a remoção
+        this.books = this.books.filter(book => book.bookId._id !== bookId);
+
+        // Opcional: Exibir um alerta ou mensagem de sucesso para o usuário
+        alert("Livro removido do reservas!");
+      })
+      .catch(error => {
+        console.error("Erro ao remover livro do reservas:", error);
+        
+        // Opcional: Exibir uma mensagem de erro para o usuário
+        alert("Erro ao remover livro do reservas.");
+      });
+  },
+  cleanCartBook() {
+    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário
+    
+    // Verifica se o userId foi recuperado corretamente
+    if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+    }
+    userService.deleteAllBooksReservations(userId)
+      .then(response => {
+        console.log("Reservas esvaziado com sucesso!", response);
+
+        // Atualiza a lista para refletir o carrinho vazio
+        this.books = [];
+
+        // Opcional: Exibir um alerta ou mensagem de sucesso para o usuário
+        alert("Reservas esvaziado com sucesso!");
+      })
+      .catch(error => {
+        console.error("Erro ao esvaziar reservas:", error);
+
+        // Opcional: Exibir uma mensagem de erro para o usuário
+        alert("Erro ao esvaziar o carrinho.");
+      });
+  },
+  moveToLoans() {
+    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário
+    
+    // Verifica se o userId foi recuperado corretamente
+    if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+    }
+    userService.moveReservationsBooksToLoans(userId)
+      .then(response => {
+        console.log("Empréstimo solicitado com sucesso!", response);
+
+        // Atualiza a lista para refletir o carrinho vazio
+        this.books = [];
+
+        // Opcional: Exibir um alerta ou mensagem de sucesso para o usuário
+        alert("Empréstimo solicitado com sucesso!");
+      })
+      .catch(error => {
+        console.error("Erro ao solicitar empréstimo de livros:", error);
+
+        // Opcional: Exibir uma mensagem de erro para o usuário
+        alert("Erro ao solicitar empréstimo de livros.");
+      });
+
+  },
+
+},
+mounted() {
+  this.fetchBooksReservations();
+},
+
+}
+
+</script>
 
 <style scoped>
 .bloco-do-submenu {
@@ -120,25 +202,6 @@ import { RouterLink, RouterView } from 'vue-router'
   text-decoration: underline;
 }
 
-.botao-escolher-livro {
-  width: 173px;
-  height: 47px;
-  background-color: #0C8CE9;
-  margin-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 5px;
-}
-
-.botao-escolher-livro:hover {
-  color: #0C8CE9;
-  background-color: #fff;
-  border: 1px solid #0C8CE9;
-}
 
 /* ########################################### */
 /* RESERVAS DO USUARIO */
@@ -208,6 +271,9 @@ import { RouterLink, RouterView } from 'vue-router'
 }
 
 .bloco-botao-reservas {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 20px;
   margin-top: 20px;
 }
@@ -219,15 +285,36 @@ import { RouterLink, RouterView } from 'vue-router'
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #d9d9d9;
+  background-color: #00A65A;
   font-size: 18px;
   font-weight: bold;
-  color: #8e8e8e;
+  color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px -2px #989898;
+  border: none;
 }
 
 .botao-solicitar-emprestimo-reservas:hover {
-  background-color: #e7e7e7;
+  background-color: #00cc70;
+}
+
+.botao-esvaziar-reservas {
+  width: 215px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F39C11;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px -2px #989898;
+  border: none;
+}
+
+.botao-esvaziar-reservas:hover {
+  background-color: #ffb339;
 }
 </style>
