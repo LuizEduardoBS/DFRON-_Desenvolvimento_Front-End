@@ -18,17 +18,17 @@
 
         <div class="card-carrinho" v-for="book in books" :key="book._id">
           <div class="icone-excluir-card">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+            <svg @click="deleteBookCart(book.bookId._id)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
             </svg>
           </div>
           <img src="" alt="">
           <div>
-            <span>Nome do livro<br>Aparece aqui</span>
+            <span>{{ book.bookId.title || 'Nome do livro não disponível' }}</span>
           </div>
           <div>
-            <span><strong>Status</strong> <span class="status-livro-card" id="">Disponivel</span></span>
+            <span><strong>Status</strong> <span class="status-livro-card" id="">{{ book.availability }}</span></span>
           </div>
         </div>
 
@@ -36,9 +36,12 @@
         
       </div>
 
-      <div class="bloco-botoes-carrinho">
-        <div class="botao-solicitar-emprestimo"><span>Solicitar Empréstimo</span></div>
-        <div class="botao-esvaziar-carrinho"><span>Esvaziar Carrinho</span></div>
+      <div class="bloco-botoes-carrinho" v-if="books.length > 0">
+        <button class="botao-solicitar-emprestimo" @click="moveToLoans()"><span>Solicitar Empréstimo</span></button>
+        <button class="botao-esvaziar-carrinho" @click="cleanCartBook()"><span>Esvaziar Carrinho</span></button>
+      </div>
+      <div class="bloco-botoes-carrinho" v-else>
+        <div style="font-size: 18px;">Seu carrinho está vazio!</div>
       </div>
     </div>
   </main>
@@ -53,14 +56,104 @@ export default {
     books: [], // Lista dos livros no carrinho
   }},
   methods: {
+  // Busca Os livros no carrinho
   fetchBooksCart() {
     const userId = localStorage.getItem('userId');
+    if (!userId) {
+      console.error("Usuário não encontrado no localStorage");
+      return;
+    }
+
     userService.getCart(userId).then(response => {
-      this.books = response.data.carrinho; // Ajuste para acessar o carrinho no response
+      // Verifique se a resposta tem a estrutura esperada
+      if (response.data && response.data.carrinho) {
+        this.books = response.data.carrinho; // Ajuste para acessar o carrinho no response
+        console.log("Livros no carrinho:", this.books); // Verifique se os livros estão sendo carregados corretamente
+      } else {
+        console.error("Carrinho vazio ou dados inválidos:", response);
+      }
     }).catch(error => {
       console.error("Erro ao carregar o carrinho:", error);
     });
-  }
+  },
+  deleteBookCart(bookId) {
+    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário
+    
+    // Verifica se o userId foi recuperado corretamente
+    if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+    }
+
+    userService.deleteCart(userId, bookId)
+      .then(response => {
+        console.log("Livro removido do carrinho com sucesso!");
+        
+        // Atualiza a lista de livros no carrinho após a remoção
+        this.books = this.books.filter(book => book.bookId._id !== bookId);
+
+        // Opcional: Exibir um alerta ou mensagem de sucesso para o usuário
+        alert("Livro removido do carrinho!");
+      })
+      .catch(error => {
+        console.error("Erro ao remover livro do carrinho:", error);
+        
+        // Opcional: Exibir uma mensagem de erro para o usuário
+        alert("Erro ao remover livro do carrinho.");
+      });
+  },
+  cleanCartBook() {
+    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário
+    
+    // Verifica se o userId foi recuperado corretamente
+    if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+    }
+    userService.deleteAllBooksCart(userId)
+      .then(response => {
+        console.log("Carrinho esvaziado com sucesso!", response);
+
+        // Atualiza a lista para refletir o carrinho vazio
+        this.books = [];
+
+        // Opcional: Exibir um alerta ou mensagem de sucesso para o usuário
+        alert("Carrinho esvaziado com sucesso!");
+      })
+      .catch(error => {
+        console.error("Erro ao esvaziar carrinho:", error);
+
+        // Opcional: Exibir uma mensagem de erro para o usuário
+        alert("Erro ao esvaziar o carrinho.");
+      });
+  },
+  moveToLoans() {
+    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário
+    
+    // Verifica se o userId foi recuperado corretamente
+    if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+    }
+    userService.moveBooksToLoans(userId)
+      .then(response => {
+        console.log("Empréstimo solicitado com sucesso!", response);
+
+        // Atualiza a lista para refletir o carrinho vazio
+        this.books = [];
+
+        // Opcional: Exibir um alerta ou mensagem de sucesso para o usuário
+        alert("Empréstimo solicitado com sucesso!");
+      })
+      .catch(error => {
+        console.error("Erro ao solicitar empréstimo de livros:", error);
+
+        // Opcional: Exibir uma mensagem de erro para o usuário
+        alert("Erro ao solicitar empréstimo de livros.");
+      });
+
+  },
+
 },
 mounted() {
   this.fetchBooksCart();
@@ -108,26 +201,6 @@ mounted() {
   text-decoration: underline;
 }
 
-.botao-escolher-livro {
-  width: 173px;
-  height: 47px;
-  background-color: #0C8CE9;
-  margin-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 5px;
-}
-
-.botao-escolher-livro:hover {
-  color: #0C8CE9;
-  background-color: #fff;
-  border: 1px solid #0C8CE9;
-}
-
 /* ########################################### */
 /* CARRINHO DO USUARIO */
 .main-usuario-carrinho {
@@ -139,7 +212,7 @@ mounted() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   font-size: 18px;
 }
 
@@ -148,7 +221,7 @@ mounted() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 .notificacao-livro-indisponivel {
@@ -161,6 +234,7 @@ mounted() {
   height: 40px;
   border-radius: 10px;
   margin-bottom: 5px;
+  margin-top: 20px;
 }
 
 .bloco-cards-carrinho {
@@ -229,6 +303,7 @@ mounted() {
   color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px -2px #989898;
+  border: none;
 }
 
 .botao-solicitar-emprestimo:hover {
@@ -248,6 +323,7 @@ mounted() {
   color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px -2px #989898;
+  border: none;
 }
 
 .botao-esvaziar-carrinho:hover {

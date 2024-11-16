@@ -121,6 +121,9 @@ router.delete('/:userId', async (req, res) => {
     }
 });
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// ROTAS PARA LIDAR COM O CARRINHO DO USUÁRIO
+
 // Rota para adicionar um livro ao carrinho do usuário
 router.post('/:userId/carrinho', async (req, res) => {
     const { userId } = req.params;
@@ -156,13 +159,13 @@ router.get('/:userId/carrinho', async (req, res) => {
 
 // Remove um livro do carrinho do usuário
 router.delete('/:userId/carrinho/:bookId', async (req, res) => {
-    const { userId, bookId } = req.params;
+    const { userId, bookId } = req.params;  // Obtendo o userId e bookId da URL
 
     try {
-        const user = await User.findById(userId);
+        const user = await User.findById(userId);  // Buscando o usuário
         if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
 
-        user.carrinho = user.carrinho.filter(item => item.bookId.toString() !== bookId);
+        user.carrinho = user.carrinho.filter(item => item.bookId.toString() !== bookId); // Filtra o carrinho
         await user.save();
 
         res.status(200).json({ message: 'Livro removido do carrinho', carrinho: user.carrinho });
@@ -171,16 +174,29 @@ router.delete('/:userId/carrinho/:bookId', async (req, res) => {
     }
 });
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-// Move um livro do carrinho para empréstimos, subtrai -1 do book.copies e soma +1 no emprestimos.qtdeBook
-router.post('/:userId/carrinho/:bookId/emprestimos', async (req, res) => {
-    const { userId, bookId } = req.params;
+// Remove todos os livros do carrinho do usuário
+router.delete('/:userId/carrinho', async (req, res) => {
+    const { userId } = req.params;  // Obtendo o userId da URL
 
     try {
-        console.log(`Iniciando a movimentação do livro para empréstimos. userId: ${userId}, bookId: ${bookId}`);
+        const user = await User.findById(userId);  // Buscando o usuário
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        user.carrinho = []; // Limpa o carrinho (remove todos os livros)
+        await user.save();
+
+        res.status(200).json({ message: 'Todos os livros foram removidos do carrinho', carrinho: user.carrinho });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao remover livros do carrinho', error });
+    }
+});
+
+// Move todos os livros do carrinho para empréstimos
+router.post('/:userId/carrinho/emprestimos', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        console.log(`Iniciando movimentação de todos os livros do carrinho para empréstimos. userId: ${userId}`);
 
         // Busca o usuário no banco de dados
         const user = await User.findById(userId);
@@ -189,61 +205,63 @@ router.post('/:userId/carrinho/:bookId/emprestimos', async (req, res) => {
             return res.status(404).json({ message: 'Usuário não encontrado' });
         }
 
-        // Verifica se o livro está no carrinho do usuário
-        const bookIndex = user.carrinho.findIndex(item => item.bookId.toString() === bookId);
-        if (bookIndex === -1) {
-            console.error('Livro não encontrado no carrinho');
-            return res.status(404).json({ message: 'Livro não encontrado no carrinho' });
+        if (!user.carrinho || user.carrinho.length === 0) {
+            console.error('Carrinho vazio');
+            return res.status(400).json({ message: 'O carrinho está vazio' });
         }
 
-        console.log('Livro encontrado no carrinho, movendo para empréstimos');
+        // Itera sobre os livros no carrinho
+        for (const item of user.carrinho) {
+            const bookId = item.bookId;
 
-        // Remove o livro do carrinho
-        user.carrinho.splice(bookIndex, 1);
+            // Calcula as datas de empréstimo e devolução
+            const dataEmprestimo = new Date();
+            const dataDevolucao = new Date(dataEmprestimo);
+            dataDevolucao.setDate(dataEmprestimo.getDate() + 15);
 
-        // Calcula a data de devolução (15 dias após a data de empréstimo)
-        const dataEmprestimo = new Date();
-        const dataDevolucao = new Date(dataEmprestimo);
-        dataDevolucao.setDate(dataEmprestimo.getDate() + 15);
+            // Adiciona o livro à lista de empréstimos
+            user.emprestimos.push({
+                bookId,
+                qtdeBook: 1,
+                status: 'Solicitado',
+                dataEmprestimo,
+                dataDevolucao,
+            });
 
-        // Adiciona o livro à lista de empréstimos com status, data de empréstimo e data de devolução
-        user.emprestimos.push({ bookId, qtdeBook: 1, status: 'Solicitado', dataEmprestimo, dataDevolucao });
-
-        // Busca o livro no banco de dados
-        const book = await Book.findById(bookId);
-        if (book) {
-            console.log(`Livro encontrado no banco de dados: ${book.title}, cópias disponíveis: ${book.copies}`);
-            if (book.copies > 0) {
-                // Reduz a quantidade de cópias do livro
-                book.copies -= 1;
-                await book.save();
-                console.log(`Cópias atualizadas para o livro: ${book.copies}`);
+            // Busca o livro no banco de dados
+            const book = await Book.findById(bookId);
+            if (book) {
+                console.log(`Livro encontrado no banco de dados: ${book.title}, cópias disponíveis: ${book.copies}`);
+                if (book.copies > 0) {
+                    // Reduz a quantidade de cópias disponíveis
+                    book.copies -= 1;
+                    await book.save();
+                    console.log(`Cópias atualizadas para o livro: ${book.copies}`);
+                } else {
+                    console.warn(`Não há cópias disponíveis para o livro: ${book.title}`);
+                    return res.status(400).json({ message: `Não há cópias disponíveis para o livro: ${book.title}` });
+                }
             } else {
-                console.error('Não há cópias disponíveis do livro');
-                return res.status(400).json({ message: 'Não há cópias disponíveis do livro' });
+                console.error(`Livro com ID ${bookId} não encontrado no banco de dados`);
+                return res.status(404).json({ message: `Livro com ID ${bookId} não encontrado no banco de dados` });
             }
-        } else {
-            console.error('Livro não encontrado no banco de dados');
-            return res.status(404).json({ message: 'Livro não encontrado no banco de dados' });
         }
 
-        // Salva as alterações no usuário
+        // Limpa o carrinho após mover todos os livros para empréstimos
+        user.carrinho = [];
         await user.save();
-        console.log('Empréstimo atualizado com sucesso para o usuário');
 
-        res.status(200).json({ message: 'Livro movido para empréstimos', emprestimos: user.emprestimos });
+        console.log('Todos os livros foram movidos do carrinho para empréstimos com sucesso');
+        res.status(200).json({ message: 'Todos os livros foram movidos para empréstimos', emprestimos: user.emprestimos });
     } catch (error) {
-        console.error('Erro ao mover livro para empréstimos:', error);
-        res.status(500).json({ message: 'Erro ao mover livro para empréstimos', error: error.message || error });
+        console.error('Erro ao mover livros para empréstimos:', error);
+        res.status(500).json({ message: 'Erro ao mover livros para empréstimos', error: error.message || error });
     }
 });
 
 
-
-
-
-
-
+////////////////////////////////////////////////////////////////////////////////////////////
+// ROTAS PARA LIDAR COM O RESERVAS DO USUÁRIO
 
 // Rota para adicionar um livro às reservas do usuário
 router.post('/:userId/reservas', async (req, res) => {
@@ -280,20 +298,39 @@ router.get('/:userId/reservas', async (req, res) => {
 
 // Remove um livro das reservas do usuário
 router.delete('/:userId/reservas/:bookId', async (req, res) => {
-    const { userId, bookId } = req.params;
+    const { userId, bookId } = req.params;  // Obtendo o userId e bookId da URL
 
     try {
-        const user = await User.findById(userId);
+        const user = await User.findById(userId);  // Buscando o usuário
         if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
 
-        user.reservas = user.reservas.filter(item => item.bookId.toString() !== bookId);
+        user.reservas = user.reservas.filter(item => item.bookId.toString() !== bookId); // Filtra o reservas
         await user.save();
 
-        res.status(200).json({ message: 'Livro removido das reservas', reservas: user.reservas });
+        res.status(200).json({ message: 'Livro removido do reservas', reservas: user.reservas });
     } catch (error) {
-        res.status(500).json({ message: 'Erro ao remover livro das reservas', error });
+        res.status(500).json({ message: 'Erro ao remover livro do reservas', error });
     }
 });
+
+// Remove todos os livros do carrinho do usuário
+router.delete('/:userId/reservas', async (req, res) => {
+    const { userId } = req.params;  // Obtendo o userId da URL
+
+    try {
+        const user = await User.findById(userId);  // Buscando o usuário
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        user.reservas = []; // Limpa o carrinho (remove todos os livros)
+        await user.save();
+
+        res.status(200).json({ message: 'Todos os livros foram removidos do reservas', reservas: user.reservas });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao remover livros do carrinho', error });
+    }
+});
+
+//////////////////////////////////////////////////
 
 // Move um livro das reservas para empréstimos, subtrai -1 do book.copies e soma +1 no emprestimos.qtdeBook
 router.post('/:userId/reservas/:bookId/emprestimos', async (req, res) => {

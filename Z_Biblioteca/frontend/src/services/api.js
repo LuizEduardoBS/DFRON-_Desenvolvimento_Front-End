@@ -75,18 +75,33 @@ export const userService = {
     getProfileById(id) {
         return apiClient.get(`/auth/${id}`); // Obtém perfil do usuário por ID
     },
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // ROTAS PARA LIDAR COM O CARRINHO DO USUÁRIO
     postCart(id, data) {
         return apiClient.post(`/auth/${id}/carrinho`, data); // Envia um livro para o carrinho
     },
     getCart(id) {
-        return apiClient.get(`/auth/${id}/carrinho`); // AAAAAAAAAAAAAAAA
+        return apiClient.get(`/auth/${id}/carrinho`); // Busca todos os livros no carrinho
     },
+    deleteCart(userId, bookId) {
+        return apiClient.delete(`/auth/${userId}/carrinho/${bookId}`); // Deleta um livro do carrinho pelo id
+    },
+    deleteAllBooksCart(userId) {
+        return apiClient.delete(`/auth/${userId}/carrinho`); // Deleta todos os livros do carrinho
+    },
+    moveBooksToLoans(userId) {
+        return apiClient.post(`/auth/${userId}/carrinho/emprestimos`); // Deleta todos os livros do carrinho
+    },
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // ROTAS PARA LIDAR COM O RESERVAS DO USUÁRIO
     postReservations(id, data) {
         return apiClient.post(`/auth/${id}/reservas`, data); // Envia um livro para o reservas
     },
     getReservations(id) {
         return apiClient.get(`/auth/${id}/reservas`); // AAAAAAAAAAAAAAAA
     },
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // ROTAS PARA LIDAR COM O RESERVAS DO USUÁRIO
     postNotifPrivate(id, data) {
         return apiClient.post(`/auth/${id}/notificacao_privada`, data); 
     },
