@@ -42,7 +42,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <button class="botao-esvaziar-reservas" @click="cleanCartBook()"><span>Esvaziar Reservas</span></button>
       </div>
       <div class="bloco-botoes-carrinho" v-else>
-        <div style="font-size: 18px;">Seu carrinho está vazio!</div>
+        <div style="font-size: 18px;">Sua área de reservas está vazia!</div>
       </div>
     </div>
   </main>
