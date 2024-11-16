@@ -17,7 +17,7 @@
         <span><strong>{{ notificacao.status || notificacao.status }}</strong></span>
       </div>
       <div class="texto-da-notificacao">
-        <h2><strong>{{ notificacao.title || "123" }} - {{ formatDate(notificacao.dataNotif) }}</strong></h2>
+        <h2><strong>{{ notificacao.title || "Atenção" }} - {{ formatDate(notificacao.dataNotif) }}</strong></h2>
         <p>{{ notificacao.textNotifGeneral || notificacao.textNotif }}</p>
       </div>
     </div>
@@ -133,7 +133,7 @@ onMounted(async () => {
 
 .main-usuario-notificacoes {
   width: 1072px;
-  height: 756px;
+  height: 100%;
   background-color: #fff;
   margin-top: 20px;
   display: flex;
