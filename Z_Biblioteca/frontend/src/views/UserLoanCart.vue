@@ -11,7 +11,8 @@
   <main class="main-usuario-carrinho">
     <div class="conteudo-bloco-carrinho">
       <div>
-        <span class="notificacao-livro-indisponivel">*Livros com status indisponível serão enviados para a sessão de reservados. Quando ficar disponível você será notificado.</span>
+        <span class="notificacao-livro-indisponivel">
+          *Atenção: No máximo 3 livros emprestado. Se ja estiver com 1 pode solicitar apenas 2, se estiver com 2 pode solicitar apenas 1.</span>
       </div>
 
       <div class="bloco-cards-carrinho">
@@ -37,7 +38,12 @@
       </div>
 
       <div class="bloco-botoes-carrinho" v-if="books.length > 0">
-        <button class="botao-solicitar-emprestimo" @click="moveToLoans()"><span>Solicitar Empréstimo</span></button>
+        <button class="botao-solicitar-emprestimo" 
+          :class="{ disabled: isBookDisabled(book) }"
+          :disabled="isBookDisabled(book)"
+          @click="moveToLoans()">
+          <span>Solicitar Empréstimo</span>
+        </button>
         <button class="botao-esvaziar-carrinho" @click="cleanCartBook()"><span>Esvaziar Carrinho</span></button>
       </div>
       <div class="bloco-botoes-carrinho" v-else>
@@ -54,7 +60,48 @@ export default {
   data() {
     return {
     books: [], // Lista dos livros no carrinho
+    userLoans: [], // Empréstimos do usuário
+    activeLoansCount: [],
+    book: ''
   }},
+  computed: {
+    isBookDisabled() {
+      return (book) => {
+        const isRestricted = ["negado", "devolvido"]; // Status normalizados
+
+        // Contar quantos livros no empréstimo não estão com status "negado" ou "devolvido"
+        const activeLoansCount = this.userLoans.filter(
+          item => !isRestricted.includes(item.status.toLowerCase())
+        ).length;
+
+        // Verificar se o livro já está no empréstimo
+        const isInLoan = this.userLoans.some(
+          item => item.bookId._id === book.bookId && !isRestricted.includes(item.status.toLowerCase())
+        );
+
+        // Verificar disponibilidade do livro
+        const isUnavailable = book.availability === "Indisponível";
+
+        // Lógica para habilitar/desabilitar o botão com base no número de livros no empréstimo
+        if (activeLoansCount === 3) {
+          return true; // Desabilita se o usuário tem 3 livros no empréstimo
+        }
+
+        // Quando o usuário tem 2 livros no empréstimo que atendem à condição
+        if (activeLoansCount === 2) {
+          return this.books.length > 1; // Desabilita se tiver livros no carrinho
+        }
+
+        // Quando o usuário tem 1 livro no empréstimo que atende à condição
+        if (activeLoansCount === 1) {
+          return this.books.length > 2; // Desabilita se tiver mais de 2 livros no carrinho
+        }
+
+        // Se o usuário não tiver livros no empréstimo ou a condição não for atendida, pode adicionar o livro
+        return isInLoan || isUnavailable;
+      };
+    },
+  },
   methods: {
   // Busca Os livros no carrinho
   fetchBooksCart() {
@@ -155,11 +202,34 @@ export default {
   },
   formatImagePath(path) {
     return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
-  }
+  },
+  async fetchBooksLend() { // Busca os livro no Carrinho, reservas e empréstimos
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+      }
+      
+      try {
+        const response = await userService.getLend(userId);
+        if (response.data && response.data.emprestimos) {
+          this.userLoans = response.data.emprestimos; // Salvar no estado do componente
+        } else {
+          console.error("Emprestimos vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar o emprestimos:", error);
+      }  
+
+      // Garante que a interface seja atualizada após mudanças
+      this.$forceUpdate();
+    },
 
 },
 mounted() {
   this.fetchBooksCart();
+
+  this.fetchBooksLend(); 
 },
 
 }
@@ -167,6 +237,12 @@ mounted() {
 </script>
 
 <style scoped>
+.botao-solicitar-emprestimo.disabled {
+  background-color: #D9D9D9;
+  color: #8E8E8E;
+  cursor: not-allowed;
+}
+
 .bloco-do-submenu {
   width: 1072px;
   height: 80px;
