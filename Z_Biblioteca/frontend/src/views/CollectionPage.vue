@@ -128,7 +128,7 @@ export default {
         }
 
         // Verificar se o livro já está no carrinho, reservas ou empréstimos
-        const isInCart = userCart.some(item => item.bookId === book._id);
+        const isInCart = userCart.some(item => item.bookId._id === book._id);
         const isInReservation = userReservations.some(item => item.bookId._id === book._id);
         const isInLoan = userLoans.some(
           item => item.bookId._id === book._id &&
@@ -187,8 +187,9 @@ export default {
 
         if (response.status === 200) {
           alert("Livro adicionado ao carrinho com sucesso!");
-          // Atualiza o estado reativo do carrinho
-          this.userCart.push({ bookId: book._id });
+
+          // Use Vue.set para garantir reatividade
+          this.userCart = [...this.userCart, { bookId: book }];
         }
       } catch (error) {
         console.error("Erro ao adicionar o livro ao carrinho:", error);
@@ -228,13 +229,15 @@ export default {
         const response = await userService.getReservations(userId);
         if (response.data && response.data.reservas) {
           this.userReservations = response.data.reservas; // Salvar no estado do componente
-          console.log('AQUIIII', this.userReservations)
         } else {
           console.error("Reservas vazio ou dados inválidos:", response);
         }
       } catch (error) {
         console.error("Erro ao carregar o reservas:", error);
       } 
+
+      // Garante que a interface seja atualizada após mudanças
+      this.$forceUpdate();
     },
 
   },
@@ -245,7 +248,7 @@ export default {
       this.applyFilter();
     };
 
-    this.fetchBooksCartLendReservations(); // Carregar dados do carrinho ao montar o componente
+    this.fetchBooksCartLendReservations(); 
 
 
   }
