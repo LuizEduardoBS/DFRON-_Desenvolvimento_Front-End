@@ -51,8 +51,18 @@
         </div>
       </div>
       <div class="botoes-da-descricao">
-        <button class="botao-adicionar-da-descricao" @click.stop="addToCart(book)" >Adicionar ao carrinho</button>
-        <button class="botao-reservar-da-descricao" @click.stop="addToReservations(book)">Reservar</button>
+        <button class="botao-adicionar-da-descricao" 
+          :class="{ disabled: isBookDisabled(book) }"
+          :disabled="isBookDisabled(book)"
+          @click.stop="addToCart(book)">
+        Adicionar ao carrinho
+      </button>
+        <button class="botao-reservar-da-descricao" 
+        :class="{ disabled: isBookDisabled(book) }"
+        :disabled="isBookDisabled(book)"
+        @click.stop="addToReservations(book)">
+        Reservar
+      </button>
       </div>
     </div>
   </div>
@@ -108,18 +118,48 @@ export default {
   },
   data() {
     return {
-      book: null,
+      book: '',
       userId: '',
+      userCart: [], // Carrinho do usuário
+      userReservations: [], // Reservas do usuário
+      userLoans: [], // Empréstimos do usuário
     };
   },
   watch: {
     // Quando a prop 'id' mudar, a função fetchBook será chamada para atualizar os dados
     id: 'fetchBook'
   },
-  mounted() {
-    this.fetchBook();  // Chama a função fetchBook ao montar
+  computed: {
+    isBookDisabled() {
+      return (book) => {
+        console.log('Dados usados para desabilitar:', this.userCart, this.userReservations, this.userLoans);
 
-    
+        const userCart = this.userCart || [];
+        const userReservations = this.userReservations || [];
+        const userLoans = this.userLoans || [];
+
+        const isRestricted = ["negado", "devolvido"]; // Status normalizados
+
+        // Verificar se já há 3 livros no carrinho
+        if (userCart.length >= 3) {
+          return true;
+        }
+
+        // Verificar se o livro já está no carrinho, reservas ou empréstimos
+        const isInCart = userCart.some(item => item.bookId._id === book._id);
+        const isInReservation = userReservations.some(item => item.bookId._id === book._id);
+        const isInLoan = userLoans.some(
+          item => item.bookId._id === book._id &&
+                  !isRestricted.includes(item.status.toLowerCase())
+        );
+
+        // Verificar disponibilidade
+        const isUnavailable = book.availability === "Indisponível";
+
+        return isInCart || isInReservation || isInLoan || isUnavailable;
+      };
+    },
+
   },
   methods: {
     fetchBook() {
@@ -151,20 +191,62 @@ export default {
           return;
         }
 
-        if (this.book.availability !== "Disponível") {
-          alert("O livro esta indisponivel no momento. Voce pode reservar para pegar emprestado assim que ficar disponível!");
-          return;
-        }
-
         const response = await userService.postCart(userId, { bookId: book._id });
 
         if (response.status === 200) {
           alert("Livro adicionado ao carrinho com sucesso!");
+
+          // Use Vue.set para garantir reatividade
+          this.userCart = [...this.userCart, { bookId: book }];
         }
       } catch (error) {
         console.error("Erro ao adicionar o livro ao carrinho:", error);
         alert("Ocorreu um erro ao adicionar o livro ao carrinho.");
       }
+    },
+    async fetchBooksCartLendReservations() { // Busca os livro no Carrinho, reservas e empréstimos
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+      }
+
+      try {
+        const response = await userService.getCart(userId);
+        if (response.data && response.data.carrinho) {
+          this.userCart = response.data.carrinho; // Salvar no estado do componente
+          console.log(this.userCart)
+        } else {
+          console.error("Carrinho vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar o carrinho:", error);
+      } 
+      
+      try {
+        const response = await userService.getLend(userId);
+        if (response.data && response.data.emprestimos) {
+          this.userLoans = response.data.emprestimos; // Salvar no estado do componente
+        } else {
+          console.error("Emprestimos vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar o emprestimos:", error);
+      }  
+      // Busca os livros no reservas
+      try {
+        const response = await userService.getReservations(userId);
+        if (response.data && response.data.reservas) {
+          this.userReservations = response.data.reservas; // Salvar no estado do componente
+        } else {
+          console.error("Reservas vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar o reservas:", error);
+      } 
+
+      // Garante que a interface seja atualizada após mudanças
+      this.$forceUpdate();
     },
     async addToReservations(book) {
       try {
@@ -193,12 +275,29 @@ export default {
         alert("Ocorreu um erro ao adicionar o livro ao carrinho.");
       }
     }
-  }
+  },
+  mounted() {
+    this.fetchBook();  // Chama a função fetchBook ao montar
+    this.fetchBooksCartLendReservations(); 
+    
+  },
 };
 </script>
 
 
 <style scoped>
+.botao-adicionar-da-descricao.disabled {
+  background-color: #D9D9D9;
+  color: #8E8E8E;
+  cursor: not-allowed;
+}
+
+.botao-reservar-da-descricao.disabled {
+  background-color: #D9D9D9;
+  color: #8E8E8E;
+  cursor: not-allowed;
+}
+
 /* ########################################### */
 /* DESCRIÇÃO DO LIVRO */
 .main-descricao-livro {
