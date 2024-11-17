@@ -27,6 +27,8 @@
 
             <!-- Botão "Adicionar" fora do router-link -->
             <button 
+              :class="{ disabled: isBookDisabled(book) }"
+              :disabled="isBookDisabled(book)"
               @click.stop="addToCart(book)" 
               class="botao-adicionar-index">
               Adicionar
@@ -61,8 +63,41 @@ export default {
     return {
       books: [], // Lista completa de livros
       searchQuery: '', // Consulta de pesquisa para o campo de busca
-      highlightedBooks: [] // Lista de livros em destaque, últimos 6 cadastrados
+      highlightedBooks: [], // Lista de livros em destaque, últimos 6 cadastrados
+      userCart: [], // Carrinho do usuário
+      userReservations: [], // Reservas do usuário
+      userLoans: [], // Empréstimos do usuário
     };
+  },
+  computed: {
+    isBookDisabled() {
+      return (book) => {
+        const userCart = this.userCart || [];
+        const userReservations = this.userReservations || [];
+        const userLoans = this.userLoans || [];
+
+        const isRestricted = ["negado", "devolvido"]; // Status normalizados
+
+        // Verificar se já há 3 livros no carrinho
+        if (userCart.length >= 3) {
+          return true;
+        }
+
+        // Verificar se o livro já está no carrinho, reservas ou empréstimos
+        const isInCart = userCart.some(item => item.bookId._id === book._id);
+        const isInReservation = userReservations.some(item => item.bookId._id === book._id);
+        const isInLoan = userLoans.some(
+          item => item.bookId._id === book._id &&
+                  !isRestricted.includes(item.status.toLowerCase())
+        );
+
+        // Verificar disponibilidade
+        const isUnavailable = book.availability === "Indisponível";
+
+        return isInCart || isInReservation || isInLoan || isUnavailable;
+      };
+    },
+
   },
   methods: {
     fetchBooks() {
@@ -106,21 +141,76 @@ export default {
 
         if (response.status === 200) {
           alert("Livro adicionado ao carrinho com sucesso!");
+
+          // Use Vue.set para garantir reatividade
+          this.userCart = [...this.userCart, { bookId: book }];
         }
       } catch (error) {
         console.error("Erro ao adicionar o livro ao carrinho:", error);
         alert("Ocorreu um erro ao adicionar o livro ao carrinho.");
       }
-    }
+    },
+    async fetchBooksCartLendReservations() { // Busca os livro no Carrinho, reservas e empréstimos
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+      }
+
+      try {
+        const response = await userService.getCart(userId);
+        if (response.data && response.data.carrinho) {
+          this.userCart = response.data.carrinho; // Salvar no estado do componente
+          console.log(this.userCart)
+        } else {
+          console.error("Carrinho vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar o carrinho:", error);
+      } 
+      
+      try {
+        const response = await userService.getLend(userId);
+        if (response.data && response.data.emprestimos) {
+          this.userLoans = response.data.emprestimos; // Salvar no estado do componente
+        } else {
+          console.error("Emprestimos vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar o emprestimos:", error);
+      }  
+      // Busca os livros no reservas
+      try {
+        const response = await userService.getReservations(userId);
+        if (response.data && response.data.reservas) {
+          this.userReservations = response.data.reservas; // Salvar no estado do componente
+        } else {
+          console.error("Reservas vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar o reservas:", error);
+      } 
+
+      // Garante que a interface seja atualizada após mudanças
+      this.$forceUpdate();
+    },
   },
   mounted() {
     this.fetchBooks();
+
+    this.fetchBooksCartLendReservations(); 
   }
 };
 </script>
 
 
 <style scoped>
+.botao-adicionar-index.disabled {
+  background-color: #D9D9D9;
+  color: #8E8E8E;
+  cursor: not-allowed;
+}
+
 .bloco-cards-destaques .card-link {
   text-decoration: none;
   color: inherit;
