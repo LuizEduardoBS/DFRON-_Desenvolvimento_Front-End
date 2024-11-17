@@ -98,7 +98,7 @@ export const userService = {
         return apiClient.post(`/auth/${id}/reservas`, data); // Envia um livro para o reservas
     },
     getReservations(id) {
-        return apiClient.get(`/auth/${id}/reservas`); // AAAAAAAAAAAAAAAA
+        return apiClient.get(`/auth/${id}/reservas`); // // Busca todos os livros no reservas
     },
     deleteReservations(userId, bookId) {
         return apiClient.delete(`/auth/${userId}/reservas/${bookId}`); // Deleta um livro do carrinho pelo id
@@ -110,7 +110,14 @@ export const userService = {
         return apiClient.post(`/auth/${userId}/reservas/emprestimos`); // Deleta todos os livros do carrinho
     },
     ////////////////////////////////////////////////////////////////////////////////////////////
-    // ROTAS PARA LIDAR COM O RESERVAS DO USUÁRIO
+    // ROTAS PARA LIDAR COM O EMPRÉSTIMOS DO USUÁRIO
+
+    getLend(id) {
+        return apiClient.get(`/auth/${id}/emprestimos`); // Busca todos os livros no emprestimos
+    },
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    // ROTAS PARA LIDAR COM O NOTIFICAÇÕES PRIVADAS DO USUÁRIO
     postNotifPrivate(id, data) {
         return apiClient.post(`/auth/${id}/notificacao_privada`, data); 
     },

@@ -418,7 +418,19 @@ router.post('/:userId/reservas/emprestimos', async (req, res) => {
 });
 
 
+// Rota para buscar os livros no empréstimos do usuário
+router.get('/:userId/emprestimos', async (req, res) => {
+    const { userId } = req.params;
 
+    try {
+        const user = await User.findById(userId).populate('emprestimos.bookId'); // Popula os detalhes dos livros no carrinho
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        res.status(200).json({ emprestimos: user.emprestimos });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar livros do empréstimos', error });
+    }
+});
 
 
 
