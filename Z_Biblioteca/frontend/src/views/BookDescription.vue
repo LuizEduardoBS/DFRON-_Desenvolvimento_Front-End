@@ -269,6 +269,9 @@ export default {
 
         if (response.status === 200) {
           alert("Livro reservado com sucesso!");
+
+          // Use Vue.set para garantir reatividade
+          this.userReservations = [...this.userReservations, { bookId: book }];
         }
       } catch (error) {
         console.error("Erro ao adicionar o livro ao carrinho:", error);
