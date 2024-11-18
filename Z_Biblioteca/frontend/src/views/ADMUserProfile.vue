@@ -1,6 +1,6 @@
 <template>
   <main class="main-perfil-usuarios-adm">
-    <button id="botao-voltar-pagina-anterior">Voltar</button>
+    <router-link to="/admusers" class="botao-voltar-pagina-anterior">Voltar</router-link>
     <div class="conteudo-perfil-usuarios-adm">
       <div class="coluna-perfil-usuarios-adm-1">
         <img src="@/assets/img/person.png" alt="" class="foto-do-perfil">
@@ -73,7 +73,12 @@
 
     <table class="tabela-historico-usuario">
       <tbody>
-        <tr class="linha-historico" v-for="book in userLoans" :key="book.bookId._id">
+        <tr 
+          class="linha-historico" 
+          v-for="book in visibleUserLoans" 
+          :key="book.bookId._id"
+          :class="{'linha-devolvido-negado': book.status === 'Devolvido' || book.status === 'Negado'}"
+        >
           <td class="coluna-1-historico-usuario">{{ book.bookId.customId || '---' }}</td>
           <td class="coluna-2-historico-usuario">{{ book.bookId.author || '---' }}</td>
           <td class="coluna-3-historico-usuario">{{ book.bookId.title || '---' }}</td>
@@ -83,6 +88,7 @@
               @change="(event) => {
                 atualizarStatus(user.data._id, book._id, event);
               }"
+              :class="{'linha-devolvido-negado': book.status === 'Devolvido' || book.status === 'Negado'}"
             >
               <option value="Solicitado" :selected="book.status === 'Solicitado'">Solicitado</option>
               <option value="Autorizado" :selected="book.status === 'Autorizado'">Autorizado</option>
@@ -98,7 +104,7 @@
       </tbody>
     </table>
 
-    <div class="botao-ver-mais-historico">Ver mais</div>
+    <div class="botao-ver-mais-historico" @click="loadMore">Ver mais</div>
 
   </main>
 </template>
@@ -114,14 +120,33 @@ export default {
       user: '', // Variável para armazenar os dados do usuário
       textNotif: '',
       userLoans: [],
-      userId: ''
+      userId: '',
+      visibleLoans: 5 // Número inicial de linhas visíveis
     };
   },
+  computed: {
+    visibleUserLoans() {
+      return this.userLoans
+        .slice() // Cria uma cópia para evitar mutações no array original
+        .sort((a, b) => {
+          // Prioriza status "Solicitado"
+          if (a.status === "Solicitado" && b.status !== "Solicitado") return -1;
+          if (b.status === "Solicitado" && a.status !== "Solicitado") return 1;
+
+          // Caso ambos não sejam "Solicitado", ordena por dataEmprestimo (mais recente primeiro)
+          const dateA = new Date(a.dataEmprestimo);
+          const dateB = new Date(b.dataEmprestimo);
+          return dateB - dateA; // Decrescente (mais recente no topo)
+        })
+        .slice(0, this.visibleLoans); // Aplica a paginação
+    },
+  },
+
   methods: {
     async fetchUser() {
       try {
         this.user = await userService.getProfileById(this.id);
-        console.log('Dados do usuário:', this.user); // Verifique se os dados estão sendo recebidos corretamente
+        // console.log('Dados do usuário:', this.user); // Verifique se os dados estão sendo recebidos corretamente
       } catch (error) {
         console.error('Erro ao buscar o perfil do usuário:', error);
       }
@@ -160,7 +185,6 @@ export default {
     async fetchBooksLend() {
       this.user = await userService.getProfileById(this.id)
       const userId = this.user.data._id;
-      console.log(userId)
       if (!userId) {
         console.error("Usuário não encontrado ou ainda não carregado");
         return;
@@ -168,10 +192,9 @@ export default {
 
       try {
         const response = await userService.getLend(userId);
-        console.log("Dados retornados:", response.data); // Verifica o formato dos dados
+        // console.log("Dados retornados:", response.data); // Verifica o formato dos dados
         if (response.data && response.data.emprestimos) {
           this.userLoans = response.data.emprestimos; // Salva os dados no estado
-          console.log(this.userLoans)
         } else {
           console.error("Emprestimos vazio ou dados inválidos:", response);
         }
@@ -202,6 +225,10 @@ export default {
         console.error('Erro ao atualizar status:', error);
       }
     },
+    // Método para carregar mais linhas
+    loadMore() {
+      this.visibleLoans += 5; // Incrementa mais 5 linhas
+    },
 
 
   },
@@ -218,10 +245,20 @@ export default {
 
 
 <style scoped>
-#botao-voltar-pagina-anterior {
+.linha-devolvido-negado {
+  background-color: #D9D9D9;
+}
+
+.botao-voltar-pagina-anterior {
   align-self: flex-start;
   justify-self: flex-start;
   margin: 10px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  padding: 2px 5px 2px 5px;
+  border-radius: 5px;
+  background-color: #0C8CE9;
 }
 /* ########################################### */
 /* VISUALIZAÇÃO PERFIL DO USUARIO - ADM */
@@ -415,6 +452,7 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .botao-ver-mais-historico:hover {

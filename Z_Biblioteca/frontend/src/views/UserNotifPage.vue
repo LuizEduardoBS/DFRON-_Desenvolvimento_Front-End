@@ -201,7 +201,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  
+  margin-bottom: 10px;
 }
 
 .botao-ver-mais-historico-notificacoes:hover {
