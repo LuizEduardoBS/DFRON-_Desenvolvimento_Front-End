@@ -14,7 +14,7 @@
       <div class="coluna-perfil-usuario-1">
         <img src="../assets/img/person.png" alt="" class="foto-do-perfil">
         <div class="coluna-identificadores">
-          <input type="text" disabled placeholder="Nome do Usuário">
+          <input type="text" :value="user.username" disabled placeholder="Nome do Usuário">
           <input type="text" disabled placeholder="email@email.com">
         </div>
       </div>
@@ -28,22 +28,25 @@
 
     <h1>Gerenciar Livros</h1>
 
-    <div class="linha-gerenciar-livro">
+    <div class="linha-gerenciar-livro" 
+    v-for="book in visibleUserLoans" 
+    :key="book.bookId._id"
+    :class="{'linha-devolvido-negado': book.status === 'Devolvido' || book.status === 'Negado'}">
       <div class="grid-colunas-da-linha">
 
         <div class="coluna-1-gerenciar-livro">
           <img src="" alt="">
           <div class="descricoes-coluna-1">
-            <span><strong>Título: </strong><span class="titulo-livro">O Homem Mais Rico...</span></span>
-            <span><strong>Status: </strong><span class="status-livro">Autorizado</span></span>
+            <span><strong>Título: </strong><span class="titulo-livro">{{ book.bookId.title? book.bookId.title : '---' }}</span></span>
+            <span><strong>Status: </strong><span class="status-livro">{{ book.status? book.status : '---' }}</span></span>
             <span><strong>Avaliar: </strong></span>
           </div>
         </div>
 
         <div class="coluna-2-gerenciar-livro">
           <div class="descricoes-coluna-2">
-            <span><strong>Data empréstimo: </strong><span class="titulo-livro">15/08/2024</span></span>
-            <span><strong>Prazo devolução: </strong><span class="status-livro">30/08/2024</span></span>
+            <span><strong>Data empréstimo: </strong><span class="titulo-livro">{{ formatDate(book.dataEmprestimo) || '---' }}</span></span>
+            <span><strong>Prazo devolução: </strong><span class="status-livro">{{ formatDate(book.prazoDevolucao) || '---' }}</span></span>
             <span><strong>Data devolução: </strong> - - -</span>
           </div>
         </div>
@@ -65,134 +68,111 @@
       </div>
     </div>
 
-    <div class="linha-gerenciar-livro">
-      <div class="grid-colunas-da-linha">
-
-        <div class="coluna-1-gerenciar-livro">
-          <img src="" alt="">
-          <div class="descricoes-coluna-1">
-            <span><strong>Título: </strong><span class="titulo-livro">O Homem Mais Rico...</span></span>
-            <span><strong>Status: </strong><span class="status-livro">Autorizado</span></span>
-            <span><strong>Avaliar: </strong></span>
-          </div>
-        </div>
-
-        <div class="coluna-2-gerenciar-livro">
-          <div class="descricoes-coluna-2">
-            <span><strong>Data empréstimo: </strong><span class="titulo-livro">15/08/2024</span></span>
-            <span><strong>Prazo devolução: </strong><span class="status-livro">30/08/2024</span></span>
-            <span><strong>Data devolução: </strong> - - -</span>
-          </div>
-        </div>
-        <div class="coluna-3-gerenciar-livro">
-          <div class="renovar-livro">
-            <span><strong>Renovar: </strong></span>
-            <button class="botao-renovar">+ 10 dias</button>
-          </div>
-          <div class="finalizar-emprestimo">
-            <span><strong>Finalizar: </strong></span>
-            <button class="botao-finalizar">
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="linha-gerenciar-livro">
-      <div class="grid-colunas-da-linha">
-
-        <div class="coluna-1-gerenciar-livro">
-          <img src="" alt="">
-          <div class="descricoes-coluna-1">
-            <span><strong>Título: </strong><span class="titulo-livro">O Homem Mais Rico...</span></span>
-            <span><strong>Status: </strong><span class="status-livro">Autorizado</span></span>
-            <span><strong>Avaliar: </strong></span>
-          </div>
-        </div>
-
-        <div class="coluna-2-gerenciar-livro">
-          <div class="descricoes-coluna-2">
-            <span><strong>Data empréstimo: </strong><span class="titulo-livro">15/08/2024</span></span>
-            <span><strong>Prazo devolução: </strong><span class="status-livro">30/08/2024</span></span>
-            <span><strong>Data devolução: </strong> - - -</span>
-          </div>
-        </div>
-
-        <div class="coluna-3-gerenciar-livro">
-          <div class="renovar-livro">
-            <span><strong>Renovar: </strong></span>
-            <button class="botao-renovar">+ 10 dias</button>
-          </div>
-          <div class="finalizar-emprestimo">
-            <span><strong>Finalizar: </strong></span>
-            <button class="botao-finalizar">
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="linha-gerenciar-livro emprestimo-finalizado">
-      <div class="grid-colunas-da-linha">
-        <div class="coluna-1-gerenciar-livro">
-          <img src="" alt="">
-          <div class="descricoes-coluna-1">
-            <span><strong>Título: </strong><span class="titulo-livro">O Homem Mais Rico...</span></span>
-            <span><strong>Status: </strong><span class="status-livro">Autorizado</span></span>
-            <span><strong>Avaliar: </strong></span>
-          </div>
-        </div>
-
-        <div class="coluna-2-gerenciar-livro">
-          <div class="descricoes-coluna-2">
-            <span><strong>Data empréstimo: </strong><span class="titulo-livro">15/08/2024</span></span>
-            <span><strong>Prazo devolução: </strong><span class="status-livro">30/08/2024</span></span>
-            <span><strong>Data devolução: </strong> - - -</span>
-          </div>
-        </div>
-
-        <div class="coluna-3-gerenciar-livro">
-          <div class="renovar-livro">
-            <span><strong>Renovar: </strong></span>
-            <button class="botao-renovar">+ 10 dias</button>
-          </div>
-          <div class="finalizar-emprestimo">
-            <span><strong>Finalizar: </strong></span>
-            <button class="botao-finalizar">
-              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="botao-ver-mais-historico">Ver mais</div>
+    <div class="botao-ver-mais-historico" @click="loadMore">Ver mais</div>
 
   </main>
 </template>
 
 <script>
-import { RouterLink, RouterView } from 'vue-router'
+import axios from 'axios';
+import { userService } from '@/services/api';
 
 export default {
+  props: ['id'],
+  data() {
+    return {
+      user: '', // Variável para armazenar os dados do usuário
+      textNotif: '',
+      userLoans: [],
+      userId: '',
+      visibleLoans: 5 // Número inicial de linhas visíveis
+    };
+  },
+  computed: {
+    visibleUserLoans() {
+      return this.userLoans
+        .slice() // Cria uma cópia para evitar mutações no array original
+        .sort((a, b) => {
+          // Prioriza status "Solicitado"
+          if (a.status === "Solicitado" && b.status !== "Solicitado") return -1;
+          if (b.status === "Solicitado" && a.status !== "Solicitado") return 1;
+
+          // Caso ambos não sejam "Solicitado", ordena por dataEmprestimo (mais recente primeiro)
+          const dateA = new Date(a.dataEmprestimo);
+          const dateB = new Date(b.dataEmprestimo);
+          return dateB - dateA; // Decrescente (mais recente no topo)
+        })
+        .slice(0, this.visibleLoans); // Aplica a paginação
+    },
+  },
+
   methods: {
-    logout() {
-      localStorage.removeItem('token');
-      this.$router.push('/login');
-    }
+    async fetchUser() {
+      const userId = localStorage.getItem("userId");
+      try {
+        this.user = await userService.getProfileById(userId);
+        console.log('Dados do usuário:', this.user); // Verifique se os dados estão sendo recebidos corretamente
+      } catch (error) {
+        console.error('Erro ao buscar o perfil do usuário:', error);
+      }
+    },
+    
+    
+    async fetchBooksLend() {
+      const userId = localStorage.getItem("userId");
+
+      this.user = await userService.getProfileById(userId)
+      
+      if (!userId) {
+        console.error("Usuário não encontrado ou ainda não carregado");
+        return;
+      }
+
+      try {
+        const response = await userService.getLend(userId);
+        // console.log("Dados retornados:", response.data); // Verifica o formato dos dados
+        if (response.data && response.data.emprestimos) {
+          this.userLoans = response.data.emprestimos; // Salva os dados no estado
+        } else {
+          console.error("Emprestimos vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar os empréstimos:", error);
+      }
+    },
+    // Função para formatar a data
+    formatDate(dateString) {
+      if (!dateString || isNaN(Date.parse(dateString))) return '---'; // Verifica se a data é válida
+      const date = new Date(dateString);
+      const options = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      };
+      return new Intl.DateTimeFormat('pt-BR', options).format(date);
+    },
+    // Método para carregar mais linhas
+    loadMore() {
+      this.visibleLoans += 5; // Incrementa mais 5 linhas
+    },
+
+
+  },
+  mounted() {
+    this.fetchUser(); // Chama o método ao montar o componente
+
+    this.fetchBooksLend();
+
+    this.formatDate();
   }
-}
+};
 </script>
 
 <style scoped>
+.linha-devolvido-negado {
+  background-color: #D9D9D9;
+}
+
 .bloco-do-submenu {
   width: 1072px;
   height: 80px;
@@ -255,14 +235,13 @@ export default {
 
 .main-perfil-usuario {
   width: 1072px;
-  height: 742px;
+  height: 100%;
   background-color: #fff;
   box-shadow: 0 2px 8px -2px #989898;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .conteudo-perfil-usuario {
@@ -271,6 +250,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  margin-top: 20px;
 }
 
 .foto-do-perfil {
@@ -460,6 +440,7 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .botao-ver-mais-historico:hover {
