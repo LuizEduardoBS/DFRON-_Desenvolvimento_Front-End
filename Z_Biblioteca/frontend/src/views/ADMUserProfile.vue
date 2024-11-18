@@ -1,8 +1,9 @@
 <template>
   <main class="main-perfil-usuarios-adm">
+    <button id="botao-voltar-pagina-anterior">Voltar</button>
     <div class="conteudo-perfil-usuarios-adm">
       <div class="coluna-perfil-usuarios-adm-1">
-        <img src="./img/person.png" alt="" class="foto-do-perfil">
+        <img src="@/assets/img/person.png" alt="" class="foto-do-perfil">
         <div v-if="user" class="coluna-identificadores">
           <span><strong>ID: </strong><span id="id-usuario">{{ user.data.customId }}</span></span>       
           <span><strong>Usuário: </strong><span id="nome-usuario">{{ user.data.username }}</span></span>
@@ -72,58 +73,28 @@
 
     <table class="tabela-historico-usuario">
       <tbody>
-        <tr class="linha-historico">
-          <td class="coluna-1-historico-usuario">382</td>
-          <td class="coluna-2-historico-usuario">George Samuel Cle...</td>
-          <td class="coluna-3-historico-usuario">O Homem Mais Rico...</td>
+        <tr class="linha-historico" v-for="book in userLoans" :key="book.bookId._id">
+          <td class="coluna-1-historico-usuario">{{ book.bookId.customId || '---' }}</td>
+          <td class="coluna-2-historico-usuario">{{ book.bookId.author || '---' }}</td>
+          <td class="coluna-3-historico-usuario">{{ book.bookId.title || '---' }}</td>
           <td class="coluna-4-historico-usuario">
-            <select name="" id="">
-              <option value="">Solicitado</option>
-              <option value="">Autorizado</option>
-              <option value="">Devolvido</option>
-              <option value="">Negado</option>
+            <select 
+              v-model="book.status" 
+              @change="(event) => {
+                atualizarStatus(user.data._id, book._id, event);
+              }"
+            >
+              <option value="Solicitado" :selected="book.status === 'Solicitado'">Solicitado</option>
+              <option value="Autorizado" :selected="book.status === 'Autorizado'">Autorizado</option>
+              <option value="Devolvido" :selected="book.status === 'Devolvido'">Devolvido</option>
+              <option value="Negado" :selected="book.status === 'Negado'">Negado</option>
             </select>
           </td>
-          <td class="coluna-5-historico-usuario">15/08/2024</td>
-          <td class="coluna-6-historico-usuario">30/08/2024</td>
-          <td class="coluna-7-historico-usuario">---</td>
+          <td class="coluna-5-historico-usuario">{{ formatDate(book.dataEmprestimo) || '---' }}</td>
+          <td class="coluna-6-historico-usuario">{{ formatDate(book.prazoDevolucao) || '---' }}</td>
+          <td class="coluna-7-historico-usuario">{{ formatDate(book.dataDevolucao) || '---' }}</td>
         </tr>
-        <tr class="linha-historico">
-          <td class="coluna-1-historico-usuario">-</td>
-          <td class="coluna-2-historico-usuario"></td>
-          <td class="coluna-3-historico-usuario"></td>
-          <td class="coluna-4-historico-usuario"></td>
-          <td class="coluna-5-historico-usuario"></td>
-          <td class="coluna-6-historico-usuario"></td>
-          <td class="coluna-7-historico-usuario"></td>
-        </tr>
-        <tr class="linha-historico">
-          <td class="coluna-1-historico-usuario">-</td>
-          <td class="coluna-2-historico-usuario"></td>
-          <td class="coluna-3-historico-usuario"></td>
-          <td class="coluna-4-historico-usuario"></td>
-          <td class="coluna-5-historico-usuario"></td>
-          <td class="coluna-6-historico-usuario"></td>
-          <td class="coluna-7-historico-usuario"></td>
-        </tr>
-        <tr class="linha-historico">
-          <td class="coluna-1-historico-usuario">-</td>
-          <td class="coluna-2-historico-usuario"></td>
-          <td class="coluna-3-historico-usuario"></td>
-          <td class="coluna-4-historico-usuario"></td>
-          <td class="coluna-5-historico-usuario"></td>
-          <td class="coluna-6-historico-usuario"></td>
-          <td class="coluna-7-historico-usuario"></td>
-        </tr>
-        <tr class="linha-historico">
-          <td class="coluna-1-historico-usuario">-</td>
-          <td class="coluna-2-historico-usuario"></td>
-          <td class="coluna-3-historico-usuario"></td>
-          <td class="coluna-4-historico-usuario"></td>
-          <td class="coluna-5-historico-usuario"></td>
-          <td class="coluna-6-historico-usuario"></td>
-          <td class="coluna-7-historico-usuario"></td>
-        </tr>
+        
       </tbody>
     </table>
 
@@ -140,8 +111,10 @@ export default {
   props: ['id'],
   data() {
     return {
-      user: null, // Variável para armazenar os dados do usuário
-      textNotif: ''
+      user: '', // Variável para armazenar os dados do usuário
+      textNotif: '',
+      userLoans: [],
+      userId: ''
     };
   },
   methods: {
@@ -184,10 +157,60 @@ export default {
         console.error('Erro ao enviar notificações:', error);
       }
     },
+    async fetchBooksLend() {
+      this.user = await userService.getProfileById(this.id)
+      const userId = this.user.data._id;
+      console.log(userId)
+      if (!userId) {
+        console.error("Usuário não encontrado ou ainda não carregado");
+        return;
+      }
+
+      try {
+        const response = await userService.getLend(userId);
+        console.log("Dados retornados:", response.data); // Verifica o formato dos dados
+        if (response.data && response.data.emprestimos) {
+          this.userLoans = response.data.emprestimos; // Salva os dados no estado
+          console.log(this.userLoans)
+        } else {
+          console.error("Emprestimos vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar os empréstimos:", error);
+      }
+    },
+    // Função para formatar a data
+    formatDate(dateString) {
+      if (!dateString || isNaN(Date.parse(dateString))) return '---'; // Verifica se a data é válida
+      const date = new Date(dateString);
+      const options = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      };
+      return new Intl.DateTimeFormat('pt-BR', options).format(date);
+    },
+    async atualizarStatus(userId, emprestimoId, event) {
+      const novoStatus = event.target.value;
+      console.log(emprestimoId)
+      try {
+        const response = await axios.put(`http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/status`, {
+          status: novoStatus
+        });
+        console.log('Status atualizado:', response.data);
+      } catch (error) {
+        console.error('Erro ao atualizar status:', error);
+      }
+    },
+
 
   },
   mounted() {
     this.fetchUser(); // Chama o método ao montar o componente
+
+    this.fetchBooksLend();
+
+    this.formatDate();
   }
 };
 </script>
@@ -195,18 +218,23 @@ export default {
 
 
 <style scoped>
+#botao-voltar-pagina-anterior {
+  align-self: flex-start;
+  justify-self: flex-start;
+  margin: 10px;
+}
 /* ########################################### */
 /* VISUALIZAÇÃO PERFIL DO USUARIO - ADM */
 .main-perfil-usuarios-adm {
   width: 1072px;
-  height: 593px;
+  height: 100%;
   background-color: #fff;
   box-shadow: 0 2px 8px -2px #989898;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  
 }
 
 .conteudo-perfil-usuarios-adm {

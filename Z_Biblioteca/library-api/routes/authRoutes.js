@@ -216,8 +216,8 @@ router.post('/:userId/carrinho/emprestimos', async (req, res) => {
 
             // Calcula as datas de empréstimo e devolução
             const dataEmprestimo = new Date();
-            const dataDevolucao = new Date(dataEmprestimo);
-            dataDevolucao.setDate(dataEmprestimo.getDate() + 15);
+            const prazoDevolucao = new Date(dataEmprestimo);
+            prazoDevolucao.setDate(dataEmprestimo.getDate() + 15);
 
             // Adiciona o livro à lista de empréstimos
             user.emprestimos.push({
@@ -225,7 +225,7 @@ router.post('/:userId/carrinho/emprestimos', async (req, res) => {
                 qtdeBook: 1,
                 status: 'Solicitado',
                 dataEmprestimo,
-                dataDevolucao,
+                prazoDevolucao,
             });
 
             // Busca o livro no banco de dados
@@ -339,8 +339,6 @@ router.delete('/:userId/reservas', async (req, res) => {
     }
 });
 
-//////////////////////////////////////////////////
-
 // Move todos os livros do reservas para empréstimos
 router.post('/:userId/reservas/emprestimos', async (req, res) => {
     const { userId } = req.params;
@@ -366,8 +364,8 @@ router.post('/:userId/reservas/emprestimos', async (req, res) => {
 
             // Calcula as datas de empréstimo e devolução
             const dataEmprestimo = new Date();
-            const dataDevolucao = new Date(dataEmprestimo);
-            dataDevolucao.setDate(dataEmprestimo.getDate() + 15);
+            const prazoDevolucao = new Date(dataEmprestimo);
+            prazoDevolucao.setDate(dataEmprestimo.getDate() + 15);
 
             // Adiciona o livro à lista de empréstimos
             user.emprestimos.push({
@@ -375,7 +373,7 @@ router.post('/:userId/reservas/emprestimos', async (req, res) => {
                 qtdeBook: 1,
                 status: 'Solicitado',
                 dataEmprestimo,
-                dataDevolucao,
+                prazoDevolucao,
             });
 
             // Busca o livro no banco de dados
@@ -416,7 +414,39 @@ router.post('/:userId/reservas/emprestimos', async (req, res) => {
         res.status(500).json({ message: 'Erro ao mover livros para empréstimos', error: error.message || error });
     }
 });
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ROTAS PARA LIDAR COM EMPRÉSTIMOS DO USUÁRIO
+// Atualizar o status de um empréstimo de um usuário
+router.put('/:userId/emprestimos/:emprestimoId/status', async (req, res) => {
+    const { userId, emprestimoId } = req.params;
+    const { status } = req.body; // O novo status do empréstimo
 
+    try {
+        // Encontrar o usuário pelo ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Encontrar o empréstimo específico pelo ID
+        const emprestimo = user.emprestimos.id(emprestimoId);
+        if (!emprestimo) {
+            return res.status(404).json({ message: 'Empréstimo não encontrado' });
+        }
+
+        // Atualizar o status do empréstimo
+        emprestimo.status = status;
+
+        // Salvar as alterações no banco de dados
+        await user.save();
+
+        res.status(200).json({ message: 'Status do empréstimo atualizado com sucesso', emprestimo });
+    } catch (error) {
+        console.error('Erro ao atualizar status do empréstimo:', error);
+        res.status(500).json({ message: 'Erro ao atualizar status do empréstimo', error });
+    }
+});
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rota para buscar os livros no empréstimos do usuário
 router.get('/:userId/emprestimos', async (req, res) => {

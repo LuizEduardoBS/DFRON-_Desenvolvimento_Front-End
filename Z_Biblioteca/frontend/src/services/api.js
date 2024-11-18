@@ -115,6 +115,9 @@ export const userService = {
     getLend(id) {
         return apiClient.get(`/auth/${id}/emprestimos`); // Busca todos os livros no emprestimos
     },
+    putLendStatus(id, emprestimoId) {
+        return apiClient.get(`/auth/${id}/emprestimos/${emprestimoId}/status`); // Rota para update do status do empréstimo
+    },
     
     ////////////////////////////////////////////////////////////////////////////////////////////
     // ROTAS PARA LIDAR COM O NOTIFICAÇÕES PRIVADAS DO USUÁRIO
