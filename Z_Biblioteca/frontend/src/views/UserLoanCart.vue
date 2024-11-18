@@ -203,7 +203,7 @@ export default {
   formatImagePath(path) {
     return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
   },
-  async fetchBooksLend() { // Busca os livro no Carrinho, reservas e empréstimos
+  async fetchBooksLend() { // Busca os livro no empréstimos
       const userId = localStorage.getItem("userId");
       if (!userId) {
         console.error("Usuário não encontrado no localStorage");

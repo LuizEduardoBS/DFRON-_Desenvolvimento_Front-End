@@ -38,7 +38,11 @@ import { RouterLink, RouterView } from 'vue-router'
       </div>
 
       <div class="bloco-botao-reservas" v-if="books.length > 0">
-        <button class="botao-solicitar-emprestimo-reservas" @click="moveToLoans()"><span>Solicitar Empréstimo</span></button>
+        <button class="botao-solicitar-emprestimo-reservas" 
+          :class="{ disabled: isBookDisabled(book) }"
+          :disabled="isBookDisabled(book)"
+          @click="moveToLoans()">
+          <span>Solicitar Empréstimo</span></button>
         <button class="botao-esvaziar-reservas" @click="cleanCartBook()"><span>Esvaziar Reservas</span></button>
       </div>
       <div class="bloco-botoes-carrinho" v-else>
@@ -55,7 +59,50 @@ export default {
   data() {
     return {
     books: [], // Lista dos livros no carrinho
+    userLoans: [], // Empréstimos do usuário
+    activeLoansCount: [],
+    book: ''
   }},
+  computed: {
+    isBookDisabled() {
+      return (book) => {
+        const isRestricted = ["negado", "devolvido"]; // Status normalizados
+
+        // Contar quantos livros no empréstimo não estão com status "negado" ou "devolvido"
+        const activeLoansCount = this.userLoans.filter(
+          item => !isRestricted.includes(item.status.toLowerCase())
+        ).length;
+
+        // Verificar se o livro já está no empréstimo
+        const isInLoan = this.userLoans.some(
+          item => item.bookId._id === book.bookId && !isRestricted.includes(item.status.toLowerCase())
+        );
+//////////////////////////////////// AQUI
+        // Verificar disponibilidade do livro
+        const isUnavailable = book.availability === "Indisponível";
+
+        console.log('aaa', book.availability)
+
+        // Lógica para habilitar/desabilitar o botão com base no número de livros no empréstimo
+        if (activeLoansCount === 3) {
+          return true; // Desabilita se o usuário tem 3 livros no empréstimo
+        }
+
+        // Quando o usuário tem 2 livros no empréstimo que atendem à condição
+        if (activeLoansCount === 2) {
+          return this.books.length > 1; // Desabilita se tiver livros no carrinho
+        }
+
+        // Quando o usuário tem 1 livro no empréstimo que atende à condição
+        if (activeLoansCount === 1) {
+          return this.books.length > 2; // Desabilita se tiver mais de 2 livros no carrinho
+        }
+
+        // Se o usuário não tiver livros no empréstimo ou a condição não for atendida, pode adicionar o livro
+        return isInLoan || isUnavailable;
+      };
+    },
+  },
   methods: {
   // Busca Os livros no carrinho
   fetchBooksReservations() {
@@ -115,7 +162,7 @@ export default {
       .then(response => {
         console.log("Reservas esvaziado com sucesso!", response);
 
-        // Atualiza a lista para refletir o carrinho vazio
+        // Atualiza a lista para refletir o reservas vazio
         this.books = [];
 
         // Opcional: Exibir um alerta ou mensagem de sucesso para o usuário
@@ -156,11 +203,34 @@ export default {
   },
   formatImagePath(path) {
     return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
-  }
+  },
+  async fetchBooksLend() { // Busca os livro no empréstimos
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        console.error("Usuário não encontrado no localStorage");
+        return;
+      }
+      
+      try {
+        const response = await userService.getLend(userId);
+        if (response.data && response.data.emprestimos) {
+          this.userLoans = response.data.emprestimos; // Salvar no estado do componente
+        } else {
+          console.error("Emprestimos vazio ou dados inválidos:", response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar o emprestimos:", error);
+      }  
+
+      // Garante que a interface seja atualizada após mudanças
+      this.$forceUpdate();
+    },
 
 },
 mounted() {
   this.fetchBooksReservations();
+
+  this.fetchBooksLend();
 },
 
 }
@@ -168,6 +238,12 @@ mounted() {
 </script>
 
 <style scoped>
+.botao-solicitar-emprestimo-reservas.disabled {
+  background-color: #D9D9D9;
+  color: #8E8E8E;
+  cursor: not-allowed;
+}
+
 .bloco-do-submenu {
   width: 1072px;
   height: 80px;
