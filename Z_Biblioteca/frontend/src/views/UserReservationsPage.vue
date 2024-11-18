@@ -77,7 +77,7 @@ export default {
         const isInLoan = this.userLoans.some(
           item => item.bookId._id === book.bookId && !isRestricted.includes(item.status.toLowerCase())
         );
-//////////////////////////////////// AQUI
+
         // Verificar disponibilidade do livro
         const isUnavailable = book.availability === "Indisponível";
 

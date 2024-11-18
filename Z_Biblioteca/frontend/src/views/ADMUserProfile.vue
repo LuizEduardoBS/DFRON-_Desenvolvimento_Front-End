@@ -1,35 +1,3 @@
-<!-- O registro do emprestimo vai ser feito em outra tela, mas vai ser nessa que o status vai ser  alterado para autorizado, deve ser aqui que coloco a função
-
-const emprestimo = {
-  bookId: book._id,
-  title: book.title,
-  status: 'Autorizado',
-  dataEmprestimo: new Date(), // data atual
-  prazoDevolucao: calcularPrazoDevolucao(), // Função para calcular a data de devolução
-  dataDevolucao: null // A data de devolução será preenchida quando o livro for devolvido
-};
-
-// Função para calcular a data de devolução (por exemplo, 7 dias após a data de empréstimo)
-function calcularPrazoDevolucao() {
-  const prazo = 7; // Prazo de 7 dias
-  const dataEmprestimo = new Date();
-  dataEmprestimo.setDate(dataEmprestimo.getDate() + prazo);
-  return dataEmprestimo;
-}
-
-// Salvar o empréstimo no usuário
-User.findByIdAndUpdate(userId, {
-  $push: { emprestimos: emprestimo }
-}, { new: true }, (err, user) => {
-  if (err) {
-      console.error("Erro ao salvar empréstimo:", err);
-  } else {
-      console.log("Empréstimo registrado:", user);
-  }
-}); -->
-
-
-
 <template>
   <main class="main-perfil-usuarios-adm">
     <div class="conteudo-perfil-usuarios-adm">
