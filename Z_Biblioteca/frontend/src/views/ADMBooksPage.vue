@@ -62,7 +62,12 @@
               </select>
             </td>
             <td id="coluna-7-livro">
-              <a href="" class="editar-livro">Editar</a>
+              <router-link
+                :to="{ name: 'editarlivro', params: { id: book._id } }"
+                class="editar-livro">
+                Editar
+              </router-link>
+
             </td>
 
             <!-- Modal de Confirmação -->

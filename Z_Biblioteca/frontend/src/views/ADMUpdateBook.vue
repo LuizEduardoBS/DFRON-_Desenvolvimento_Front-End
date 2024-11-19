@@ -1,16 +1,16 @@
 <template>
   <header class="bloco-do-submenu">
     <section class="opcoes-submenu-adm">
-      <router-link to="./perfiladm" class="opcao-menu" >Dashboard</router-link>
-      <router-link to="./admusers" class="opcao-menu">Usuários</router-link>
-      <router-link to="./admlivros" class="opcao-menu">Livros</router-link>
+      <router-link to="/perfiladm" class="opcao-menu" >Dashboard</router-link>
+      <router-link to="/admusers" class="opcao-menu">Usuários</router-link>
+      <router-link to="/admlivros" class="opcao-menu">Livros</router-link>
     </section>
   </header>
 
   <main class="main-adicionar-livro">
     <div class="conteudo-add-livro">
       <div class="título-pagina-disponibilidade">
-        <h1>Adicionar livro:</h1>
+        <h1>Atualizar livro:</h1>
 
         <form id="form-livro" class="form-add-livro" @submit.prevent="enviarFormulario">
           <select v-model="availability" required>
@@ -25,7 +25,7 @@
         <div class="coluna-add-livro">
           <label class="titulo-dos-campos">Título *</label>
           <input type="text" v-model="title" placeholder="Nome do livro" class="campo-tamanho-comum" required />
-
+          x
           <label class="titulo-dos-campos">Autor *</label>
           <input type="text" v-model="author" placeholder="Nome do autor" class="campo-tamanho-comum" required>
 
@@ -48,6 +48,11 @@
 
           <label class="titulo-dos-campos" for="imagem">Capa *</label>
           <input type="file" @change="handleFileUpload" accept="image/*" class="campo-tamanho-comum" required />
+
+          <div v-if="coverImage">
+            <p>Imagem atual:</p>
+            <img :src="formatImagePath(coverImage)" alt="Capa do livro" style="max-width: 100px; max-height: 150px;" />
+          </div>
         </div>
 
         <div class="coluna-add-livro">
@@ -70,10 +75,13 @@
 
 <script>
 import axios from 'axios';
+import { booksService } from '@/services/api';
 
 export default {
+  props: ['id'],
   data() {
     return {
+      book: {},
       title: '',
       author: '',
       year: '',
@@ -86,6 +94,30 @@ export default {
     };
   },
   methods: {
+    formatImagePath(path) {
+      return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    },
+    async fetchBook() {
+      const bookId = this.$route.params.id; // Pega o ID da rota
+      try {
+        // Supondo que `booksService.fetchBookById` retorne os dados do livro
+        const bookData = await booksService.fetchBookById(bookId);
+        console.log('Dados do livro:', bookData);
+
+        // Atualizando as variáveis do formulário com os dados recebidos
+        this.title = bookData.title;
+        this.author = bookData.author;
+        this.year = bookData.year;
+        this.availability = bookData.availability;
+        this.genre = bookData.genre;
+        this.isbn = bookData.isbn;
+        this.copies = bookData.copies;
+        this.description = bookData.description;
+        this.coverImage = bookData.coverImage;
+      } catch (error) {
+        console.error('Erro ao buscar livro:', error);
+      }
+    },
     handleFileUpload(event) {
       this.coverImage = event.target.files[0];
     },
@@ -104,23 +136,26 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:3000/api/books', formData, {
+        const response = await axios.put('http://localhost:3000/api/books', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-        console.log('Livro adicionado:', response.data);
-        alert('Livro cadastrado com sucesso!');
+        console.log('Livro atualizado:', response.data);
+        alert('Livro atualizado com sucesso!');
         this.$router.push('/admlivros');
       } catch (error) {
-        console.error('Erro ao adicionar livro:', error);
-        alert('Erro ao cadastrar o livro.');
+        console.error('Erro ao atualizar o livro:', error);
+        alert('Erro ao atualizar o livro.');
       }
     },
     cancelarEnvio() {
       this.$router.push('/admlivros');
     }
   },
+  mounted() {
+    this.fetchBook();
+  }
 };
 </script>
 
@@ -167,7 +202,7 @@ export default {
 /* ADICIONAR LIVROS - ADM */
 .main-adicionar-livro {
   width: 1072px;
-  height: 686px;
+  height: 100%;
   background-color: #fff;
   margin-top: 20px;
   box-shadow: 0 2px 8px -2px #989898;
@@ -283,6 +318,7 @@ form {
   flex-direction: row;
   gap: 20px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .botao-salvar {

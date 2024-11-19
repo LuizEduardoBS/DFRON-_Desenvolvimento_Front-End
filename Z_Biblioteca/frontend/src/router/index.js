@@ -78,7 +78,8 @@ const router = createRouter({
       path: '/admlivros',
       name: 'admulivros',
       component: () => import('../views/ADMBooksPage.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
+      props: true
     } ,
     {
       path: '/admnotificacoes',
@@ -93,10 +94,11 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
-      path: '/editarlivro',
+      path: '/editarlivro/:id',
       name: 'editarlivro',
       component: () => import('../views/ADMUpdateBook.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
+      props: true
     },
     {
       path: '/descricaolivro/:id',

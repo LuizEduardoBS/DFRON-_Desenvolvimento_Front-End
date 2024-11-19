@@ -90,7 +90,7 @@ export const userService = {
         return apiClient.delete(`/auth/${userId}/carrinho`); // Deleta todos os livros do carrinho
     },
     moveBooksToLoans(userId) {
-        return apiClient.post(`/auth/${userId}/carrinho/emprestimos`); // Deleta todos os livros do carrinho
+        return apiClient.post(`/auth/${userId}/carrinho/emprestimos`); // Move os livros do carrinho para o empréstimos
     },
     ////////////////////////////////////////////////////////////////////////////////////////////
     // ROTAS PARA LIDAR COM O RESERVAS DO USUÁRIO
