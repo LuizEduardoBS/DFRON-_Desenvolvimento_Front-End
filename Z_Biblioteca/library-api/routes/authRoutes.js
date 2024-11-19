@@ -461,6 +461,7 @@ router.get('/:userId/emprestimos', async (req, res) => {
     }
 });
 
+// Prorroga em 10 dias a devolução do livro
 router.put('/:userId/emprestimos/:emprestimoId/prazo_devolucao', async (req, res) => {
     const { userId, emprestimoId } = req.params;
 
@@ -496,6 +497,36 @@ router.put('/:userId/emprestimos/:emprestimoId/prazo_devolucao', async (req, res
     } catch (error) {
         console.error('Erro ao atualizar prazo de devolução do empréstimo:', error);
         res.status(500).json({ message: 'Erro ao atualizar prazo de devolução do empréstimo', error });
+    }
+});
+
+// Altera o status do empréstimo para "Checkout Devolução"
+router.put('/:userId/emprestimos/:emprestimoId/informar_devolucao', async (req, res) => {
+    const { userId, emprestimoId } = req.params;
+
+    try {
+        // Encontrar o usuário pelo ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Encontrar o empréstimo específico pelo ID
+        const emprestimo = user.emprestimos.id(emprestimoId);
+        if (!emprestimo) {
+            return res.status(404).json({ message: 'Empréstimo não encontrado' });
+        }
+
+        // Alterar o status para "Checkout Devolução"
+        emprestimo.status = "Checkout Devolução";
+
+        // Salvar as alterações no banco de dados
+        await user.save();
+
+        res.status(200).json({ message: 'Status do empréstimo alterado para "Checkout Devolução" com sucesso', emprestimo });
+    } catch (error) {
+        console.error('Erro ao alterar status do empréstimo:', error);
+        res.status(500).json({ message: 'Erro ao alterar status do empréstimo', error });
     }
 });
 

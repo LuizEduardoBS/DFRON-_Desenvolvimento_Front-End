@@ -92,6 +92,7 @@
             >
               <option value="Solicitado" :selected="book.status === 'Solicitado'">Solicitado</option>
               <option value="Autorizado" :selected="book.status === 'Autorizado'">Autorizado</option>
+              <option value="Checkout Devolução" :selected="book.status === 'Checkout Devolução'">Checkout Devolução</option>
               <option value="Devolvido" :selected="book.status === 'Devolvido'">Devolvido</option>
               <option value="Negado" :selected="book.status === 'Negado'">Negado</option>
             </select>
@@ -129,17 +130,25 @@ export default {
       return this.userLoans
         .slice() // Cria uma cópia para evitar mutações no array original
         .sort((a, b) => {
-          // Prioriza status "Solicitado"
-          if (a.status === "Solicitado" && b.status !== "Solicitado") return -1;
-          if (b.status === "Solicitado" && a.status !== "Solicitado") return 1;
+          // Define os grupos de prioridade
+          const prioridadeAlta = ["Solicitado", "Autorizado", "Checkout Devolução"];
+          const prioridadeBaixa = ["Negado", "Devolvido"];
 
-          // Caso ambos não sejam "Solicitado", ordena por dataEmprestimo (mais recente primeiro)
+          // Verifica a qual grupo cada status pertence
+          const grupoA = prioridadeAlta.includes(a.status) ? 1 : 2; // 1 = Alta, 2 = Baixa
+          const grupoB = prioridadeAlta.includes(b.status) ? 1 : 2;
+
+          // Coloca os grupos de prioridade alta acima dos de baixa
+          if (grupoA !== grupoB) return grupoA - grupoB;
+
+          // Dentro do mesmo grupo (prioridade alta ou baixa), ordena por dataEmprestimo
           const dateA = new Date(a.dataEmprestimo);
           const dateB = new Date(b.dataEmprestimo);
           return dateB - dateA; // Decrescente (mais recente no topo)
         })
         .slice(0, this.visibleLoans); // Aplica a paginação
     },
+
   },
 
   methods: {

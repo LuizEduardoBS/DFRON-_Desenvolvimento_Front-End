@@ -65,6 +65,7 @@
           <div class="finalizar-emprestimo">
             <span><strong>Finalizar: </strong></span>
             <button class="botao-finalizar"
+              @click="informarDevolução(book._id)"
               :disabled="book.status === 'Devolvido' || book.status === 'Negado'"
               :style="{ backgroundColor: book.status === 'Devolvido' || book.status === 'Negado' ? '#D9D9D9' : '',
                 cursor: book.status === 'Devolvido' || book.status === 'Negado' ? 'not-allowed' : 'pointer' }"
@@ -183,6 +184,34 @@ export default {
         alert('Erro ao renovar prazo. Tente novamente.');
       }
     },
+    async informarDevolução(emprestimoId) {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        console.error("ID do usuário não encontrado no localStorage.");
+        return;
+      }
+
+      try {
+        const response = await axios.put(`http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/informar_devolucao`, {
+          status: "Checkout Devolução" // Aqui você pode ajustar para o status desejado
+        });
+
+        console.log("Status atualizado:", response.data);
+
+        // Atualizar o status no array userLoans local
+        const emprestimoAtualizado = this.userLoans.find(loan => loan._id === emprestimoId);
+        if (emprestimoAtualizado) {
+          emprestimoAtualizado.status = "Checkout Devolução";
+        }
+
+        alert("Devolução informada com sucesso!");
+      } catch (error) {
+        console.error("Erro ao atualizar status:", error);
+        alert("Erro ao informar a devolução. Tente novamente.");
+      }
+    },
+
+    
     isButtonDisabled(dataEmprestimo, prazoDevolucao) {
       if (!dataEmprestimo || !prazoDevolucao) return true; // Caso falte alguma data, desabilita o botão
       const emprestimo = new Date(dataEmprestimo);

@@ -121,7 +121,9 @@ export const userService = {
     putPrazoDevolucao(id, emprestimoId) {
         return apiClient.get(`/auth/${id}/emprestimos/${emprestimoId}/prazo_devolucao`); // Rota para update do status do empréstimo
     },
-    
+    putLendStatusReturnBook (id, emprestimoId) {
+        return apiClient.get(`/auth/${id}/emprestimos/${emprestimoId}/informar_devolucao`); // Rota para update do status do empréstimo informando a devolução
+    },
     ////////////////////////////////////////////////////////////////////////////////////////////
     // ROTAS PARA LIDAR COM O NOTIFICAÇÕES PRIVADAS DO USUÁRIO
     postNotifPrivate(id, data) {

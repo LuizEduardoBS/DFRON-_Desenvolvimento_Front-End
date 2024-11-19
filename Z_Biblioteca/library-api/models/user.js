@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
         {
             bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Referência para o livro
             title: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
-            status: { type: String, enum: ['Solicitado', 'Autorizado', 'Devolvido', 'Negado'] },
+            status: { type: String, enum: ['Solicitado', 'Autorizado', 'Checkout Devolução', 'Devolvido', 'Negado'] },
             dataEmprestimo: { type: Date },
             prazoDevolucao: { type: Date },
             dataDevolucao: { type: Date },
