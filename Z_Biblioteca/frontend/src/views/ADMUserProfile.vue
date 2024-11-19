@@ -85,9 +85,7 @@
           <td class="coluna-4-historico-usuario">
             <select 
               v-model="book.status" 
-              @change="(event) => {
-                atualizarStatus(user.data._id, book._id, event);
-              }"
+              @change="atualizarStatusEmprestimo(user.data._id, book._id, $event)"
               :class="{'linha-devolvido-negado': book.status === 'Devolvido' || book.status === 'Negado'}"
             >
               <option value="Solicitado" :selected="book.status === 'Solicitado'">Solicitado</option>
@@ -222,23 +220,56 @@ export default {
       };
       return new Intl.DateTimeFormat('pt-BR', options).format(date);
     },
-    async atualizarStatus(userId, emprestimoId, event) {
+    async atualizarStatusEmprestimo(userId, emprestimoId, event) {
       const novoStatus = event.target.value;
-      console.log(emprestimoId)
-      try {
-        const response = await axios.put(`http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/status`, {
-          status: novoStatus
-        });
-        console.log('Status atualizado:', response.data);
-      } catch (error) {
-        console.error('Erro ao atualizar status:', error);
+
+      if (novoStatus === 'Devolvido') {
+        // Exibe a confirmação para o usuário
+        const confirmar = confirm("Você deseja confirmar a devolução deste livro?");
+        if (!confirmar) {
+          // Se o usuário cancelar, não altera o status no frontend
+          event.target.value = this.userLoans.find(loan => loan._id === emprestimoId).status;
+          return;
+        }
+
+        try {
+          // Atualiza o status no backend antes de processar a devolução
+          const response = await axios.put(
+            `http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/status`, 
+            { status: 'Devolvido' }
+          );
+
+          // Após a confirmação, processa a devolução
+          const devolucaoResponse = await axios.put(
+            `http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/devolver`
+          );
+
+          // Atualiza os dados localmente após o sucesso
+          console.log('Devolução processada com sucesso:', devolucaoResponse.data);
+          this.fetchBooksLend(); // Atualiza a lista de empréstimos no frontend
+        } catch (error) {
+          console.error('Erro ao processar devolução:', error);
+        }
+      } else {
+        try {
+          // Atualiza o status no backend para outros casos
+          const response = await axios.put(
+            `http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/status`,
+            { status: novoStatus }
+          );
+
+          console.log('Status atualizado:', response.data);
+        } catch (error) {
+          console.error('Erro ao atualizar status:', error);
+        }
       }
     },
+
     // Método para carregar mais linhas
     loadMore() {
       this.visibleLoans += 5; // Incrementa mais 5 linhas
     },
-
+    
 
   },
   mounted() {

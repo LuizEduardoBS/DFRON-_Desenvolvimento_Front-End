@@ -93,6 +93,12 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/editarlivro',
+      name: 'editarlivro',
+      component: () => import('../views/ADMUpdateBook.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/descricaolivro/:id',
       name: 'descricaolivro',
       component: () => import('../views/BookDescription.vue'),

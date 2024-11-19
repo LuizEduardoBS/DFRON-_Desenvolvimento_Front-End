@@ -47,7 +47,7 @@
           <div class="descricoes-coluna-2">
             <span><strong>Data empréstimo: </strong><span class="titulo-livro">{{ formatDate(book.dataEmprestimo) || '---' }}</span></span>
             <span><strong>Prazo devolução: </strong><span class="status-livro">{{ formatDate(book.prazoDevolucao) || '---' }}</span></span>
-            <span><strong>Data devolução: </strong> - - -</span>
+            <span><strong>Data devolução: </strong>{{ formatDate(book.dataDevolucao) || '---' }}</span>
           </div>
         </div>
 
@@ -104,17 +104,25 @@ export default {
       return this.userLoans
         .slice() // Cria uma cópia para evitar mutações no array original
         .sort((a, b) => {
-          // Prioriza status "Solicitado"
-          if (a.status === "Solicitado" && b.status !== "Solicitado") return -1;
-          if (b.status === "Solicitado" && a.status !== "Solicitado") return 1;
+          // Define os grupos de prioridade
+          const prioridadeAlta = ["Solicitado", "Autorizado", "Checkout Devolução"];
+          const prioridadeBaixa = ["Negado", "Devolvido"];
 
-          // Caso ambos não sejam "Solicitado", ordena por dataEmprestimo (mais recente primeiro)
+          // Verifica a qual grupo cada status pertence
+          const grupoA = prioridadeAlta.includes(a.status) ? 1 : 2; // 1 = Alta, 2 = Baixa
+          const grupoB = prioridadeAlta.includes(b.status) ? 1 : 2;
+
+          // Coloca os grupos de prioridade alta acima dos de baixa
+          if (grupoA !== grupoB) return grupoA - grupoB;
+
+          // Dentro do mesmo grupo (prioridade alta ou baixa), ordena por dataEmprestimo
           const dateA = new Date(a.dataEmprestimo);
           const dateB = new Date(b.dataEmprestimo);
           return dateB - dateA; // Decrescente (mais recente no topo)
         })
         .slice(0, this.visibleLoans); // Aplica a paginação
     },
+
   },
 
   methods: {
@@ -218,7 +226,44 @@ export default {
         alert("Erro ao informar a devolução. Tente novamente.");
       }
     },
+    async atualizarStatus(userId, emprestimoId, event) {
+      const novoStatus = event.target.value;
 
+      if (novoStatus === 'Checkout Devolução') {
+        // Exibe a confirmação para o usuário
+        const confirmar = confirm("Você deseja confirmar a devolução deste livro?");
+        if (!confirmar) {
+          // Se o usuário cancelar, não altera o status no frontend
+          event.target.value = this.userLoans.find(loan => loan._id === emprestimoId).status;
+          return;
+        }
+
+        try {
+          // Chama a rota para processar a devolução no backend
+          const response = await axios.put(
+            `http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/devolver`
+          );
+
+          // Atualiza os dados localmente após o sucesso
+          console.log('Devolução processada com sucesso:', response.data);
+          this.fetchBooksLend(); // Atualiza a lista de empréstimos no frontend
+        } catch (error) {
+          console.error('Erro ao processar devolução:', error);
+        }
+      } else {
+        try {
+          // Atualiza o status no backend se não for "Checkout Devolução"
+          const response = await axios.put(
+            `http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/status`,
+            { status: novoStatus }
+          );
+
+          console.log('Status atualizado:', response.data);
+        } catch (error) {
+          console.error('Erro ao atualizar status:', error);
+        }
+      }
+    },
     
     isButtonDisabled(dataEmprestimo, prazoDevolucao) {
       if (!dataEmprestimo || !prazoDevolucao) return true; // Caso falte alguma data, desabilita o botão

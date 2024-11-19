@@ -530,6 +530,45 @@ router.put('/:userId/emprestimos/:emprestimoId/informar_devolucao', async (req, 
     }
 });
 
+// Rota para processar devolução de um livro emprestado
+router.put('/:userId/emprestimos/:emprestimoId/devolver', async (req, res) => {
+    const { userId, emprestimoId } = req.params;
+
+    try {
+        // Localiza o usuário
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        // Localiza o empréstimo específico
+        const emprestimo = user.emprestimos.id(emprestimoId);
+        if (!emprestimo) return res.status(404).json({ message: 'Empréstimo não encontrado' });
+
+        // Atualiza a data de devolução
+        emprestimo.dataDevolucao = new Date();
+
+        // Localiza o livro relacionado
+        const book = await Book.findById(emprestimo.bookId);
+        if (!book) return res.status(404).json({ message: 'Livro não encontrado' });
+
+        // Atualiza os valores de qtdeBook e copies
+        emprestimo.qtdeBook -= 1;
+        book.copies += 1;
+
+        // Salva o usuário e o livro atualizados
+        await user.save();
+        await book.save();
+
+        res.status(200).json({
+            message: 'Livro devolvido com sucesso',
+            emprestimoAtualizado: emprestimo,
+            livroAtualizado: book,
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao processar devolução do livro', error });
+    }
+});
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rota para adicionar uma notificação privada
