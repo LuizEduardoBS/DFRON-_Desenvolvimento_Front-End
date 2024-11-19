@@ -14,8 +14,8 @@
       <div class="coluna-perfil-usuario-1">
         <img src="../assets/img/person.png" alt="" class="foto-do-perfil">
         <div class="coluna-identificadores">
-          <input type="text" :value="user.username" disabled placeholder="Nome do Usuário">
-          <input type="text" disabled placeholder="email@email.com">
+          <input type="text" :value="user.data?.username || 'Carregando...'" disabled placeholder="Nome do Usuário" style="padding-left: 10px;">
+          <input type="text" :value="user.data?.email || 'Carregando...'"  disabled placeholder="email@email.com" style="padding-left: 10px;">
         </div>
       </div>
 
@@ -35,7 +35,7 @@
       <div class="grid-colunas-da-linha">
 
         <div class="coluna-1-gerenciar-livro">
-          <img src="" alt="">
+          <img :src="formatImagePath(book.bookId.coverImage)" alt="">
           <div class="descricoes-coluna-1">
             <span><strong>Título: </strong><span class="titulo-livro">{{ book.bookId.title? book.bookId.title : '---' }}</span></span>
             <span><strong>Status: </strong><span class="status-livro">{{ book.status? book.status : '---' }}</span></span>
@@ -54,11 +54,21 @@
         <div class="coluna-3-gerenciar-livro">
           <div class="renovar-livro">
             <span><strong>Renovar: </strong></span>
-            <button class="botao-renovar">+ 10 dias</button>
+            <button class="botao-renovar"
+              @click="isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' ? null : renovarPrazo(book._id)"
+              :disabled="isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado'"
+              :style="{backgroundColor: isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' ? '#D9D9D9' : '',
+                cursor: isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' ? 'not-allowed' : 'pointer',}">
+              + 10 dias
+            </button>
           </div>
           <div class="finalizar-emprestimo">
             <span><strong>Finalizar: </strong></span>
-            <button class="botao-finalizar">
+            <button class="botao-finalizar"
+              :disabled="book.status === 'Devolvido' || book.status === 'Negado'"
+              :style="{ backgroundColor: book.status === 'Devolvido' || book.status === 'Negado' ? '#D9D9D9' : '',
+                cursor: book.status === 'Devolvido' || book.status === 'Negado' ? 'not-allowed' : 'pointer' }"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                 <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
               </svg>
@@ -117,7 +127,6 @@ export default {
       }
     },
     
-    
     async fetchBooksLend() {
       const userId = localStorage.getItem("userId");
 
@@ -155,7 +164,39 @@ export default {
     loadMore() {
       this.visibleLoans += 5; // Incrementa mais 5 linhas
     },
+    async renovarPrazo(emprestimoId) {
+       const userId = localStorage.getItem('userId'); // Obtém o ID do usuário
+      try {
+        const response = await axios.put(`http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/prazo_devolucao`);
+        console.log('Prazo renovado com sucesso:', response.data);
+        
+        // Atualiza o prazo no array userLoans
+        const novoPrazo = response.data.novoPrazo; // Supondo que a API retorna o novo prazo
+        const emprestimoAtualizado = this.userLoans.find(loan => loan._id === emprestimoId);
+        if (emprestimoAtualizado) {
+          emprestimoAtualizado.prazoDevolucao = novoPrazo;
+        }
+        
+        alert('Prazo de devolução atualizado para: ' + this.formatDate(novoPrazo));
+      } catch (error) {
+        console.error('Erro ao renovar prazo:', error);
+        alert('Erro ao renovar prazo. Tente novamente.');
+      }
+    },
+    isButtonDisabled(dataEmprestimo, prazoDevolucao) {
+      if (!dataEmprestimo || !prazoDevolucao) return true; // Caso falte alguma data, desabilita o botão
+      const emprestimo = new Date(dataEmprestimo);
+      const prazo = new Date(prazoDevolucao);
 
+      // Calcula a diferença em milissegundos e converte para dias
+      const diffInTime = prazo.getTime() - emprestimo.getTime();
+      const diffInDays = diffInTime / (1000 * 3600 * 24);
+
+      return diffInDays > 15; // Retorna true se a diferença for maior que 10 dias
+    },
+    formatImagePath(path) {
+      return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    },
 
   },
   mounted() {

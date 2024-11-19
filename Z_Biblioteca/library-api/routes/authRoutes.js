@@ -446,7 +446,6 @@ router.put('/:userId/emprestimos/:emprestimoId/status', async (req, res) => {
         res.status(500).json({ message: 'Erro ao atualizar status do empréstimo', error });
     }
 });
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rota para buscar os livros no empréstimos do usuário
 router.get('/:userId/emprestimos', async (req, res) => {
@@ -462,9 +461,46 @@ router.get('/:userId/emprestimos', async (req, res) => {
     }
 });
 
+router.put('/:userId/emprestimos/:emprestimoId/prazo_devolucao', async (req, res) => {
+    const { userId, emprestimoId } = req.params;
+
+    try {
+        // Encontrar o usuário pelo ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Encontrar o empréstimo específico pelo ID
+        const emprestimo = user.emprestimos.id(emprestimoId);
+        if (!emprestimo) {
+            return res.status(404).json({ message: 'Empréstimo não encontrado' });
+        }
+
+        // Verificar se prazoDevolucao já existe e somar 10 dias
+        if (emprestimo.prazoDevolucao) {
+            const prazoAtual = new Date(emprestimo.prazoDevolucao);
+            const novoPrazo = new Date(prazoAtual.setDate(prazoAtual.getDate() + 10));
+            emprestimo.prazoDevolucao = novoPrazo;
+        } else {
+            return res.status(400).json({ message: 'Prazo de devolução atual inválido' });
+        }
+
+        // Salvar as alterações no banco de dados
+        await user.save();
+
+        res.status(200).json({ 
+            message: 'Prazo de devolução do empréstimo atualizado com sucesso', 
+            novoPrazo: emprestimo.prazoDevolucao 
+        });
+    } catch (error) {
+        console.error('Erro ao atualizar prazo de devolução do empréstimo:', error);
+        res.status(500).json({ message: 'Erro ao atualizar prazo de devolução do empréstimo', error });
+    }
+});
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rota para adicionar uma notificação privada
 router.post('/:userId/notificacao_privada', async (req, res) => {
     const { userId } = req.params;
