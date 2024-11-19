@@ -55,9 +55,9 @@
           <div class="renovar-livro">
             <span><strong>Renovar: </strong></span>
             <button class="botao-renovar"
-              @click="isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' ? null : renovarPrazo(book._id)"
-              :disabled="isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado'"
-              :style="{backgroundColor: isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' ? '#D9D9D9' : '',
+              @click="isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' || book.status === 'Checkout Devolução' ? null : renovarPrazo(book._id)"
+              :disabled="isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' || book.status === 'Checkout Devolução'"
+              :style="{backgroundColor: isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' || book.status === 'Checkout Devolução' ? '#D9D9D9' : '',
                 cursor: isButtonDisabled(book.dataEmprestimo, book.prazoDevolucao) || book.status === 'Devolvido' || book.status === 'Negado' ? 'not-allowed' : 'pointer',}">
               + 10 dias
             </button>
@@ -65,10 +65,10 @@
           <div class="finalizar-emprestimo">
             <span><strong>Finalizar: </strong></span>
             <button class="botao-finalizar"
-              @click="informarDevolução(book._id)"
+              @click="book.status === 'Devolvido' || book.status === 'Negado' || book.status === 'Checkout Devolução' ? null : confirmarDevolucao(book._id)"
               :disabled="book.status === 'Devolvido' || book.status === 'Negado'"
-              :style="{ backgroundColor: book.status === 'Devolvido' || book.status === 'Negado' ? '#D9D9D9' : '',
-                cursor: book.status === 'Devolvido' || book.status === 'Negado' ? 'not-allowed' : 'pointer' }"
+              :style="{ backgroundColor: book.status === 'Devolvido' || book.status === 'Negado' || book.status === 'Checkout Devolução' ? '#D9D9D9' : '',
+                cursor: book.status === 'Devolvido' || book.status === 'Negado' || book.status === 'Checkout Devolução' ? 'not-allowed' : 'pointer' }"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                 <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
@@ -184,7 +184,15 @@ export default {
         alert('Erro ao renovar prazo. Tente novamente.');
       }
     },
-    async informarDevolução(emprestimoId) {
+    async confirmarDevolucao(emprestimoId) {
+      const confirmar = confirm("Você tem certeza que deseja informar a devolução?");
+      if (confirmar) {
+        // Se o usuário confirmar, chama a função informarDevolução
+        await this.informarDevolucao(emprestimoId);
+      }
+      // Caso o usuário cancele, nada acontece
+    },
+    async informarDevolucao(emprestimoId) {
       const userId = localStorage.getItem("userId");
       if (!userId) {
         console.error("ID do usuário não encontrado no localStorage.");
