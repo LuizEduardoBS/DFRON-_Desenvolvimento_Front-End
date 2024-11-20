@@ -54,21 +54,51 @@ module.exports = (upload) => {
         }
     });
     
-
     // *** ATUALIZAÇÃO (PUT) ***
-    router.put('/:id', async (req, res) => {
-        const { title, author, year, availability, genre, isbn, copies, description } = req.body;
+    router.put('/:id', upload.single('coverImage'), async (req, res) => {
         try {
+            const { title, author, year, availability, genre, isbn, copies, description } = req.body;
+            const coverImage = req.file ? req.file.path : undefined;
+    
+            // Encontre o livro a ser atualizado
+            const book = await Book.findById(req.params.id);
+            if (!book) {
+                return res.status(404).json({ message: 'Livro não encontrado' });
+            }
+    
+            // Deletar imagem antiga, se uma nova foi enviada
+            if (book.coverImage && coverImage) {
+                const oldImagePath = path.resolve(book.coverImage);
+                if (fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath);
+                }
+            }
+    
+            // Atualizar o livro
             const updatedBook = await Book.findByIdAndUpdate(
                 req.params.id,
-                { title, author, year, availability, genre, isbn, copies, description },
-                { new: true }
+                {
+                    title,
+                    author,
+                    year,
+                    availability,
+                    genre,
+                    isbn,
+                    copies,
+                    description,
+                    coverImage: coverImage || book.coverImage, // Atualiza nova imagem ou mantém a antiga
+                },
+                { new: true } // Retorna o documento atualizado
             );
+    
             res.status(200).json(updatedBook);
         } catch (error) {
+            console.error('Erro ao atualizar livro:', error);
             res.status(500).json({ message: 'Erro ao atualizar livro', error });
         }
     });
+   
+    
 
     /// *** EXCLUSÃO (DELETE) ***
     router.delete('/:id', async (req, res) => {

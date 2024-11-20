@@ -15,8 +15,8 @@
         <form id="form-livro" class="form-add-livro" @submit.prevent="enviarFormulario">
           <select v-model="availability" required>
             <option value="" disabled selected>Disponibilidade *</option>
-            <option value="indisponivel">Indisponível</option>
-            <option value="disponivel">Disponível</option>
+            <option value="Indisponível">Indisponível</option>
+            <option value="Disponível">Disponível</option>
           </select>
         </form>
       </div>
@@ -91,11 +91,16 @@ export default {
       copies: '',
       description: '',
       coverImage: null,
+      file: null,
     };
   },
   methods: {
     formatImagePath(path) {
-      return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+      return `http://localhost:3000/${path}`;
+    },
+    handleFileUpload(event) {
+      this.file = event.target.files[0];
+      console.log(this.file);
     },
     async fetchBook() {
       const bookId = this.$route.params.id; // Pega o ID da rota
@@ -118,34 +123,31 @@ export default {
         console.error('Erro ao buscar livro:', error);
       }
     },
-    handleFileUpload(event) {
-      this.coverImage = event.target.files[0];
-    },
+    
     async enviarFormulario() {
       const formData = new FormData();
-      formData.append('availability', this.availability);
       formData.append('title', this.title);
       formData.append('author', this.author);
-      formData.append('year', this.year);
       formData.append('genre', this.genre);
+      formData.append('year', this.year);
+      formData.append('availability', this.availability);
       formData.append('isbn', this.isbn);
       formData.append('copies', this.copies);
       formData.append('description', this.description);
-      if (this.coverImage) {
-        formData.append('coverImage', this.coverImage);
+      if (this.file) {
+        formData.append('coverImage', this.file);
       }
 
       try {
-        const response = await axios.put('http://localhost:3000/api/books', formData, {
+        const response = await axios.put(`http://localhost:3000/api/books/${this.id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-        console.log('Livro atualizado:', response.data);
         alert('Livro atualizado com sucesso!');
         this.$router.push('/admlivros');
       } catch (error) {
-        console.error('Erro ao atualizar o livro:', error);
+        console.error('Erro ao atualizar livro:', error);
         alert('Erro ao atualizar o livro.');
       }
     },

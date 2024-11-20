@@ -15,8 +15,8 @@
         <form id="form-livro" class="form-add-livro" @submit.prevent="enviarFormulario">
           <select v-model="availability" required>
             <option value="" disabled selected>Disponibilidade *</option>
-            <option value="indisponivel">Indisponível</option>
-            <option value="disponivel">Disponível</option>
+            <option value="Indisponível">Indisponível</option>
+            <option value="Disponível">Disponível</option>
           </select>
         </form>
       </div>
