@@ -122,6 +122,7 @@ export default {
         });
         alert('Perfil atualizado com sucesso!');
         this.fetchUser();
+        this.$router.push('/perfilusuario');
       } catch (error) {
         console.error('Erro ao atualizar o perfil:', error);
         if (error.response && error.response.data.error) {

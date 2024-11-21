@@ -11,7 +11,9 @@
         <router-link to="/politicas" class="opcao-menu">Políticas</router-link>
         <router-link to="/sobre" class="opcao-menu">Sobre</router-link>
         <a href="#" class="opcao-menu" id="usuario-menu" @click="toggleMenu">
-          {{ user ? user.username : 'Usuário' }} <img src="@/assets/img/person.png">
+          {{ user ? user.username : 'Usuário' }} 
+          <img id="icone1" v-if="!user.imagePerfil" src="@/assets/img/person.png">
+          <img id="icone2" v-else :src="formatImagePath(user.imagePerfil)">
         </a>
       </section>
     </div>
@@ -36,10 +38,14 @@ export default {
   data() {
     return {
       menuVisible: false,
-      user: {} // Defina um objeto vazio para evitar problemas de acesso nulo
+      user: {}, // Defina um objeto vazio para evitar problemas de acesso nulo
+      imagePerfil: null, // Caminho da imagem do perfil
     };
   },
   methods: {
+    formatImagePath(path) {
+      return path ? `http://localhost:3000/${path}` : null;
+    },
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
     },

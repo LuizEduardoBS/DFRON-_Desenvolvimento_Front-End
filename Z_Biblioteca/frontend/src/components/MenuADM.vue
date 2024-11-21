@@ -13,7 +13,7 @@
         <a href="#" class="opcao-menu" id="usuario-menu" @click="toggleMenu">
           {{ user ? user.username : 'Usuário' }} 
           <img id="icone1" v-if="!user.imagePerfil" src="@/assets/img/person.png">
-          <img id="icone2" v-else :src="formatImagePath(user.imagePerfil)" style="width: 30px; height: 30px; border-radius: 100%;">
+          <img id="icone2" v-else :src="formatImagePath(user.imagePerfil)">
         </a>
       </section>
     </div>
@@ -162,7 +162,7 @@ export default {
   position: absolute;
   top: 29px;
   margin-left: 5px;
-  padding-right: 90px;
+  border-radius: 100%;
 }
 
 .bloco-do-submenu {

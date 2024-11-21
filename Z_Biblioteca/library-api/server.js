@@ -41,8 +41,8 @@ app.use('/api/books', booksRoutes);
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
-const testRoutes = require('./routes/userUpdateRoutes')(upload); // Passando Multer para as rotas
-app.use('/api/user', testRoutes);
+const userRoutes = require('./routes/userUpdateRoutes')(upload); // Passando Multer para as rotas
+app.use('/api/user', userRoutes);
 
 const GeneralNotifications = require('./routes/generalNotif');
 app.use('/api/generalnotifications', GeneralNotifications);
