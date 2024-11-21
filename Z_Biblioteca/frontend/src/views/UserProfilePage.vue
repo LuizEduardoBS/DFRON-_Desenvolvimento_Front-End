@@ -12,7 +12,7 @@
   <main class="main-perfil-usuario">
     <div class="conteudo-perfil-usuario">
       <div class="coluna-perfil-usuario-1">
-        <img src="../assets/img/person.png" alt="" class="foto-do-perfil">
+        <img :src="user?.data?.imagePerfil ? formatImagePath(user.data.imagePerfil) : defaultImage" alt="Foto do usuário" class="foto-do-perfil">
         <div class="coluna-identificadores">
           <input type="text" :value="user.data?.username || 'Carregando...'" disabled placeholder="Nome do Usuário" style="padding-left: 10px;">
           <input type="text" :value="user.data?.email || 'Carregando...'"  disabled placeholder="email@email.com" style="padding-left: 10px;">
@@ -87,6 +87,8 @@
 <script>
 import axios from 'axios';
 import { userService } from '@/services/api';
+import defaultImage from '@/assets/img/person.png'; // Importa a imagem padrão
+
 
 export default {
   props: ['id'],
@@ -96,7 +98,9 @@ export default {
       textNotif: '',
       userLoans: [],
       userId: '',
-      visibleLoans: 5 // Número inicial de linhas visíveis
+      visibleLoans: 5, // Número inicial de linhas visíveis
+      defaultImage, // Define a imagem padrã
+
     };
   },
   computed: {

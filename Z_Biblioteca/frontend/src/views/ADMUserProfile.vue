@@ -3,7 +3,7 @@
     <router-link to="/admusers" class="botao-voltar-pagina-anterior">Voltar</router-link>
     <div class="conteudo-perfil-usuarios-adm">
       <div class="coluna-perfil-usuarios-adm-1">
-        <img src="@/assets/img/person.png" alt="" class="foto-do-perfil">
+        <img :src="user?.data?.imagePerfil ? formatImagePath(user.data.imagePerfil) : defaultImage" alt="Foto do usuário" class="foto-do-perfil">
         <div v-if="user" class="coluna-identificadores">
           <span><strong>ID: </strong><span id="id-usuario">{{ user.data.customId }}</span></span>       
           <span><strong>Usuário: </strong><span id="nome-usuario">{{ user.data.username }}</span></span>
@@ -111,6 +111,7 @@
 <script>
 import axios from 'axios';
 import { userService } from '@/services/api';
+import defaultImage from '@/assets/img/person.png'; // Importa a imagem padrão
 
 export default {
   props: ['id'],
@@ -120,7 +121,8 @@ export default {
       textNotif: '',
       userLoans: [],
       userId: '',
-      visibleLoans: 5 // Número inicial de linhas visíveis
+      visibleLoans: 5, // Número inicial de linhas visíveis
+      defaultImage, // Define a imagem padrã
     };
   },
   computed: {
@@ -150,10 +152,15 @@ export default {
   },
 
   methods: {
+    formatImagePath(path) {
+      // Corrige as barras e adiciona o caminho completo da URL
+      return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
+    },
     async fetchUser() {
       try {
         this.user = await userService.getProfileById(this.id);
-        // console.log('Dados do usuário:', this.user); // Verifique se os dados estão sendo recebidos corretamente
+        
+        console.log('Dados do usuário:', this.user.data.imagePerfil); // Verifique se os dados estão sendo recebidos corretamente
       } catch (error) {
         console.error('Erro ao buscar o perfil do usuário:', error);
       }
