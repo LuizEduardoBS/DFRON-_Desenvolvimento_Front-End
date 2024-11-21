@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 // Função para registrar novos usuários
 exports.register = async (req, res) => {
@@ -73,3 +75,46 @@ exports.getProfile = async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar perfil do usuário' });
     }
 };
+
+// // Função para atualizar o perfil do usuário
+// exports.updateProfile = async (req, res) => {
+//     const { username, email, password } = req.body;
+//     const userId = req.params.id; // ID do usuário para atualizar
+//     const imagePerfil = req.file ? req.file.path : undefined; // Caminho da nova imagem
+
+//     try {
+//         const user = await User.findById(userId);
+//         if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+//         // Deletar imagem antiga, se uma nova foi enviada
+//         if (user.imagePerfil && imagePerfil) {
+//             const oldImagePath = path.resolve(user.imagePerfil);
+//             if (fs.existsSync(oldImagePath)) {
+//                 fs.unlinkSync(oldImagePath);
+//             }
+//         }
+
+//         // Criptografar a nova senha, se fornecida
+//         let hashedPassword;
+//         if (password) {
+//             hashedPassword = await bcrypt.hash(password, 10);
+//         }
+
+//         // Atualizar os dados do usuário
+//         const updatedUser = await User.findByIdAndUpdate(
+//             userId,
+//             {
+//                 username: username || user.username,
+//                 email: email || user.email,
+//                 password: hashedPassword || user.password,
+//                 imagePerfil: imagePerfil || user.imagePerfil,
+//             },
+//             { new: true } // Retorna o documento atualizado
+//         );
+
+//         res.status(200).json(updatedUser);
+//     } catch (error) {
+//         console.error('Erro ao atualizar usuário:', error);
+//         res.status(500).json({ message: 'Erro ao atualizar perfil', error });
+//     }
+// };

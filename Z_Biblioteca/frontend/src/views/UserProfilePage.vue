@@ -20,7 +20,7 @@
       </div>
 
       <div class="coluna-perfil-usuario-2">
-        <a href="" class="botao-editar-perfil">Editar Perfil</a>
+        <router-link to="/editar_perfil_usuario" class="botao-editar-perfil">Editar Perfil</router-link>
       </div>
     </div>
 

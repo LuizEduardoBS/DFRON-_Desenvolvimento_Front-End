@@ -45,6 +45,12 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/editar_perfil_usuario',
+      name: 'editar_perfil_usuario',
+      component: () => import('../views/UserEditPerfil.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/notificacaousuario',
       name: 'notificacaousuario',
       component: () => import('../views/UserNotifPage.vue'),

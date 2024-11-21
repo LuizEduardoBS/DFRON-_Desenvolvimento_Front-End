@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./Styles/menu_usuario_e_suas_telas.css">
+  <title>Inicio</title>
+</head>
+
+<body>
+  <header class="bloco-do-menu">
+    <div class="top-bar-index">
+
+      <div class="logo">
+        <img src="./img/Bliblioteca (1)-Photoroom.png" alt="BBLTC Biblioteca">
+      </div>
+
+      <section class="opcoes-logado-adm">
+        <a href="./index.html" class="opcao-menu">Home</a>
+        <a href="./acervo.html" class="opcao-menu">Acervo</a>
+        <a href="./politicas.html" class="opcao-menu">Políticas</a>
+        <a href="./sobre.html" class="opcao-menu">Sobre</a>
+        <a href="./login.html" id="usuario-menu" class="opcao-menu">"nome-usuario"<img src="./img/person.png"></a>
+      </section>
+    </div>
+  </header>
+
+  <main class="main-editar-usuario">
+    <div class="bloco-editar-usuario">
+      <div class="bloco-editar-usuario-interno">
+        <h1>Editar Perfil</h1>
+        <form action="/update" method="POST">
+          <img src="./img/person.png" alt="" style="border-radius: 50%; width: 150px; height: 150px;">
+
+          <div>
+            <span>Quer adicionar uma foto em seu perfil?</span>
+            <input type="file" name="imagem" accept="image/*" class="botao-add-img-perfil">
+          </div>
+
+          <span>Nome de usuário *</span>
+          <input class="input" type="text" placeholder="  exemplo@exemplo.com">
+          <span>E-mail *</span>
+          <input class="input" type="text" placeholder="  exemplo@exemplo.com">
+          <span>Nova senha *</span>
+          <input class="input" type="text" placeholder="  senha@123">
+          <span>Confirme a nova senha *</span>
+          <input class="input" type="text" placeholder="  senha@123">
+          <div class="botoes">
+            <button class="botao-salvar">Salvar</button>
+            <button class="botao-cancelar">Cancelar</button>
+          </div>
+        </form>
+      </div>
+      <div class="excluir-conta">
+        <span>Deseja excluir sua conta?</span>
+        <a href="./login.html">Excluir</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Redes Sociais:</p>
+    <div class="footer-contatos">
+      <img src="./img/instagram.svg" alt="">
+      <img src="./img/twitter-x.svg" alt="">
+      <img src="./img/github.svg" alt="">
+    </div>
+    <p>Alguns direitos resercados 2024.</p>
+  </footer>
+</body>
+
+</html>

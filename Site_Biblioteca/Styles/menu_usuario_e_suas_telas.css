@@ -292,9 +292,6 @@ body {
   width: 722px;
 }
 
-.card-avaliacao-descricao {
-
-}
 
 .identificacao-avaliacao {
   display: flex;
@@ -854,6 +851,163 @@ body {
   background-color: #e7e7e7;
 }
 
+/* ########################################### */
+/* ########## MAIN - EDITAR PERFIL.HTML ########## */
+.main-editar-usuario {
+  height: calc(100% - 90px);
+  max-width: 1072px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.bloco-editar-usuario {
+  width: 1072px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+} 
+
+.bloco-editar-usuario-interno {
+  width: 392px;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px -2px #989898;
+  border-radius: 5px;
+}
+
+.bloco-editar-usuario-interno h1 {
+  font-size: 30px;
+  font-weight: bold;
+  color: #0C8CE9;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.bloco-editar-usuario-interno form {
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.bloco-editar-usuario-interno span {
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 324px;
+  margin-top: 15px;
+}
+
+.bloco-editar-usuario-interno .input {
+  width: 324px;
+  height: 47px;
+  border: none;
+  box-shadow: 0 2px 8px -2px #989898;
+  border-radius: 5px;
+  background-color: #E7E7E7;
+  padding: 0;
+  margin: 0;
+}
+
+.bloco-editar-usuario-interno .botoes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 324px;
+  justify-content: space-between;
+}
+
+.bloco-editar-usuario-interno .botao-salvar {
+  width: 150px;
+  height: 47px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 2px 8px -2px #989898;
+  background-color: #0C8CE9;
+  color: #fff;
+  border-radius: 5px;
+  margin: 0;
+  padding: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.bloco-editar-usuario-interno .botao-cancelar {
+  width: 150px;
+  height: 47px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 2px 8px -2px #989898;
+  background-color: #fff;
+  color: #0C8CE9;
+  border-radius: 5px;
+  margin: 0;
+  padding: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.bloco-editar-usuario-interno button:hover {
+  background-color: #fff;
+  color: #0C8CE9;
+  border: 1px solid #0C8CE9;
+}
+
+.excluir-conta {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-top: 21px;
+  align-items: center;
+  gap: 21px;
+}
+
+.excluir-conta a {
+  width: 127px;
+  height: 30px;
+  background-color: #e91717;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px -2px #989898;
+}
+
+.excluir-conta a:hover {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.bloco-editar-usuario-interno .add-img-perfil {
+  width: 20px;
+  height: 20px;
+}
+
+.bloco-editar-usuario-interno .botao-add-img-perfil {
+  height: 21px;
+  width: 324px;  
+}
 
 /* ########################################### */
 /* FOOTER - RODAPÉ */

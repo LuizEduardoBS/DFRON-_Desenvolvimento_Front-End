@@ -11,7 +11,9 @@
         <router-link to="/politicas" class="opcao-menu">Políticas</router-link>
         <router-link to="/sobre" class="opcao-menu">Sobre</router-link>
         <a href="#" class="opcao-menu" id="usuario-menu" @click="toggleMenu">
-          {{ user ? user.username : 'Usuário' }} <img src="@/assets/img/person.png">
+          {{ user ? user.username : 'Usuário' }} 
+          <img id="icone1" v-if="!user.imagePerfil" src="@/assets/img/person.png">
+          <img id="icone2" v-else :src="formatImagePath(user.imagePerfil)" style="width: 30px; height: 30px; border-radius: 100%;">
         </a>
       </section>
     </div>
@@ -41,10 +43,15 @@ export default {
   data() {
     return {
       menuVisible: false,
-      user: {} // Defina um objeto vazio para evitar problemas de acesso nulo
+      user: {}, // Defina um objeto vazio para evitar problemas de acesso nulo
+      imagePerfil: null, // Caminho da imagem do perfil
+      
     };
   },
   methods: {
+    formatImagePath(path) {
+      return path ? `http://localhost:3000/${path}` : null;
+    },
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
     },
@@ -136,7 +143,18 @@ export default {
   text-decoration: underline;
 }
 
-.opcoes-logado-adm .opcao-menu img {
+.opcoes-logado-adm .opcao-menu #icone1 {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 29px;
+  margin-left: 5px;
+  padding-right: 90px;
+}
+
+.opcoes-logado-adm .opcao-menu #icone2 {
   width: 30px;
   height: 30px;
   margin: 0;

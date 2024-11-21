@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema({
             bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Referência para o livro
         },
     ],
+    imagePerfil: { type: String },
 });
 
 // Hook 'pre-save' para calcular o ID customizado
