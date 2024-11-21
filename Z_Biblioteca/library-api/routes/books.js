@@ -4,6 +4,81 @@ const router = express.Router();
 const fs = require('fs'); // Módulo para manipulação do sistema de arquivos
 const path = require('path');
 
+
+router.get('/:userId/review/:bookId', async (req, res) => {
+    const { userId, bookId } = req.params;
+
+    try {
+        // Busca o livro pelo ID
+        const book = await Book.findById(bookId);
+
+        // Verifica se o livro foi encontrado
+        if (!book) {
+            return res.status(404).json({ message: 'Livro não encontrado.' });
+        }
+
+        // Busca o review do usuário dentro da lista de reviews
+        const userReview = book.reviews.find((review) => review.userId.toString() === userId);
+
+        // Verifica se o review foi encontrado
+        if (!userReview) {
+            return res.status(404).json({ message: 'Review não encontrado para este usuário.' });
+        }
+
+        // Retorna o review
+        res.status(200).json(userReview);
+    } catch (error) {
+        console.error('Erro ao buscar review:', error);
+        res.status(500).json({ message: 'Erro no servidor. Tente novamente mais tarde.' });
+    }
+});
+
+router.post('/:userId/review/:bookId', async (req, res) => {
+    const { userId, bookId } = req.params;
+    const { rating, comment } = req.body; // Dados do review fornecidos pelo usuário
+
+    try {
+        // Busca o livro pelo ID
+        const book = await Book.findById(bookId);
+
+        // Verifica se o livro foi encontrado
+        if (!book) {
+            return res.status(404).json({ message: 'Livro não encontrado.' });
+        }
+
+        // Verifica se o usuário já fez um review
+        const existingReview = book.reviews.find((review) => review.userId.toString() === userId);
+        if (existingReview) {
+            return res.status(400).json({ message: 'O usuário já fez um review para este livro.' });
+        }
+
+        // Adiciona o novo review
+        const newReview = {
+            userId,
+            rating,
+            comment,
+            reviewsDate: new Date(), // Define a data atual como data do review
+        };
+
+        book.reviews.push(newReview);
+
+        // Salva o livro atualizado no banco de dados
+        await book.save();
+
+        // Retorna o review adicionado
+        res.status(201).json({ message: 'Review adicionado com sucesso!', review: newReview });
+    } catch (error) {
+        console.error('Erro ao adicionar review:', error);
+        res.status(500).json({ message: 'Erro no servidor. Tente novamente mais tarde.' });
+    }
+});
+
+
+
+
+
+
+
 // *** CRIAÇÃO (POST) ***
 module.exports = (upload) => {
     router.post('/', upload.single('coverImage'), async (req, res) => { // Corrigido para 'coverImage'

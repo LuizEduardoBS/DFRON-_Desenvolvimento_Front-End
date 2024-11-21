@@ -39,7 +39,24 @@
           <div class="descricoes-coluna-1">
             <span><strong>Título: </strong><span class="titulo-livro">{{ book.bookId.title? book.bookId.title : '---' }}</span></span>
             <span><strong>Status: </strong><span class="status-livro">{{ book.status? book.status : '---' }}</span></span>
-            <span><strong>Avaliar: </strong></span>
+            <span><strong>Avaliar: </strong>
+              <span class="stars">
+                <i 
+                  v-for="star in 5" 
+                  :key="star" 
+                  class="fa" 
+                  :class="star <= rating ? 'fa-star' : 'fa-star-o'" 
+                  @click="setRating(star)" 
+                  style="cursor: pointer; color: gold; font-size: 1.2rem;">
+                </i>
+              </span>
+              <!-- Ícone de comentário -->
+              <svg @click="abrirComentario(book.bookId._id)"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" cursor="pointer" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+              </svg>
+
+            </span>
           </div>
         </div>
 
@@ -89,7 +106,6 @@ import axios from 'axios';
 import { userService } from '@/services/api';
 import defaultImage from '@/assets/img/person.png'; // Importa a imagem padrão
 
-
 export default {
   props: ['id'],
   data() {
@@ -100,7 +116,9 @@ export default {
       userId: '',
       visibleLoans: 5, // Número inicial de linhas visíveis
       defaultImage, // Define a imagem padrã
-
+      rating: 0, // Avaliação atual (de 1 a 5)
+      exibirComentario: {}, // Armazena estados dos comentários por ID de livro
+      comentarioTexto: '',  // Texto do comentário atual
     };
   },
   computed: {
@@ -139,7 +157,6 @@ export default {
         console.error('Erro ao buscar o perfil do usuário:', error);
       }
     },
-    
     async fetchBooksLend() {
       const userId = localStorage.getItem("userId");
 
@@ -283,7 +300,48 @@ export default {
     formatImagePath(path) {
       return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
     },
+    
+    async setRating(value, userId, bookId, comment = '') {
+      this.rating = value; // Atualiza a avaliação
+      console.log(`Você avaliou este livro com ${value} estrelas!`);
 
+      try {
+          const response = await axios.post(
+              `http://localhost:3000/api/books/${userId}/review/${bookId}`,
+              {
+                  rating: value,
+                  comment: comment, // Envia o comentário opcional
+              }
+          );
+
+          console.log('Avaliação enviada com sucesso:', response.data);
+      } catch (error) {
+          console.error('Erro ao enviar avaliação:', error.response?.data || error.message);
+      }
+    },
+
+//////////////////////////////////////////////////////////////////////////////////////
+    abrirComentario(bookId) {
+      console.log("Abrir comentário disparado!", bookId);
+      this.$set(this.exibirComentario, bookId, true); // Mostra o campo de texto para o ID do livro
+      this.comentarioTexto = ''; // Limpa o texto
+    },
+    salvarComentario(bookId) {
+      if (!this.comentarioTexto.trim()) {
+        alert('O comentário não pode estar vazio.');
+        return;
+      }
+      console.log(`Comentário salvo para o livro ${id}:`, this.comentarioTexto);
+
+      // Aqui você pode enviar o comentário para a API:
+      // await axios.post(`/api/comentarios/${id}`, { texto: this.comentarioTexto });
+
+      this.$set(this.exibirComentario, id, false); // Esconde o campo
+    },
+    cancelarComentario(bookId) {
+      this.$set(this.exibirComentario, id, false); // Esconde o campo
+    },
+//////////////////////////////////////////////////////////////
   },
   mounted() {
     this.fetchUser(); // Chama o método ao montar o componente
@@ -296,6 +354,31 @@ export default {
 </script>
 
 <style scoped>
+
+
+.modal-comentario {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 10px;
+  resize: none;
+}
+
+.botoes-comentario {
+  display: flex;
+  justify-content: space-between;
+}
+
+
 .linha-devolvido-negado {
   background-color: #D9D9D9;
 }
