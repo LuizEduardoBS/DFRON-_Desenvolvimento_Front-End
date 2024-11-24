@@ -18,9 +18,9 @@
           <h1 class="titulo-livro-descricao" v-else>Carregando título do livro...</h1>
         </div>
         <div class="nota-numero-leitores">
-          <div><span>Nota: </span><span>0,0</span></div>
-          <div><span>0</span><span> avaliações</span></div>
-          <div><span>0</span><span> pessoas leram esse título</span></div>
+          <div><span>Nota: </span><span>{{ averageRating }}</span></div>
+          <div><span>{{ allReviews.length }}</span><span> avaliações</span></div>
+          <div><span>{{ allReviews.length }}</span><span> pessoas leram esse título</span></div>
         </div>
         <div class="texto-descricao-livro">
           <p v-if="book">{{ book.description }}</p>
@@ -71,34 +71,48 @@
   <div class="avaliacoes-descricao">
     <div class="notas-descricao">
       <div>
-        <span id="nota-grande">0,0</span>
-        <span>0</span><span> avaliações</span>
+        <span id="nota-grande">{{ averageRating }}</span>
+        <span>{{ allReviews.length }}</span><span> avaliações</span>
       </div>
       <div class="percentual-avaliacoes">
-        <div><span>5 estrelas: </span><span>-</span><span> %</span></div>
-        <div><span>4 estrelas: </span><span>-</span><span> %</span></div>
-        <div><span>3 estrelas: </span><span>-</span><span> %</span></div>
-        <div><span>2 estrelas: </span><span>-</span><span> %</span></div>
-        <div><span>1 estrelas: </span><span>-</span><span> %</span></div>
+        <div><span>5 estrelas: </span><span>{{ fiveStarCount }}</span><span> avaliações</span></div>
+        <div><span>4 estrelas: </span><span>{{ fourStarCount }}</span><span> avaliações</span></div>
+        <div><span>3 estrelas: </span><span>{{ threeStarCount }}</span><span> avaliações</span></div>
+        <div><span>2 estrelas: </span><span>{{ twoStarCount }}</span><span> avaliações</span></div>
+        <div><span>1 estrela: </span><span>{{ oneStarCount }}</span><span> avaliação</span></div>
       </div>
     </div>
     <div class="textos-avaliacoes">
-      <div class="card-avaliacao-descricao">
-        <div class="identificacao-avaliacao">
-          <div>
-            <span class="username-descricao">Username</span>
-            <span> Nota: </span><span>0,0</span>
+      <div v-if="allReviews && allReviews.length">
+        <div 
+          class="card-avaliacao-descricao" 
+          v-for="review in allReviews" 
+          :key="review._id"
+        >
+          <div class="identificacao-avaliacao">
+            <div>
+              <span class="username-descricao">{{ users.find(user => user.data._id === review.userId)?.data.username || 'Usuário desconhecido' }}</span>
+
+              
+
+              <span> Nota: </span><span>{{ review.rating }}</span>
+            </div>
+            <div>
+              <span id="date">{{ formatDate(review.reviewsDate) }}</span>
+            </div>
           </div>
           <div>
-            <span id="date">00 mês 0000</span>
+            <p>{{ review.comment }}</p>
           </div>
+          <hr>
         </div>
-        <div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit nec nisi quis congue. Phasellus suscipit sed ex in sodales. In eu ipsum vitae justo elementum tincidunt sagittis id mi. Duis ac eros ornare, convallis enim sodales, feugiat arcu. Nullam eu sollicitudin ipsum. Quisque diam sem, bibendum in vestibulum vel, pellentesque non justo. Fusce cursus, magna sit amet maximus ultrices, ipsum elit ultricies felis, id maximus nulla magna vel lectus. Nam massa orci, luctus a blandit quis, cursus vel sem.</p>
-        </div>
-        <hr>
+        <div class="botao-ver-mais-descricao"><span>Ver mais</span></div>
       </div>
-      <div class="botao-ver-mais-descricao"><span>Ver mais</span></div>
+      
+      <div v-else>
+        <p>Nenhuma avaliação encontrada.</p>
+      </div>
+      
     </div>
   </div>
 </main>
@@ -123,6 +137,10 @@ export default {
       userCart: [], // Carrinho do usuário
       userReservations: [], // Reservas do usuário
       userLoans: [], // Empréstimos do usuário
+      allReviews: [],
+      user: '',
+      userIds: [],
+      users: [],
     };
   },
   watch: {
@@ -132,7 +150,7 @@ export default {
   computed: {
     isBookDisabled() {
       return (book) => {
-        console.log('Dados usados para desabilitar:', this.userCart, this.userReservations, this.userLoans);
+        // console.log('Dados usados para desabilitar:', this.userCart, this.userReservations, this.userLoans);
 
         const userCart = this.userCart || [];
         const userReservations = this.userReservations || [];
@@ -159,14 +177,68 @@ export default {
         return isInCart || isInReservation || isInLoan || isUnavailable;
       };
     },
-
+    averageRating() {
+      if (this.allReviews.length === 0) return 0; // Evitar divisão por zero
+      const total = this.allReviews.reduce((sum, review) => sum + review.rating, 0);
+      const average = total / this.allReviews.length; // Dividindo pela quantidade de avaliações
+      return average.toFixed(1).replace('.', ','); // Formato brasileiro
+    },
+    // Contagem das avaliações por estrela
+    fiveStarCount() {
+      return this.allReviews.filter(review => review.rating === 5).length;
+    },
+    fourStarCount() {
+      return this.allReviews.filter(review => review.rating === 4).length;
+    },
+    threeStarCount() {
+      return this.allReviews.filter(review => review.rating === 3).length;
+    },
+    twoStarCount() {
+      return this.allReviews.filter(review => review.rating === 2).length;
+    },
+    oneStarCount() {
+      return this.allReviews.filter(review => review.rating === 1).length;
+    },
   },
   methods: {
-    fetchBook() {
+    // Função para formatar a data
+    formatDate(dateString) {
+      if (!dateString || isNaN(Date.parse(dateString))) return '---'; // Verifica se a data é válida
+      const date = new Date(dateString);
+      const options = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      };
+      return new Intl.DateTimeFormat('pt-BR', options).format(date);
+    },
+    async fetchBook() {
       booksService.fetchBookById(this.id)
         .then(data => {
           this.book = data;
-          console.log(this.book.availability)
+          this.allReviews = this.book.reviews
+          // console.log('Reviews', this.allReviews)
+
+        const userIds = this.allReviews.map(review => review.userId);
+        Promise.all(userIds.map(id => userService.getProfileById(id)))
+          .then(users => {
+            this.users = users; // Array de perfis de usuários
+            // console.log('Veja: ', this.users)
+          })
+          .catch(error => {
+            console.error('Erro ao buscar os perfis de usuários:', error);
+          });
+
+
+        if (this.userId) {
+          userService.getProfileById(this.userId)
+            .then(userData => {
+                this.user = userData;
+            })
+            .catch(error => {
+              console.error('Erro ao buscar os dados do usuário:', error);
+            });
+          }
         })
         .catch(error => console.error("Erro ao buscar dados do livro:", error));
     },

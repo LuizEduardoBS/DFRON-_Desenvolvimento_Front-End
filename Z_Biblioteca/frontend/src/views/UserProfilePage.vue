@@ -40,16 +40,14 @@
             <span><strong>Título: </strong><span class="titulo-livro">{{ book.bookId.title? book.bookId.title : '---' }}</span></span>
             <span><strong>Status: </strong><span class="status-livro">{{ book.status? book.status : '---' }}</span></span>
             <span><strong>Avaliar: </strong>
-              <span class="stars">
-                <i 
-                  v-for="star in 5" 
-                  :key="star" 
-                  class="fa" 
-                  :class="star <= rating ? 'fa-star' : 'fa-star-o'" 
-                  @click="setRating(star)" 
-                  style="cursor: pointer; color: gold; font-size: 1.2rem;">
-                </i>
-              </span>
+              <select id="avaliacao" required v-model="book.bookId.rating" @change="ratingBook(book.bookId._id, $event)">
+                  <option value="" disabled selected>Avalie aqui</option>
+                  <option value="1">★☆☆☆☆</option>
+                  <option value="2">★★☆☆☆</option>
+                  <option value="3">★★★☆☆</option>
+                  <option value="4">★★★★☆</option>
+                  <option value="5">★★★★★</option>
+              </select>
               <!-- Ícone de comentário -->
               <svg @click="abrirComentario(book.bookId._id)"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" cursor="pointer" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -116,9 +114,6 @@ export default {
       userId: '',
       visibleLoans: 5, // Número inicial de linhas visíveis
       defaultImage, // Define a imagem padrã
-      rating: 0, // Avaliação atual (de 1 a 5)
-      exibirComentario: {}, // Armazena estados dos comentários por ID de livro
-      comentarioTexto: '',  // Texto do comentário atual
     };
   },
   computed: {
@@ -300,48 +295,32 @@ export default {
     formatImagePath(path) {
       return `http://localhost:3000/${path.replace(/\\/g, '/')}`;
     },
-    
-    async setRating(value, userId, bookId, comment = '') {
-      this.rating = value; // Atualiza a avaliação
-      console.log(`Você avaliou este livro com ${value} estrelas!`);
-
+    async ratingBook(bookId, event) {
+      const rating = event.target.value; // Obtém o valor selecionado no dropdown
       try {
-          const response = await axios.post(
-              `http://localhost:3000/api/books/${userId}/review/${bookId}`,
-              {
-                  rating: value,
-                  comment: comment, // Envia o comentário opcional
-              }
-          );
+        const userId = localStorage.getItem("userId"); // Identificador do usuário
+        if (!userId) {
+          console.error("Usuário não encontrado.");
+          return;
+        }
+        // Faz uma requisição PUT para atualizar ou criar a avaliação
+        const response = await axios.put(
+          `http://localhost:3000/api/books/${bookId}/rating`, 
+          { rating, userId } // Envia o rating e o userId no corpo da requisição
+        );
 
-          console.log('Avaliação enviada com sucesso:', response.data);
+        console.log("Avaliação atualizada com sucesso:", response.data);
+
+        // Atualiza a avaliação no frontend (se necessário)
+        const livroAtualizado = this.userLoans.find(book => book.bookId._id === bookId);
+        if (livroAtualizado) {
+          livroAtualizado.bookId.rating = rating; // Atualiza localmente a avaliação
+        }
       } catch (error) {
-          console.error('Erro ao enviar avaliação:', error.response?.data || error.message);
+        console.error("Erro ao atualizar a avaliação:", error);
       }
     },
-
-//////////////////////////////////////////////////////////////////////////////////////
-    abrirComentario(bookId) {
-      console.log("Abrir comentário disparado!", bookId);
-      this.$set(this.exibirComentario, bookId, true); // Mostra o campo de texto para o ID do livro
-      this.comentarioTexto = ''; // Limpa o texto
-    },
-    salvarComentario(bookId) {
-      if (!this.comentarioTexto.trim()) {
-        alert('O comentário não pode estar vazio.');
-        return;
-      }
-      console.log(`Comentário salvo para o livro ${id}:`, this.comentarioTexto);
-
-      // Aqui você pode enviar o comentário para a API:
-      // await axios.post(`/api/comentarios/${id}`, { texto: this.comentarioTexto });
-
-      this.$set(this.exibirComentario, id, false); // Esconde o campo
-    },
-    cancelarComentario(bookId) {
-      this.$set(this.exibirComentario, id, false); // Esconde o campo
-    },
-//////////////////////////////////////////////////////////////
+    
   },
   mounted() {
     this.fetchUser(); // Chama o método ao montar o componente
@@ -356,27 +335,7 @@ export default {
 <style scoped>
 
 
-.modal-comentario {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  background-color: #f4f4f4;
-  border: 1px solid #ccc;
-  margin-top: 10px;
-  width: 100%;
-}
 
-textarea {
-  width: 100%;
-  height: 60px;
-  margin-bottom: 10px;
-  resize: none;
-}
-
-.botoes-comentario {
-  display: flex;
-  justify-content: space-between;
-}
 
 
 .linha-devolvido-negado {
