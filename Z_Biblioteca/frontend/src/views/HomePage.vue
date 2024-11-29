@@ -84,12 +84,15 @@ export default {
         }
 
         // Verificar se o livro já está no carrinho, reservas ou empréstimos
-        const isInCart = userCart.some(item => item.bookId._id === book._id);
-        const isInReservation = userReservations.some(item => item.bookId._id === book._id);
+        const isInCart = userCart.some(item => item.bookId && item.bookId._id === book._id);
+        const isInReservation = userReservations.some(item => item.bookId && item.bookId._id === book._id);
         const isInLoan = userLoans.some(
-          item => item.bookId._id === book._id &&
-                  !isRestricted.includes(item.status.toLowerCase())
+          item =>
+            item.bookId &&
+            item.bookId._id === book._id &&
+            !isRestricted.includes(item.status.toLowerCase())
         );
+
 
         // Verificar disponibilidade
         const isUnavailable = book.availability === "Indisponível";

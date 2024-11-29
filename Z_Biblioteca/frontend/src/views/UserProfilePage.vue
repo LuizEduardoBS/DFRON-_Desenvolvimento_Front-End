@@ -190,22 +190,19 @@ export default {
       this.visibleLoans += 5; // Incrementa mais 5 linhas
     },
     async renovarPrazo(emprestimoId) {
-       const userId = localStorage.getItem('userId'); // Obtém o ID do usuário
+      const userId = localStorage.getItem('userId'); 
       try {
         const response = await axios.put(`http://localhost:3000/api/auth/${userId}/emprestimos/${emprestimoId}/prazo_devolucao`);
-        console.log('Prazo renovado com sucesso:', response.data);
-        
-        // Atualiza o prazo no array userLoans
-        const novoPrazo = response.data.novoPrazo; // Supondo que a API retorna o novo prazo
+        const novoPrazo = response.data.novoPrazo;
+
         const emprestimoAtualizado = this.userLoans.find(loan => loan._id === emprestimoId);
         if (emprestimoAtualizado) {
           emprestimoAtualizado.prazoDevolucao = novoPrazo;
         }
-        
-        alert('Prazo de devolução atualizado para: ' + this.formatDate(novoPrazo));
+        alert(`Prazo de devolução atualizado com sucesso para: ${this.formatDate(novoPrazo)}`);
       } catch (error) {
         console.error('Erro ao renovar prazo:', error);
-        alert('Erro ao renovar prazo. Tente novamente.');
+        alert('Não foi possível renovar o prazo. Tente novamente mais tarde.');
       }
     },
     async confirmarDevolucao(emprestimoId) {
